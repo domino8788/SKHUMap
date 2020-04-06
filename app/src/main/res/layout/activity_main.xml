@@ -7,6 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+    <com.domino.skhumap.view.CustomMapView
+        android:id="@+id/main_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:mapSrc="@drawable/temp_campus_map" />
     <LinearLayout
         android:id="@+id/main_bottom_sheet"
         android:layout_width="match_parent"
