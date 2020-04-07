@@ -2,6 +2,7 @@ package com.domino.skhumap.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
@@ -11,18 +12,65 @@ import kotlinx.android.synthetic.main.custom_map_view.view.*
 
 class CustomMapView(context:Context, private val attrs: AttributeSet?, private val defStyleAttr:Int): ScrollView(context, attrs, defStyleAttr){
 
-    private val mapView:View = inflate(context,
-        R.layout.custom_map_view, this)
-    private val verticalScrollView: ScrollView by lazy { mapView.scroll_Vertical }
-    private val horizontalScrollView: HorizontalScrollView by lazy { mapView.scroll_Horizontal }
-    private val imageView:ImageView by lazy { mapView.img_map }
+    private var mx = 0f
+    private var my = 0f
+    private val mapView: View = inflate(
+        context,
+        R.layout.custom_map_view, this
+    )
+    private val vScroll: ScrollView by lazy { mapView.scroll_Vertical }
+    private val hScroll: HorizontalScrollView by lazy { mapView.scroll_Horizontal }
+    private val imageView: ImageView by lazy { mapView.img_map }
 
-    constructor(context:Context):this(context,null)
-    constructor(context:Context, attrs: AttributeSet?):this(context, attrs,0)
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    init{
+    init {
         attrs?.let { adjustAttrs(attrs!!, defStyleAttr) }
+        hScroll.setOnTouchListener { v, event ->
+            var curX: Float
+            var curY: Float
 
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    mx = event.x
+                    my = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    curX = event.x
+                    curY = event.y
+                    img_map.scrollBy(((mx - curX)*1.5).toInt(), ((my - curY)*1.5).toInt())
+                    mx = curX
+                    my = curY
+                }
+                MotionEvent.ACTION_UP -> {
+
+                }
+            }
+            true
+        }
+        vScroll.setOnTouchListener { v, event ->
+            var curX: Float
+            var curY: Float
+
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    mx = event.x
+                    my = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    curX = event.x
+                    curY = event.y
+                    img_map.scrollBy(((mx - curX)*1.5).toInt(), ((my - curY)*1.5).toInt())
+                    mx = curX
+                    my = curY
+                }
+                MotionEvent.ACTION_UP -> {
+
+                }
+            }
+            true
+        }
     }
 
     /**
