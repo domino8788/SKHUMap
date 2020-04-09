@@ -9,9 +9,9 @@
     android:fitsSystemWindows="true">
     <fragment
         android:id="@+id/main_map"
-        android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        class="com.domino.skhumap.NaverMapFragment"/>
     <LinearLayout
         android:id="@+id/main_bottom_sheet"
         android:layout_width="match_parent"
