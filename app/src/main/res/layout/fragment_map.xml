@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/map"
-    android:name="com.naver.maps.map.MapFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:navermap_latitude="37.487600"
-    app:navermap_longitude="126.825643"
-    app:navermap_zoom="16.5"
-    tools:context=".NaverMapFragment" />
+    android:fitsSystemWindows="true">
+    <fragment
+        android:id="@+id/map"
+        android:name="com.naver.maps.map.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navermap_latitude="37.487600"
+        app:navermap_longitude="126.825643"
+        app:navermap_zoom="16.5"
+        tools:context=".NaverMapFragment" />
+
+    <TextView
+        android:id="@+id/txt_current_touch_latlng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:gravity="center"
+        android:text="latlng" />
+
+</RelativeLayout>
