@@ -6,7 +6,4 @@
     android:name="com.naver.maps.map.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:navermap_latitude="37.487600"
-    app:navermap_longitude="126.825643"
-    app:navermap_zoom="16.5"
     tools:context=".NaverMapFragment" />
