@@ -1,5 +1,7 @@
 package com.domino.skhumap
 
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.PointF
 import androidx.fragment.app.Fragment
 
@@ -14,10 +16,19 @@ import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.GroundOverlay
+import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.fragment_map.*
+import java.lang.Exception
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickListener {
     lateinit var naverMap:NaverMap
+    val campusOverlay = GroundOverlay()
+    var toggleStart = true
+    var toggleEnd = false
+    var firstOrSecond = true
+    lateinit var southWestLatLng:LatLng
+    lateinit var northEastLatLng:LatLng
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,10 +55,36 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
         naverMap.setOnMapClickListener(this)
 
     }
+    fun makeImage(latLng1: LatLng, latLng2: LatLng) {
+            campusOverlay.map = null
+            campusOverlay.image = OverlayImage.fromResource(R.drawable.map_img2)
+            campusOverlay.bounds = LatLngBounds(latLng1!!, latLng2!!)
+            campusOverlay.alpha = 0.5f
+            campusOverlay.map = naverMap
+            txt_swne.text = "ll 1 : ${latLng1.toString()}    ll 2 : ${latLng2.toString()}"
+            txt_count.text = "finish"
+
+    }
 
     @UiThread
     override fun onMapClick(point: PointF, latlng: LatLng) {
         txt_current_touch_latlng.text = latlng.toString()
+        if (toggleEnd) {
+            makeImage(southWestLatLng, northEastLatLng)
+            toggleEnd = false
+        } else {
+            if (firstOrSecond) {
+                campusOverlay.map = null
+                southWestLatLng = latlng
+                txt_count.text = "1"
+                firstOrSecond = false
+            } else {
+                firstOrSecond = true
+                northEastLatLng = latlng
+                toggleEnd = true
+                txt_count.text = "2"
+            }
+        }
     }
 
 }
