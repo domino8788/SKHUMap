@@ -16,6 +16,18 @@
         app:navermap_zoom="16.5"
         tools:context=".NaverMapFragment" />
 
+    <Button
+        android:id="@+id/btn_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="50dp"
+        android:text="DOWN" />
+
     <RadioGroup
         android:id="@+id/ll_group"
         android:layout_width="wrap_content"
@@ -25,11 +37,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="33dp"
-        android:layout_marginLeft="33dp"
-        android:layout_marginTop="479dp"
-        android:layout_marginEnd="218dp"
-        android:layout_marginRight="218dp">
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginEnd="201dp"
+        android:layout_marginRight="201dp">
 
         <RadioButton
             android:id="@+id/ll1_latitude"
@@ -43,30 +55,7 @@
             android:layout_height="wrap_content"
             android:text="LatLng1_Longtitude" />
 
-        <RadioButton
-            android:id="@+id/ll2_latitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LatLng2_Latitude" />
-
-        <RadioButton
-            android:id="@+id/ll2_longtitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LatLng2_Longtitude" />
     </RadioGroup>
-
-    <Button
-        android:id="@+id/btn_down"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:layout_marginBottom="142dp"
-        android:text="DOWN" />
 
     <Button
         android:id="@+id/btn_up"
@@ -77,36 +66,14 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="28dp"
         android:layout_marginLeft="28dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginRight="37dp"
-        android:layout_marginBottom="198dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="106dp"
         android:text="UP" />
 
-    <TextView
-        android:id="@+id/txt_current_touch_latlng"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="26dp"
-        android:gravity="center"
-        android:text="latlng" />
 
     <TextView
-        android:id="@+id/txt_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="177dp"
-        android:layout_marginLeft="177dp"
-        android:layout_marginBottom="63dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/txt_swne"
+        android:id="@+id/txt_sw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -129,6 +96,30 @@
         android:layout_marginRight="19dp"
         android:layout_marginBottom="14dp"
         android:text="Switch" />
+
+    <Button
+        android:id="@+id/btn_magnification_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_magnification_down"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="16dp"
+        android:text="mag_up"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp" />
+
+    <Button
+        android:id="@+id/btn_magnification_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="254dp"
+        android:text="mag_down"
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentLeft="true" />
 
 
 </RelativeLayout>

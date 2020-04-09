@@ -25,10 +25,9 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
     lateinit var naverMap: NaverMap
     val campusOverlay = GroundOverlay()
     var toggleStart = true
-    var toggleEnd = false
-    var firstOrSecond = true
     var select = 0
     var distance = 0.000020
+    var magnification = 12.5f
     lateinit var southWestLatLng: LatLng
     lateinit var northEastLatLng: LatLng
 
@@ -49,8 +48,6 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
             select = when (checkedId) {
                 R.id.ll1_latitude -> 0
                 R.id.ll1_longtitude -> 1
-                R.id.ll2_latitude -> 2
-                R.id.ll2_longtitude -> 3
                 else -> 0
             }
         }
@@ -60,19 +57,12 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
         btn_up.setOnClickListener {
             makeImage(
                 campusOverlay.bounds.run {
-                when (select) {
-                    0 -> LatLng(southWest.latitude + distance, southWest.longitude)
-                    1 -> LatLng(southWest.latitude, southWest.longitude + distance)
-                    else -> LatLng(southWest.latitude + distance, southWest.longitude)
-                }
-            },
-                campusOverlay.bounds.run {
                     when (select) {
-                        2 -> LatLng(northEast.latitude + distance, northEast.longitude)
-                        3 -> LatLng(northEast.latitude, northEast.longitude + distance)
-                        else -> LatLng(northEast.latitude + distance, northEast.longitude)
+                        0 -> LatLng(southWest.latitude + distance, southWest.longitude)
+                        1 -> LatLng(southWest.latitude, southWest.longitude + distance)
+                        else -> LatLng(southWest.latitude + distance, southWest.longitude)
                     }
-                }
+                },magnification
             )
         }
         btn_down.setOnClickListener {
@@ -83,18 +73,18 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
                         1 -> LatLng(southWest.latitude, southWest.longitude - distance)
                         else -> LatLng(southWest.latitude - distance, southWest.longitude)
                     }
-                },
-                campusOverlay.bounds.run {
-                    when (select) {
-                        2 -> LatLng(northEast.latitude - distance, northEast.longitude)
-                        3 -> LatLng(northEast.latitude, northEast.longitude - distance)
-                        else -> LatLng(
-                            northEast.latitude - distance,
-                            northEast.longitude
-                        )
-                    }
-                }
+                }, magnification
             )
+        }
+        btn_magnification_up.setOnClickListener {
+            btn_magnification_up.text = "mag_up ${magnification}"
+            magnification+=0.05f
+            makeImage(campusOverlay.bounds.southWest, magnification)
+        }
+        btn_magnification_down.setOnClickListener {
+            btn_magnification_down.text = "mag_down ${magnification}"
+            magnification-=0.05f
+            makeImage(campusOverlay.bounds.southWest, magnification)
         }
     }
 
@@ -108,43 +98,28 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
 
     }
 
-    fun makeImage(southWestLatLng: LatLng, northEastLatLng: LatLng) {
-        try {
-            campusOverlay.map = null
-            campusOverlay.image = OverlayImage.fromResource(R.drawable.map_img2)
-            campusOverlay.bounds = LatLngBounds(southWestLatLng!!, northEastLatLng!!)
-            campusOverlay.alpha = 0.5f
-            campusOverlay.map = naverMap
-            txt_swne.text =
-                "ll 1 : ${southWestLatLng.toString()}    ll 2 : ${northEastLatLng.toString()}"
-            txt_count.text = "finish"
-        } catch (e: Exception) {
-            txt_count.text = "over!!"
-        } finally {
+    fun makeImage(southWestLatLng: LatLng, magnification:Float) {
+        campusOverlay.map = null
+        campusOverlay.image = OverlayImage.fromResource(R.drawable.campus)
 
-        }
+        northEastLatLng = southWestLatLng.offset(
+            campusOverlay.image.getIntrinsicHeight(context!!).toDouble()/magnification,
+            campusOverlay.image.getIntrinsicWidth(context!!).toDouble()/magnification
+            )
+
+        campusOverlay.bounds = LatLngBounds(southWestLatLng, northEastLatLng)
+        campusOverlay.alpha = 0.5f
+        campusOverlay.map = naverMap
+        txt_sw.text = "ll 1 : ${southWestLatLng.toString()}    ll 2 : ${northEastLatLng.toString()}"
     }
 
     @UiThread
     override fun onMapClick(point: PointF, latlng: LatLng) {
-        txt_current_touch_latlng.text = latlng.toString()
-        if (!toggleStart)
-            return
-        if (toggleEnd) {
-            makeImage(southWestLatLng, northEastLatLng)
-            toggleEnd = false
-        } else {
-            if (firstOrSecond) {
-                campusOverlay.map = null
-                southWestLatLng = latlng
-                txt_count.text = "1"
-                firstOrSecond = false
-            } else {
-                firstOrSecond = true
-                northEastLatLng = latlng
-                toggleEnd = true
-                txt_count.text = "2"
-            }
+        if(toggleStart) {
+            txt_sw.text = latlng.toString()
+            southWestLatLng = latlng
+
+            makeImage(southWestLatLng, magnification)
         }
     }
 
