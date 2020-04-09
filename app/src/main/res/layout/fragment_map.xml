@@ -16,6 +16,72 @@
         app:navermap_zoom="16.5"
         tools:context=".NaverMapFragment" />
 
+    <RadioGroup
+        android:id="@+id/ll_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="479dp"
+        android:layout_marginEnd="218dp"
+        android:layout_marginRight="218dp">
+
+        <RadioButton
+            android:id="@+id/ll1_latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LatLng1_Latitude" />
+
+        <RadioButton
+            android:id="@+id/ll1_longtitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LatLng1_Longtitude" />
+
+        <RadioButton
+            android:id="@+id/ll2_latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LatLng2_Latitude" />
+
+        <RadioButton
+            android:id="@+id/ll2_longtitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LatLng2_Longtitude" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginBottom="142dp"
+        android:text="DOWN" />
+
+    <Button
+        android:id="@+id/btn_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginBottom="198dp"
+        android:text="UP" />
+
     <TextView
         android:id="@+id/txt_current_touch_latlng"
         android:layout_width="wrap_content"
@@ -45,11 +111,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginBottom="92dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="42dp"
         android:text="TextView" />
+
+    <Switch
+        android:checked="true"
+        android:id="@+id/switch_on_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="19dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginBottom="14dp"
+        android:text="Switch" />
 
 
 </RelativeLayout>

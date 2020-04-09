@@ -22,13 +22,15 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import java.lang.Exception
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickListener {
-    lateinit var naverMap:NaverMap
+    lateinit var naverMap: NaverMap
     val campusOverlay = GroundOverlay()
     var toggleStart = true
     var toggleEnd = false
     var firstOrSecond = true
-    lateinit var southWestLatLng:LatLng
-    lateinit var northEastLatLng:LatLng
+    var select = 0
+    var distance = 0.000020
+    lateinit var southWestLatLng: LatLng
+    lateinit var northEastLatLng: LatLng
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +45,57 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as MapFragment?
         mapFragment?.getMapAsync(this)
 
-        txt_current_touch_latlng
+        ll_group.setOnCheckedChangeListener { group, checkedId ->
+            select = when (checkedId) {
+                R.id.ll1_latitude -> 0
+                R.id.ll1_longtitude -> 1
+                R.id.ll2_latitude -> 2
+                R.id.ll2_longtitude -> 3
+                else -> 0
+            }
+        }
+        switch_on_off.setOnCheckedChangeListener { buttonView, isChecked ->
+            toggleStart = isChecked
+        }
+        btn_up.setOnClickListener {
+            makeImage(
+                campusOverlay.bounds.run {
+                when (select) {
+                    0 -> LatLng(southWest.latitude + distance, southWest.longitude)
+                    1 -> LatLng(southWest.latitude, southWest.longitude + distance)
+                    else -> LatLng(southWest.latitude + distance, southWest.longitude)
+                }
+            },
+                campusOverlay.bounds.run {
+                    when (select) {
+                        2 -> LatLng(northEast.latitude + distance, northEast.longitude)
+                        3 -> LatLng(northEast.latitude, northEast.longitude + distance)
+                        else -> LatLng(northEast.latitude + distance, northEast.longitude)
+                    }
+                }
+            )
+        }
+        btn_down.setOnClickListener {
+            makeImage(
+                campusOverlay.bounds.run {
+                    when (select) {
+                        0 -> LatLng(southWest.latitude - distance, southWest.longitude)
+                        1 -> LatLng(southWest.latitude, southWest.longitude - distance)
+                        else -> LatLng(southWest.latitude - distance, southWest.longitude)
+                    }
+                },
+                campusOverlay.bounds.run {
+                    when (select) {
+                        2 -> LatLng(northEast.latitude - distance, northEast.longitude)
+                        3 -> LatLng(northEast.latitude, northEast.longitude - distance)
+                        else -> LatLng(
+                            northEast.latitude - distance,
+                            northEast.longitude
+                        )
+                    }
+                }
+            )
+        }
     }
 
     @UiThread
@@ -55,14 +107,16 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
         naverMap.setOnMapClickListener(this)
 
     }
-    fun makeImage(latLng1: LatLng, latLng2: LatLng) {
+
+    fun makeImage(southWestLatLng: LatLng, northEastLatLng: LatLng) {
         try {
             campusOverlay.map = null
             campusOverlay.image = OverlayImage.fromResource(R.drawable.map_img2)
-            campusOverlay.bounds = LatLngBounds(latLng1!!, latLng2!!)
+            campusOverlay.bounds = LatLngBounds(southWestLatLng!!, northEastLatLng!!)
             campusOverlay.alpha = 0.5f
             campusOverlay.map = naverMap
-            txt_swne.text = "ll 1 : ${latLng1.toString()}    ll 2 : ${latLng2.toString()}"
+            txt_swne.text =
+                "ll 1 : ${southWestLatLng.toString()}    ll 2 : ${northEastLatLng.toString()}"
             txt_count.text = "finish"
         } catch (e: Exception) {
             txt_count.text = "over!!"
@@ -74,6 +128,8 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
     @UiThread
     override fun onMapClick(point: PointF, latlng: LatLng) {
         txt_current_touch_latlng.text = latlng.toString()
+        if (!toggleStart)
+            return
         if (toggleEnd) {
             makeImage(southWestLatLng, northEastLatLng)
             toggleEnd = false
