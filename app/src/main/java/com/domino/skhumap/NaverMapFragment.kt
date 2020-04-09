@@ -56,6 +56,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
 
     }
     fun makeImage(latLng1: LatLng, latLng2: LatLng) {
+        try {
             campusOverlay.map = null
             campusOverlay.image = OverlayImage.fromResource(R.drawable.map_img2)
             campusOverlay.bounds = LatLngBounds(latLng1!!, latLng2!!)
@@ -63,7 +64,11 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
             campusOverlay.map = naverMap
             txt_swne.text = "ll 1 : ${latLng1.toString()}    ll 2 : ${latLng2.toString()}"
             txt_count.text = "finish"
+        } catch (e: Exception) {
+            txt_count.text = "over!!"
+        } finally {
 
+        }
     }
 
     @UiThread
