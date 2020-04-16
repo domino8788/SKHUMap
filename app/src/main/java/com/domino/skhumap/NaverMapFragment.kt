@@ -46,7 +46,6 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as MapFragment?
         mapFragment?.getMapAsync(this)
-        FirebaseApp.initializeApp(context!!)
         btn_open_add_data_activity.setOnClickListener {
             startActivity(Intent(context, AddCampusDataActivity::class.java).apply {
                 putExtra("location", currentTouchMarker.position)
