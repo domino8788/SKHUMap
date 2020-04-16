@@ -1,6 +1,6 @@
 package com.domino.skhumap
 
-import com.naver.maps.geometry.LatLng
+import com.google.firebase.firestore.GeoPoint
 
-data class Department(val id:String, val name:String ,val location:LatLng) {
+data class Department(val name:String ,val location:GeoPoint) {
 }
