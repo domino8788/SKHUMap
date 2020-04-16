@@ -12,7 +12,6 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,4 +36,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.naver.maps:map-sdk:3.7.1'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-firestore:21.2.1'
 }
