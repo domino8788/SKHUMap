@@ -1,18 +1,18 @@
 package com.domino.skhumap
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PointF
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
 import androidx.annotation.UiThread
-import com.google.firebase.FirebaseApp
+import androidx.fragment.app.Fragment
+import com.domino.skhumap.MapManager.naverMap
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.util.Assert
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -20,7 +20,6 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.GroundOverlay
-import com.naver.maps.map.overlay.LocationOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.fragment_map.*
@@ -29,9 +28,9 @@ const val REQUEST_CODE = 1000
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickListener {
 
-    lateinit var naverMap:NaverMap
+    val db by lazy { FirebaseFirestore.getInstance() }
+    val departments by lazy { arrayListOf<Department>() }
     val campusGroudOverlay by lazy { GroundOverlay() }
-    val markers by lazy { arrayListOf<Marker>() }
     val currentTouchMarker by lazy { Marker() }
 
     override fun onCreateView(
@@ -54,10 +53,29 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
     }
 
 
+    fun realTimeMarkerUpdate() {
+        db.collection("department").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            for(change in querySnapshot?.documentChanges!!){
+                change.run {
+                    when (type) {
+                        DocumentChange.Type.ADDED -> {
+                            departments.add(newIndex, document.toObject(Department::class.java))
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            departments[newIndex] = document.toObject(Department::class.java)
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            departments.removeAt(oldIndex)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @UiThread
     override fun onMapReady(nMap: NaverMap) {
-        this.naverMap = nMap
+        naverMap = nMap
         naverMap.run {
             extent = LatLngBounds(LatLng(37.486033, 126.823969), LatLng(37.489835, 126.827264))
             minZoom = 16.5
@@ -76,7 +94,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
             bounds = LatLngBounds(LatLng(37.486427880037326, 126.82376783058442), LatLng(37.48854961512034, 126.82754956984687))
             map = nMap
         }
-
+        realTimeMarkerUpdate()
         naverMap.setOnMapClickListener(this)
     }
 

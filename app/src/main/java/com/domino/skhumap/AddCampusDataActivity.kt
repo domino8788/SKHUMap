@@ -24,7 +24,7 @@ class AddCampusDataActivity : AppCompatActivity() {
 
         btn_data_push.setOnClickListener {
             db.collection("department").document(txt_id.text.toString())
-                .set(Department(txt_name.text.toString(), GeoPoint(location.latitude, location.longitude)))
+                .set(Department(txt_id.text.toString() ,txt_name.text.toString(), GeoPoint(location.latitude, location.longitude)))
                 .addOnSuccessListener {
                     Log.d("Firbase : ", "DocumentSnapshot successfully written!")
                     Toast.makeText(this, "문서 추가 성공", Toast.LENGTH_SHORT)
