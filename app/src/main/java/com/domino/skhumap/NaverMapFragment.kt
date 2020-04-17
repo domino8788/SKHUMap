@@ -59,12 +59,14 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
                 change.run {
                     when (type) {
                         DocumentChange.Type.ADDED -> {
-                            departments.add(newIndex, document.toObject(Department::class.java))
+                            departments.add(newIndex, document.toDto(Department::class.java))
                         }
                         DocumentChange.Type.MODIFIED -> {
-                            departments[newIndex] = document.toObject(Department::class.java)
+                            departments[oldIndex].removeMarker()
+                            departments[newIndex] = document.toDto(Department::class.java)
                         }
                         DocumentChange.Type.REMOVED -> {
+                            departments[oldIndex].removeMarker()
                             departments.removeAt(oldIndex)
                         }
                     }
@@ -72,6 +74,12 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
             }
         }
     }
+
+    private fun <T> QueryDocumentSnapshot.toDto(valueType:Class<T>): T =
+        when(valueType) {
+            Department::class.java -> this.toObject(valueType).apply { addMarker() } as T
+            else -> this.toObject(valueType)
+        }
 
     @UiThread
     override fun onMapReady(nMap: NaverMap) {
