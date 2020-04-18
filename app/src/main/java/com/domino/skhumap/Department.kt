@@ -6,6 +6,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 
+@IgnoreExtraProperties
 data class Department(
     @DocumentId val id:String="",
     @PropertyName("name") val name:String="",
@@ -14,6 +15,8 @@ data class Department(
     @PropertyName("info") val info:HashMap<String, Any>?=null)
 {
     val marker:Marker=Marker()
+    @Exclude
+    get
 
     fun addMarker(){
         marker.apply {

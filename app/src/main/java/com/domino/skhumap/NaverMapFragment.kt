@@ -87,7 +87,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
         naverMap.run {
             extent = LatLngBounds(LatLng(37.486033, 126.823969), LatLng(37.489835, 126.827264))
             minZoom = 16.5
-            mapType = NaverMap.MapType.Terrain
+            mapType = NaverMap.MapType.Basic
             uiSettings.run {
                 isCompassEnabled = false
                 isZoomControlEnabled = false
@@ -100,6 +100,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
         campusGroudOverlay.run {
             image = OverlayImage.fromResource(R.drawable.campus)
             bounds = LatLngBounds(LatLng(37.486427880037326, 126.82376783058442), LatLng(37.48854961512034, 126.82754956984687))
+            alpha = 0.45f
             map = nMap
         }
         realTimeMarkerUpdate()
