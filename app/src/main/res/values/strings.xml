@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SKHU MAP</string>
+    <string-array name="type_array">
+        <item>department</item>
+        <item>lecture room</item>
+        <item></item>
+        <item>toilet</item>
+    </string-array>
 </resources>
