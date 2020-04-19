@@ -21,7 +21,6 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
-import com.naver.maps.map.widget.IndoorLevelPickerView
 import kotlinx.android.synthetic.main.fragment_map.*
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickListener {

@@ -26,6 +26,7 @@ data class Facility(
             name = readString()!!
             location = GeoPoint(parcel.readDouble(), parcel.readDouble())
             type = readInt()
+            info = readSerializable() as HashMap<String, Any>
         }
     }
 
@@ -55,6 +56,7 @@ data class Facility(
             writeDouble(location!!.latitude)
             writeDouble(location!!.longitude)
             writeInt(type)
+            writeSerializable(info)
         }
     }
 

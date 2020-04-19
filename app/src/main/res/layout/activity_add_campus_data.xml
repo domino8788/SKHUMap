@@ -10,21 +10,21 @@
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/department_id"
+        android:id="@+id/facility_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txt_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="id"
-            android:singleLine="true"
-            />
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/department_name"
+        android:id="@+id/facility_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp">
@@ -33,6 +33,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="name"
+            android:singleLine="true"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/facility_min_floor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginVertical="20dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_min_floor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="minFloor"
+            android:inputType="numberSigned"
+            android:singleLine="true"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/facility_max_floor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginVertical="20dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_max_floor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:hint="maxFloor"
             android:singleLine="true"
             />
     </com.google.android.material.textfield.TextInputLayout>
