@@ -12,7 +12,6 @@ import com.domino.skhumap.MapManager.naverMap
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.util.Assert
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -22,14 +21,13 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import com.naver.maps.map.widget.IndoorLevelPickerView
 import kotlinx.android.synthetic.main.fragment_map.*
-
-const val REQUEST_CODE = 1000
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickListener {
 
     val db by lazy { FirebaseFirestore.getInstance() }
-    val departments by lazy { arrayListOf<Department>() }
+    val facilities by lazy { arrayListOf<Facility>() }
     val campusGroudOverlay by lazy { GroundOverlay() }
     val currentTouchMarker by lazy { Marker() }
 
@@ -54,20 +52,20 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
 
 
     fun realTimeMarkerUpdate() {
-        db.collection("department").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+        db.collection(MapManager.collectionName).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             for(change in querySnapshot?.documentChanges!!){
                 change.run {
                     when (type) {
                         DocumentChange.Type.ADDED -> {
-                            departments.add(newIndex, document.toDto(Department::class.java))
+                            facilities.add(newIndex, document.toDto(Facility::class.java))
                         }
                         DocumentChange.Type.MODIFIED -> {
-                            departments[oldIndex].removeMarker()
-                            departments[newIndex] = document.toDto(Department::class.java)
+                            facilities[oldIndex].removeMarker()
+                            facilities[newIndex] = document.toDto(Facility::class.java)
                         }
                         DocumentChange.Type.REMOVED -> {
-                            departments[oldIndex].removeMarker()
-                            departments.removeAt(oldIndex)
+                            facilities[oldIndex].removeMarker()
+                            facilities.removeAt(oldIndex)
                         }
                     }
                 }
@@ -77,7 +75,14 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
 
     private fun <T> QueryDocumentSnapshot.toDto(valueType:Class<T>): T =
         when(valueType) {
-            Department::class.java -> this.toObject(valueType).apply { addMarker() } as T
+            Facility::class.java -> this.toObject(valueType).apply {
+                addMarker()?.setOnClickListener {
+                    this@NaverMapFragment.startActivity(Intent(context, AddCampusDataActivity::class.java).also {
+                        it.putExtra("selected", this)
+                    })
+                    false
+                }
+            } as T
             else -> this.toObject(valueType)
         }
 
@@ -104,7 +109,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback, NaverMap.OnMapClickList
             map = nMap
         }
         realTimeMarkerUpdate()
-        naverMap.setOnMapClickListener(this)
+        naverMap.onMapClickListener = this
     }
 
     override fun onMapClick(point: PointF, latlng: LatLng) {
