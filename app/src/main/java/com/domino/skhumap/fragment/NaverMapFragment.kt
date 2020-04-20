@@ -16,7 +16,6 @@ import com.naver.maps.map.OnMapReadyCallback
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback {
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,14 +26,12 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as MapFragment?
-        mapFragment?.getMapAsync(this)
+        (childFragmentManager.findFragmentById(R.id.map) as MapFragment?)?.getMapAsync(this)
     }
 
     @UiThread
     override fun onMapReady(nMap: NaverMap) {
         naverMap = nMap
         MapManager.mapMode = MapManager.MODE.CAMPUS
-
     }
 }

@@ -16,6 +16,7 @@ object MapManager {
         set(mode) {
             when (mode) {
                 MODE.CAMPUS -> {
+                    /* 지도 기본 설정 */
                     naverMap.run {
                         extent = LatLngBounds(
                             LatLng(37.486033, 126.823969),
@@ -33,14 +34,15 @@ object MapManager {
                         cameraPosition =
                             CameraPosition(LatLng(37.487600, 126.825643), 16.5, 0.0, 67.5)
                     }
+                    /* 캠퍼스 지도 오버레이 */
                     campusGroudOverlay.run {
                         image = OverlayImage.fromResource(R.drawable.campus)
                         bounds = LatLngBounds(
                             LatLng(37.486427880037326, 126.82376783058442),
                             LatLng(37.48854961512034, 126.82754956984687)
                         )
-                        map = naverMap
                         alpha = 0.45f
+                        map = naverMap
                     }
                 }
                 MODE.INDOOR -> {
@@ -54,6 +56,4 @@ object MapManager {
         CAMPUS(0),
         INDOOR(1)
     }
-
-
 }
