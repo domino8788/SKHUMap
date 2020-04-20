@@ -27,7 +27,7 @@ data class Facility(
         }
     }
 
-    enum class Type(val id:Int, val icon:Int){
+    enum class TYPE(val id:Int, val icon:Int){
         DEPARTMENT(0, R.drawable.ic_apartment_black_24dp)
     }
 
