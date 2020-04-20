@@ -11,6 +11,6 @@
         android:id="@+id/main_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.domino.skhumap.NaverMapFragment"/>
+        class="com.domino.skhumap.fragment.NaverMapFragment"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

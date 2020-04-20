@@ -1,7 +1,8 @@
-package com.domino.skhumap
+package com.domino.skhumap.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.domino.skhumap.R
 
 class MainActivity : AppCompatActivity() {
 
