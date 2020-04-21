@@ -2,6 +2,8 @@ package com.domino.skhumap.manager
 
 import com.domino.skhumap.Facility
 import com.domino.skhumap.R
+import com.domino.skhumap.db.FirestoreHelper
+import com.google.firebase.firestore.CollectionReference
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -47,6 +49,8 @@ object MapManager {
                         alpha = 0.45f
                         map = naverMap
                     }
+                    /* 마커 표시 */
+                    DisplayMarker(FirestoreHelper.campusReference)
                 }
                 MODE.INDOOR -> {
 
@@ -58,6 +62,11 @@ object MapManager {
     enum class MODE(val id: Int) {
         CAMPUS(0),
         INDOOR(1)
+    }
+
+    fun DisplayMarker(target: CollectionReference) {
+        removeMarkers()
+        FirestoreHelper.queryPullDriven(target, ::makeMarkers)
     }
 
     fun makeMarkers(facilities:MutableList<Facility>) {
