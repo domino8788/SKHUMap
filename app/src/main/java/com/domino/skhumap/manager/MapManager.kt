@@ -80,4 +80,12 @@ object MapManager {
             }
         }
     }
+
+    fun removeMarkers() {
+        facilities?.let{
+            for(facility in it){
+                facility.marker!!.map = null
+            }
+        }
+    }
 }
