@@ -1,16 +1,19 @@
 package com.domino.skhumap.manager
 
+import com.domino.skhumap.Facility
 import com.domino.skhumap.R
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.GroundOverlay
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 
 object MapManager {
     lateinit var naverMap: NaverMap
     private val campusGroudOverlay by lazy { GroundOverlay() }
+    var facilities: MutableList<Facility>? = null
 
     var mapMode: MODE = MODE.CAMPUS
         set(mode) {
@@ -55,5 +58,26 @@ object MapManager {
     enum class MODE(val id: Int) {
         CAMPUS(0),
         INDOOR(1)
+    }
+
+    fun makeMarkers(facilities:MutableList<Facility>) {
+        this.facilities = facilities
+            facilities.forEach { facility ->
+                facility.run {
+                    marker = Marker().apply {
+
+                    captionText = "$id  $name"
+                    position = LatLng(location!!.latitude, location!!.longitude)
+                    icon = OverlayImage.fromResource(
+                        when (type) {
+                            Facility.TYPE.DEPARTMENT.id -> Facility.TYPE.DEPARTMENT.icon
+                            else -> Facility.TYPE.DEPARTMENT.icon
+                        }
+                    )
+                    isHideCollidedSymbols = true
+                    map = naverMap
+                }
+            }
+        }
     }
 }
