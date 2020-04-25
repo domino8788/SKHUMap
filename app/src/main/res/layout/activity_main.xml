@@ -16,14 +16,32 @@
     <com.domino.skhumap.view.MultipleLevelBottomSheetView
         android:id="@+id/main_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="@dimen/main_bottom_sheet_full_size"
         android:background="@drawable/bg_bottom_sheet_border"
         android:orientation="vertical"
-        app:behavior_peekHeight="50dp"
+        app:behavior_peekHeight="@dimen/main_menu_size"
         app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/main_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_menu_size"
+            android:layout_gravity="bottom"
+            android:animateLayoutChanges="false"
+            android:background="@drawable/bg_tab_layout_border"
+            android:fillViewport="false"
+            app:tabGravity="center"
+            app:tabIconTint="@color/colorAccent"
+            app:tabIndicatorAnimationDuration="0"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="fixed"
+            />
 
-
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/main_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
     </com.domino.skhumap.view.MultipleLevelBottomSheetView>
 
 

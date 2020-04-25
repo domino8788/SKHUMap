@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="view_pager_height">250dp</dimen>
+    <dimen name="main_bottom_sheet_full_size">500dp</dimen>
+    <dimen name="main_menu_size">70dp</dimen>
+    <dimen name="menu_icon_size">24dp</dimen>
+    <dimen name="default_text_size">10sp</dimen>
 </resources>
