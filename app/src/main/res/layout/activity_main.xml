@@ -13,4 +13,18 @@
         android:layout_height="match_parent"
         class="com.domino.skhumap.fragment.NaverMapFragment"/>
 
+    <com.domino.skhumap.view.MultipleLevelBottomSheetView
+        android:id="@+id/main_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="@drawable/bg_bottom_sheet_border"
+        android:orientation="vertical"
+        app:behavior_peekHeight="50dp"
+        app:behavior_hideable="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">>
+
+
+    </com.domino.skhumap.view.MultipleLevelBottomSheetView>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
