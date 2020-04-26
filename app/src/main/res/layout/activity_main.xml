@@ -21,7 +21,7 @@
         android:orientation="vertical"
         app:behavior_peekHeight="@dimen/main_menu_size"
         app:behavior_hideable="false"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">>
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/main_tab_layout"
             android:layout_width="match_parent"
