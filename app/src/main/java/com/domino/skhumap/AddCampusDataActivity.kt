@@ -2,13 +2,15 @@ package com.domino.skhumap
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
+import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.manager.MapManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.naver.maps.geometry.LatLng
 import kotlinx.android.synthetic.main.activity_add_campus_data.*
+import kotlinx.android.synthetic.main.activity_add_campus_data.layout
 
 class AddCampusDataActivity : AppCompatActivity() {
 
@@ -28,27 +30,35 @@ class AddCampusDataActivity : AppCompatActivity() {
             txt_id.isEnabled = false
             /* 수정 */
             btn_data_push.setOnClickListener {
-                update(id)
+                FirestoreHelper.update(
+                    MapManager.selectedFloor?.let{
+                        FirestoreHelper.departmentReference(MapManager.selectedDepartment!!.id, MapManager.selectedFloor!!)
+                    }?:FirestoreHelper.campusReference, id, viewToMap())
                 finish()
             }
 
             /* 삭제 버튼과 삭제  */
+            if(MapManager.mapMode != MapManager.MODE.CAMPUS){
             layout.addView(Button(applicationContext).also {
                 it.text = "delete"
                 it.setOnClickListener {
-                    delete(id)
+                    FirestoreHelper.delete(FirestoreHelper.departmentReference(MapManager.selectedDepartment!!.id, MapManager.selectedFloor!!), id)
                     finish()
                 }
             })
+            }
         } ?:
         /* 추가 */
         btn_data_push.setOnClickListener {
-            insert()
+            FirestoreHelper.insert(
+                MapManager.selectedFloor?.let{
+                    FirestoreHelper.departmentReference(MapManager.selectedDepartment!!.id, MapManager.selectedFloor!!)
+                }?:FirestoreHelper.campusReference, viewToDTO())
             finish()
         }
 
         spinner_type.run {
-            val list = MapManager.Type.values().map { it.toString() }
+            val list = Facility.TYPE.values().map { it.toString() }
             adapter = ArrayAdapter(
                 this@AddCampusDataActivity,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -64,7 +74,7 @@ class AddCampusDataActivity : AppCompatActivity() {
                     facility_min_floor.visibility = View.GONE
                     facility_max_floor.visibility = View.GONE
                     when(position){
-                        MapManager.Type.DEPARTMENT.id -> {
+                        Facility.TYPE.DEPARTMENT.id -> {
                             facility_min_floor.visibility = View.VISIBLE
                             facility_max_floor.visibility = View.VISIBLE
                         }
@@ -80,59 +90,38 @@ class AddCampusDataActivity : AppCompatActivity() {
 
     }
 
-    private fun insert() {
-        db.collection(MapManager.collectionName).document(txt_id.text.toString())
-            .set(
-                Facility(
-                    txt_id.text.toString(),
-                    txt_name.text.toString(), GeoPoint(location!!.latitude, location!!.longitude),
-                    MapManager.Type.valueOf(spinner_type.selectedItem.toString()).id,
-                    when (spinner_type.selectedItemPosition) {
-                        MapManager.Type.DEPARTMENT.id -> hashMapOf<String, Any>(
-                            "minFloor" to txt_min_floor.text.toString().toInt(),
-                            "maxFloor" to txt_max_floor.text.toString().toInt()
-                        )
-                        else -> hashMapOf()
-                    }
+    private fun viewToDTO():Facility = Facility(
+            txt_id.text.toString(),
+            txt_name.text.toString().split(','),
+        GeoPoint(location!!.latitude, location!!.longitude),
+            Facility.TYPE.valueOf(spinner_type.selectedItem.toString()).id,
+            when (spinner_type.selectedItemPosition) {
+                Facility.TYPE.DEPARTMENT.id -> hashMapOf<String, Any>(
+                    "minFloor" to txt_min_floor.text.toString().toInt(),
+                    "maxFloor" to txt_max_floor.text.toString().toInt()
                 )
-            )
-            .addOnSuccessListener {
-                Log.d("Firebase : ", "DocumentSnapshot successfully written!")
-                Toast.makeText(this, "문서 추가 성공", Toast.LENGTH_SHORT)
+                else -> hashMapOf()
             }
-            .addOnFailureListener { e ->
-                Log.w("Firebase : ", "Error writing document", e)
-                Toast.makeText(this, "문서 추가 실패", Toast.LENGTH_SHORT)
-            }
-    }
+        )
 
-    private fun update(id: String) {
-        db.collection(MapManager.collectionName).document(id)
-            .update(
-                mapOf(
-                    "name" to txt_name.text.toString(),
-                    "type" to MapManager.Type.valueOf(spinner_type.selectedItem.toString()).id,
-                    "info" to when (spinner_type.selectedItemPosition) {
-                        MapManager.Type.DEPARTMENT.id -> hashMapOf(
-                            "minFloor" to txt_min_floor.text.toString().toInt(),
-                            "maxFloor" to txt_max_floor.text.toString().toInt()
-                        )
-                        else -> hashMapOf()
-                    }
-                )
+    private fun viewToMap():Map<String, Any> = mapOf(
+        "name" to txt_name.text.toString().split(','),
+        "type" to Facility.TYPE.valueOf(spinner_type.selectedItem.toString()).id,
+        "info" to when (spinner_type.selectedItemPosition) {
+            Facility.TYPE.DEPARTMENT.id -> hashMapOf(
+                "minFloor" to txt_min_floor.text.toString().toInt(),
+                "maxFloor" to txt_max_floor.text.toString().toInt()
             )
-    }
-
-    private fun delete(id: String) {
-        db.collection(MapManager.collectionName).document(id).delete()
-    }
+            else -> hashMapOf()
+        }
+    )
 
     private fun setValue(facility: Facility) {
         facility.run {
             txt_id.setText(id)
-            txt_name.setText(name)
+            txt_name.setText(name!!.joinToString(",","",""))
             when(type){
-                MapManager.Type.DEPARTMENT.id -> {
+                Facility.TYPE.DEPARTMENT.id -> {
                     txt_min_floor.setText((info?.get("minFloor") as? Long)?.toString())
                     txt_max_floor.setText((info?.get("maxFloor") as? Long)?.toString())
                 }
