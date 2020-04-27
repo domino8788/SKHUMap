@@ -11,5 +11,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         FirebaseApp.initializeApp(this)
 
+    override fun onBackPressed() {
+        if (MapManager.selectedFloor != null) {
+            MapManager.selectedFloor = null
+            MapManager.selectedDepartment = null
+        } else {
+            if (doubleBackToExitPressedOnce) {
+                return super.onBackPressed()
+            }
+            this.doubleBackToExitPressedOnce = true
+            Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+        }
     }
 }
