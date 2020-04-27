@@ -1,15 +1,49 @@
 package com.domino.skhumap
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
-import com.google.firebase.FirebaseApp
+import android.os.Handler
+import android.widget.NumberPicker
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.manager.MapManager
+import kotlinx.android.synthetic.main.fragment_map.*
+
 
 class MainActivity : AppCompatActivity() {
+    private var doubleBackToExitPressedOnce = false
+
+    lateinit var context: Context
+
+    init {
+        instance = this
+    }
+
+    companion object {
+        private var instance: AppCompatActivity? = null
+        val context: Context
+            get() {
+                return instance!!.applicationContext
+            }
+        val appCompatActivity: AppCompatActivity
+            get() {
+                return instance!!
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        FirebaseApp.initializeApp(this)
+        FirestoreHelper.init()
+        indoor_level_picker.run {
+            setOnValueChangedListener { picker, oldVal, newVal ->
+                MapManager.selectedFloor = MapManager.floorList[newVal].second
+            }
+            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            wrapSelectorWheel = false
+        }
+    }
 
     override fun onBackPressed() {
         if (MapManager.selectedFloor != null) {
