@@ -32,13 +32,23 @@ data class Facility(
 
     enum class TYPE(val id:Int, val icon:Int){
         DEPARTMENT(0, R.drawable.ic_apartment_black_24dp),
-        LECTUREROOM(1, R.drawable.ic_apartment_black_24dp),
-        TOILET(2, R.drawable.ic_apartment_black_24dp),
-        ADMINISTRATION(3, R.drawable.ic_apartment_black_24dp),
+        LECTUREROOM(1, R.drawable.ic_lecture_room),
+        LIBRARY(2, R.drawable.ic_book),
+        ADMINISTRATION(3, R.drawable.ic_work),
         PROJECTROOM(4, R.drawable.ic_apartment_black_24dp),
-        PROFESSORROOM(5, R.drawable.ic_apartment_black_24dp),
-        DOOR(6, R.drawable.ic_apartment_black_24dp),
-        INFO(7, R.drawable.ic_apartment_black_24dp)
+        PROFESSORROOM(5, R.drawable.ic_proferssor_room),
+        DOOR(6, R.drawable.ic_meeting_room_24px),
+        INFO(7, 0),
+        UPSTAIRS(8, R.drawable.ic_up_stair),
+        DOWNSTAIRS(9, R.drawable.ic_down_stair),
+        ENTRANCE(10, R.drawable.ic_entrance),
+        ELEVATOR(11, R.drawable.ic_elevator),
+        TOILET_MAN(12, R.drawable.ic_toilet_man),
+        TOILET_WOMAN(13, R.drawable.ic_toilet_woman),
+        CAFE(14, R.drawable.ic_apartment_black_24dp),
+        DEPARTMENTROOM(15, R.drawable.ic_apartment_black_24dp),
+        POSTOFFICE(16, R.drawable.ic_apartment_black_24dp),
+        STATIONERY(17, R.drawable.ic_apartment_black_24dp)
     }
 
     fun addMarker(): Marker? = Marker().apply {
