@@ -35,17 +35,17 @@ data class Facility(
         PROJECTROOM(4, R.drawable.ic_apartment_black_24dp),
         PROFESSORROOM(5, R.drawable.ic_professor_room),
         DOOR(6, R.drawable.ic_meeting_room_24px),
-        INFO(7, 0),
+        INFO(7, R.drawable.ic_info),
         UPSTAIRS(8, R.drawable.ic_up_stair),
         DOWNSTAIRS(9, R.drawable.ic_down_stair),
         ENTRANCE(10, R.drawable.ic_entrance),
         ELEVATOR(11, R.drawable.ic_elevator),
         TOILET_MAN(12, R.drawable.ic_toilet_man),
         TOILET_WOMAN(13, R.drawable.ic_toilet_woman),
-        CAFE(14, R.drawable.ic_apartment_black_24dp),
-        DEPARTMENTROOM(15, R.drawable.ic_apartment_black_24dp),
-        POSTOFFICE(16, R.drawable.ic_apartment_black_24dp),
-        STATIONERY(17, R.drawable.ic_apartment_black_24dp)
+        CAFE(14, R.drawable.ic_cafe),
+        DEPARTMENTROOM(15, R.drawable.ic_department_room),
+        POSTOFFICE(16, R.drawable.ic_post_office),
+        STATIONERY(17, R.drawable.ic_store)
     }
 
     fun removeMarker() {
