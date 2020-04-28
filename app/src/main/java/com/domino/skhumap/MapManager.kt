@@ -54,13 +54,9 @@ object MapManager {
             }
             minValue = 0
             value = abs(minFloor) + if (minFloor > 0) -1 else 0
-            if (floorList.size> maxValue){
                 displayedValues =  floorList.map { it -> it.first }.toTypedArray()
                 maxValue = floorList.size - 1
-            }else{
-                maxValue = floorList.size - 1
-                displayedValues =  floorList.map { it -> it.first }.toTypedArray()
-            }
+
             visibility = View.VISIBLE
         }
     }
