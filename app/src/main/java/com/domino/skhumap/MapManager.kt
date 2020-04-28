@@ -20,7 +20,8 @@ import kotlin.math.abs
 
 object MapManager {
     lateinit var naverMap: NaverMap
-    private val indoorBenchMark = LatLng(37.487033, 126.823269)
+    private val indoorBenchMarkSouthWest = LatLng(37.487033, 126.823269)
+    private val indoorBenchMarkNorthEast = LatLng(37.48970638628553, 126.82803403021207)
     private val defaultZoom = 18.5
     private val defaultCampusImageBearing = 67.5
     lateinit var floorList: MutableList<Pair<String, Int>>
@@ -139,11 +140,8 @@ object MapManager {
                     indoorGroundOverlay.apply {
                         image = OverlayImage.fromResource(resourceId)
                         bounds = LatLngBounds(
-                            indoorBenchMark,
-                            indoorBenchMark.offset(
-                                image.getIntrinsicHeight(MainActivity.context).toDouble() / 10,
-                                image.getIntrinsicWidth(MainActivity.context).toDouble() / 10
-                            )
+                            indoorBenchMarkSouthWest,
+                            indoorBenchMarkNorthEast
                         )
                         map = naverMap
                     }
