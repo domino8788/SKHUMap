@@ -47,6 +47,13 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             it.addOnTabSelectedListener(this)
             initTab()
         }
+        indoor_level_picker.run {
+            setOnValueChangedListener { picker, oldVal, newVal ->
+                MapManager.selectedFloor = MapManager.floorList[newVal].second
+            }
+            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            wrapSelectorWheel = false
+        }
     }
 
     fun initTab(){

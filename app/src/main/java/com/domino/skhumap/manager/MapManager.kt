@@ -72,10 +72,38 @@ object MapManager {
             field = mode
         }
 
+    fun levelPickerRenew(facility: Facility) {
+        MainActivity.appCompatActivity.indoor_level_picker.run {
+            value = 0
+            val minFloor = (facility.info!!["minFloor"] as Long).toInt()
+            val maxFloor = (facility.info!!["maxFloor"] as Long).toInt()
+
+            floorList = getFloorList(minFloor, maxFloor)
+            minValue = 0
+            value = abs(minFloor) + if (minFloor > 0) -1 else 0
+
+            if (floorList.size> maxValue){
+                displayedValues =  floorList.map { it -> it.first }.toTypedArray()
+                maxValue = floorList.size - 1
+            }else{
+                maxValue = floorList.size - 1
+                displayedValues =  floorList.map { it -> it.first }.toTypedArray()
+            }
+            visibility = View.VISIBLE
+        }
+    }
+
 
     var selectedDepartment: Facility? = null
         set(department) {
             field = department
+            department?.let {
+                levelPickerRenew(it)
+//                naverMap.cameraPosition = CameraPosition(
+//                    LatLng(it.location!!.latitude, it.location!!.longitude), defaultZoom, 0.0, defaultCampusImageBearing
+//                )
+                selectedFloor = 1
+            }
         }
 
     var selectedFloor: Int? = null
