@@ -12,7 +12,9 @@ object FirestoreHelper {
 
     private val db by lazy { FirebaseFirestore.getInstance() }
     private const val COLLECTION_FACILITIES = "facilities"
+
     val campusReference by lazy { db.collection(COLLECTION_FACILITIES) }
+    fun departmentReference(departmentId:String, floor:Int): CollectionReference = campusReference.document(departmentId).collection(floor.toString())
 
     fun queryPullDriven(queryTarget: CollectionReference, callback: ((facilities:MutableList<Facility>) -> Unit)?) {
         queryTarget.get().addOnCompleteListener { task ->
