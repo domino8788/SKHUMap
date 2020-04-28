@@ -36,7 +36,7 @@ data class Facility(
         LIBRARY(2, R.drawable.ic_book),
         ADMINISTRATION(3, R.drawable.ic_work),
         PROJECTROOM(4, R.drawable.ic_apartment_black_24dp),
-        PROFESSORROOM(5, R.drawable.ic_proferssor_room),
+        PROFESSORROOM(5, R.drawable.ic_professor_room),
         DOOR(6, R.drawable.ic_meeting_room_24px),
         INFO(7, 0),
         UPSTAIRS(8, R.drawable.ic_up_stair),
