@@ -153,7 +153,7 @@ object MapManager {
     fun getFloorName(floorNumber: Int): String =
         "${if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"}"
 
-    fun getLevelList(minFloor: Int, maxFloor: Int): List<Pair<String, Int>> =
+    fun getFloorList(minFloor: Int, maxFloor: Int): MutableList<Pair<String, Int>> =
         mutableListOf<Pair<String, Int>>().apply {
             (minFloor..maxFloor).forEach { add(getFloorName(it) to it) }
         }
