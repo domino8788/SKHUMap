@@ -2,6 +2,7 @@ package com.domino.skhumap.manager
 
 import com.domino.skhumap.Facility
 import com.domino.skhumap.R
+import com.domino.skhumap.activity.MainActivity
 import com.domino.skhumap.db.FirestoreHelper
 import com.google.firebase.firestore.CollectionReference
 import com.naver.maps.geometry.LatLng
@@ -17,24 +18,17 @@ object MapManager {
     lateinit var naverMap: NaverMap
     private val campusGroudOverlay by lazy { GroundOverlay() }
     var facilities: MutableList<Facility>? = null
-
-    var selectedDepartment: Facility? = null
-        set(department) {
-            field = department
-        }
-
-    var selectedFloor: Int? = null
-        set(floor) {
-            field = floor
-        }
-
-    fun getFloorName(floorNumber: Int): String =
-        "${if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"}"
-
-    fun getLevelList(minFloor: Int, maxFloor: Int): List<Pair<String, Int>> =
-        mutableListOf<Pair<String, Int>>().apply {
-            (minFloor..maxFloor).forEach { add(getFloorName(it) to it) }
-        }
+    lateinit var floorList: MutableList<Pair<String, Int>>
+    val resourceId: Int
+        get() = MainActivity.context.resources.getIdentifier(
+            "d${selectedDepartment!!.id}_${getFloorName(selectedFloor!!)}",
+            "drawable",
+            MainActivity.context.packageName
+        )
+    enum class MODE(val id: Int) {
+        CAMPUS(0),
+        INDOOR(1)
+    }
 
     var mapMode: MODE = MODE.CAMPUS
         set(mode) {
@@ -78,21 +72,36 @@ object MapManager {
             field = mode
         }
 
-    enum class MODE(val id: Int) {
-        CAMPUS(0),
-        INDOOR(1)
-    }
+
+    var selectedDepartment: Facility? = null
+        set(department) {
+            field = department
+        }
+
+    var selectedFloor: Int? = null
+        set(floor) {
+            field = floor
+        }
+
+    fun getFloorName(floorNumber: Int): String =
+        "${if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"}"
+
+    fun getLevelList(minFloor: Int, maxFloor: Int): List<Pair<String, Int>> =
+        mutableListOf<Pair<String, Int>>().apply {
+            (minFloor..maxFloor).forEach { add(getFloorName(it) to it) }
+        }
+
 
     fun DisplayMarker(target: CollectionReference) {
         removeMarkers()
         FirestoreHelper.queryPullDriven(target, ::makeMarkers)
     }
 
-    fun makeMarkers(facilities:MutableList<Facility>) {
+    fun makeMarkers(facilities: MutableList<Facility>) {
         this.facilities = facilities
-            facilities.forEach { facility ->
-                facility.run {
-                    marker = Marker().apply {
+        facilities.forEach { facility ->
+            facility.run {
+                marker = Marker().apply {
 
                     captionText = "$id  $name"
                     position = LatLng(location!!.latitude, location!!.longitude)
@@ -110,8 +119,8 @@ object MapManager {
     }
 
     fun removeMarkers() {
-        facilities?.let{
-            for(facility in it){
+        facilities?.let {
+            for (facility in it) {
                 facility.marker!!.map = null
             }
         }
