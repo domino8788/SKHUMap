@@ -30,6 +30,25 @@ object MapManager {
         INDOOR(1)
     }
 
+    fun init(){
+        naverMap.run {
+            extent = LatLngBounds(
+                LatLng(37.486033, 126.823969),
+                LatLng(37.489835, 126.827264)
+            )
+            minZoom = 16.5
+            uiSettings.run {
+                isCompassEnabled = false
+                isZoomControlEnabled = false
+                isScaleBarEnabled = false
+                isRotateGesturesEnabled = false
+                isTiltGesturesEnabled = false
+            }
+            backgroundColor = Color.WHITE
+        }
+        mapMode = MapManager.MODE.CAMPUS
+    }
+
     var mapMode: MODE = MODE.CAMPUS
         set(mode) {
             when (mode) {
