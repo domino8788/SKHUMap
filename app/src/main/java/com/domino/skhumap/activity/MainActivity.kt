@@ -1,5 +1,6 @@
 package com.domino.skhumap.activity
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_menu_tab.view.*
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
+
+    lateinit var context: Context
+
+    init {
+        instance = this
+    }
+
+    companion object {
+        private var instance: AppCompatActivity? = null
+        val context: Context
+            get() {
+                return instance!!.applicationContext
+            }
+        val appCompatActivity: AppCompatActivity
+            get() {
+                return instance!!
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
