@@ -15,9 +15,9 @@
 
     <NumberPicker
         android:id="@+id/indoor_level_picker"
+        android:background="@drawable/bg_bottom_sheet_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/primary_text_dark"
         android:visibility="gone" />
     <Button
         android:id="@+id/btn_open_add_data_activity"
@@ -31,4 +31,5 @@
         android:layout_marginBottom="8dp"
         android:text="add"
         />
+
 </RelativeLayout>
