@@ -161,7 +161,7 @@ object MapManager {
 
     fun DisplayMarker(target: CollectionReference) {
         removeMarkers()
-        FirestoreHelper.queryPullDriven(target, ::makeMarkers)
+        FirestoreHelper.realTimeUpdate(target, ::makeMarkers)
     }
 
     fun makeMarkers(facilities: MutableList<Facility>) {
