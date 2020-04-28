@@ -169,6 +169,11 @@ object MapManager {
                             else -> Facility.TYPE.DEPARTMENT.icon
                         }
                     )
+                    setOnClickListener {
+                        if (mapMode == MODE.CAMPUS)
+                            selectedDepartment = facility
+                        false
+                    }
                     isHideCollidedSymbols = true
                     map = naverMap
                 }
