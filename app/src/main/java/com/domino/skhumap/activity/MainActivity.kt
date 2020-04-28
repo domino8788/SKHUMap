@@ -3,11 +3,15 @@ package com.domino.skhumap.activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.Toast
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
 import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.manager.MapManager
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
     }
 
-    fun initTab(){
+    private fun initTab(){
         val titles = resources.getStringArray(R.array.menu)
         val icons = arrayOf(R.drawable.ic_location_on_black_24dp, R.drawable.ic_chat_black_24dp, R.drawable.ic_calendar_black_24dp ,R.drawable.ic_account_circle_black_24dp)
 
