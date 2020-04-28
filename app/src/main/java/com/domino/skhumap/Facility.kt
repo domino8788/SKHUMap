@@ -11,7 +11,7 @@ import com.naver.maps.map.overlay.OverlayImage
 @IgnoreExtraProperties
 data class Facility(
     @DocumentId var id: String = "",
-    @PropertyName("name") var name: List<String>? = null,
+    @PropertyName("name") var name: List<String> = mutableListOf(),
     @PropertyName("location") var location: GeoPoint? = null,
     @PropertyName("type") var type: Int = 0,
     @PropertyName("info") var info: HashMap<String, Any>? = null
@@ -23,7 +23,7 @@ data class Facility(
     constructor(parcel: Parcel) : this() {
         parcel.run {
             id = readString()!!
-            readList(name, Facility.javaClass.classLoader)!!
+            readList(name, String.javaClass.classLoader)!!
             location = GeoPoint(parcel.readDouble(), parcel.readDouble())
             type = readInt()
             info = readSerializable() as HashMap<String, Any>
