@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_menu_tab.view.*
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
-    lateinit var context: Context
+    private var doubleBackToExitPressedOnce = false
 
     init {
         instance = this
@@ -89,5 +89,17 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         main_bottom_sheet.level = MultipleLevelBottomSheetView.STATE.HALF_EXPANDED
     }
 
-
+    override fun onBackPressed() {
+        if (MapManager.selectedFloor != null) {
+            MapManager.selectedFloor = null
+            MapManager.selectedDepartment = null
+        } else {
+            if (doubleBackToExitPressedOnce) {
+                return super.onBackPressed()
+            }
+            this.doubleBackToExitPressedOnce = true
+            Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+        }
+    }
 }
