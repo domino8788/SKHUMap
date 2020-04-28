@@ -17,6 +17,16 @@ object MapManager {
     private val campusGroudOverlay by lazy { GroundOverlay() }
     var facilities: MutableList<Facility>? = null
 
+    var selectedDepartment: Facility? = null
+        set(department) {
+            field = department
+        }
+
+    var selectedFloor: Int? = null
+        set(floor) {
+            field = floor
+        }
+
     var mapMode: MODE = MODE.CAMPUS
         set(mode) {
             when (mode) {
