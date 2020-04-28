@@ -175,10 +175,7 @@ object MapManager {
                     captionText = "$id  $name"
                     position = LatLng(location!!.latitude, location!!.longitude)
                     icon = OverlayImage.fromResource(
-                        when (type) {
-                            Facility.TYPE.DEPARTMENT.id -> Facility.TYPE.DEPARTMENT.icon
-                            else -> Facility.TYPE.DEPARTMENT.icon
-                        }
+                            Facility.TYPE.values().find{ TYPE -> TYPE.id == type }?.let { it.icon }?:R.drawable.ic_meeting_room_24px
                     )
                     setOnClickListener {
                         if (mapMode == MODE.CAMPUS) {
