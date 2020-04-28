@@ -165,18 +165,14 @@ object MapManager {
     }
 
     fun makeMarkers(facilities: MutableList<Facility>) {
-        this.facilities = facilities
+        this.facilities.addAll(facilities)
         facilities.forEach { facility ->
             facility.run {
                 marker = Marker().apply {
-
                     captionText = "$id  $name"
                     position = LatLng(location!!.latitude, location!!.longitude)
                     icon = OverlayImage.fromResource(
-                        when (type) {
-                            Facility.TYPE.DEPARTMENT.id -> Facility.TYPE.DEPARTMENT.icon
-                            else -> Facility.TYPE.DEPARTMENT.icon
-                        }
+                        Facility.TYPE.values().find{ TYPE -> TYPE.id == type }?.let { it.icon }?:R.drawable.ic_meeting_room_24px
                     )
                     setOnClickListener {
                         if (mapMode == MODE.CAMPUS)
@@ -191,10 +187,11 @@ object MapManager {
     }
 
     fun removeMarkers() {
-        facilities?.let {
-            for (facility in it) {
+        facilities.run {
+            for (facility in this) {
                 facility.marker!!.map = null
             }
+            clear()
         }
     }
 }
