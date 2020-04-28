@@ -19,15 +19,19 @@ import kotlin.math.abs
 
 object MapManager {
     lateinit var naverMap: NaverMap
-    private val campusGroudOverlay by lazy { GroundOverlay() }
-    var facilities: MutableList<Facility>? = null
+    private val indoorBenchMarkSouthWest = LatLng(37.487033, 126.823269)
+    private val indoorBenchMarkNorthEast = LatLng(37.48970638628553, 126.82803403021207)
+    private val groundOverlay by lazy { GroundOverlay() }
+    val facilities: MutableList<Facility> = mutableListOf()
     lateinit var floorList: MutableList<Pair<String, Int>>
+
     val resourceId: Int
         get() = MainActivity.context.resources.getIdentifier(
             "d${selectedDepartment!!.id}_${getFloorName(selectedFloor!!)}",
             "drawable",
             MainActivity.context.packageName
         )
+
     enum class MODE(val id: Int) {
         CAMPUS(0),
         INDOOR(1)
@@ -139,6 +143,11 @@ object MapManager {
     var selectedFloor: Int? = null
         set(floor) {
             field = floor
+            if (floor == null) {
+                MainActivity.appCompatActivity.indoor_level_picker.visibility = View.GONE
+                mapMode = MODE.CAMPUS
+            } else
+                mapMode = MODE.INDOOR
         }
 
     fun getFloorName(floorNumber: Int): String =
