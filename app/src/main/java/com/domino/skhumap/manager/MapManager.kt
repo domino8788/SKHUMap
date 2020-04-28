@@ -11,6 +11,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import kotlin.math.abs
 
 object MapManager {
     lateinit var naverMap: NaverMap
@@ -26,6 +27,10 @@ object MapManager {
         set(floor) {
             field = floor
         }
+
+    fun getFloorName(floorNumber: Int): String =
+        "${if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"}"
+
 
     var mapMode: MODE = MODE.CAMPUS
         set(mode) {
