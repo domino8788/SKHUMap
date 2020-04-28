@@ -1,5 +1,7 @@
 package com.domino.skhumap.manager
 
+import android.graphics.Color
+import android.view.View
 import com.domino.skhumap.Facility
 import com.domino.skhumap.R
 import com.domino.skhumap.activity.MainActivity
@@ -12,6 +14,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.abs
 
 object MapManager {
@@ -55,39 +58,47 @@ object MapManager {
                 MODE.CAMPUS -> {
                     /* 지도 기본 설정 */
                     naverMap.run {
-                        extent = LatLngBounds(
-                            LatLng(37.486033, 126.823969),
-                            LatLng(37.489835, 126.827264)
-                        )
-                        minZoom = 16.5
                         mapType = NaverMap.MapType.Basic
-                        uiSettings.run {
-                            isCompassEnabled = false
-                            isZoomControlEnabled = false
-                            isScaleBarEnabled = false
-                            isRotateGesturesEnabled = false
-                            isTiltGesturesEnabled = false
-                        }
                         cameraPosition =
                             CameraPosition(LatLng(37.487600, 126.825643), 16.5, 0.0, 67.5)
                     }
                     /* 캠퍼스 지도 오버레이 */
-                    campusGroudOverlay.run {
+                    groundOverlay.run {
                         image = OverlayImage.fromResource(R.drawable.campus)
                         bounds = LatLngBounds(
                             LatLng(37.486427880037326, 126.82376783058442),
                             LatLng(37.48854961512034, 126.82754956984687)
                         )
                         alpha = 0.45f
-                        map = naverMap
                     }
                     /* 마커 표시 */
                     DisplayMarker(FirestoreHelper.campusReference)
                 }
                 MODE.INDOOR -> {
-
+                    /* 지도 기본 설정 */
+                    naverMap.run {
+                        mapType = NaverMap.MapType.None
+                        naverMap.cameraPosition =
+                            CameraPosition(LatLng(37.487600, 126.825643), 16.5)
+                    }
+                    /* 실내 지도 오버레이 */
+                    groundOverlay.apply {
+                        image = OverlayImage.fromResource(resourceId)
+                        bounds = LatLngBounds(
+                            indoorBenchMarkSouthWest,
+                            indoorBenchMarkNorthEast
+                        )
+                    }
+                    /* 마커 표시 */
+                    DisplayMarker(
+                        FirestoreHelper.departmentReference(
+                            selectedDepartment!!.id,
+                            selectedFloor!!
+                        )
+                    )
                 }
             }
+            groundOverlay.map = naverMap
             field = mode
         }
 
