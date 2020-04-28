@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.annotation.UiThread
 import com.domino.skhumap.R
 import com.domino.skhumap.manager.MapManager
-import com.domino.skhumap.manager.MapManager.naverMap
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -31,7 +30,9 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
 
     @UiThread
     override fun onMapReady(nMap: NaverMap) {
-        naverMap = nMap
-        MapManager.mapMode = MapManager.MODE.CAMPUS
+        MapManager.run {
+            naverMap = nMap
+            init()
+        }
     }
 }
