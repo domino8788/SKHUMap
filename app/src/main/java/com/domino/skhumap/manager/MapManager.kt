@@ -178,7 +178,8 @@ object MapManager {
         facility.run {
             facilities.add(this)
             marker = Marker().apply {
-                captionText = "$id  $name"
+                captionText = "$id"
+                subCaptionText = "${name.joinToString("\n","", "")}"
                 position = LatLng(location!!.latitude, location!!.longitude)
                 icon = OverlayImage.fromResource(resourceId)
                 setOnClickListener {
