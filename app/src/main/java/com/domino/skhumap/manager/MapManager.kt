@@ -159,6 +159,7 @@ object MapManager {
         back()
         selectedDepartment = searchableFacility.department
         selectedFloor = searchableFacility.floorNumber
+        naverMap.cameraPosition = CameraPosition(searchableFacility.facility.latLng, defaultZoom, 0.0, if(mapMode == MODE.CAMPUS) defaultCampusImageBearing else 0.0)
     }
 
     fun getFloorName(floorNumber: Int): String =
