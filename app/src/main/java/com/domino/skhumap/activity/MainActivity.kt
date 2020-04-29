@@ -102,8 +102,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onBackPressed() {
         if (MapManager.selectedFloor != null) {
-            MapManager.selectedFloor = null
-            MapManager.selectedDepartment = null
+            MapManager.back()
         } else {
             if (doubleBackToExitPressedOnce) {
                 return super.onBackPressed()

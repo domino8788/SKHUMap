@@ -1,6 +1,5 @@
 package com.domino.skhumap.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -24,8 +23,6 @@ class FavoritesAdapter(private val list: MutableList<SearchableFacility>) :
     }
 
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
-        Log.d("Hello", "${list.joinToString("\n", "", "").toString()} $position")
-
         holder.run {
             listOf(favorites1, favorites2, favorites3, favorites4).forEachIndexed { index, view ->
                 val listIndex =  position * 4 + index
