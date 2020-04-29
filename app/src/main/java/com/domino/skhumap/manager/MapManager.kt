@@ -150,6 +150,17 @@ object MapManager {
                 mapMode = MODE.INDOOR
         }
 
+    fun back(){
+        selectedDepartment = null
+        selectedFloor = null
+    }
+
+    fun markMap(searchableFacility: SearchableFacility){
+        back()
+        selectedDepartment = searchableFacility.department
+        selectedFloor = searchableFacility.floorNumber
+    }
+
     fun getFloorName(floorNumber: Int): String =
         "${if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"}"
 
