@@ -45,7 +45,7 @@
             app:tabIndicatorFullWidth="false"
             app:tabMode="fixed" />
 
-        <androidx.viewpager.widget.ViewPager
+        <com.domino.skhumap.view.ScrollunableViewPager
             android:id="@+id/main_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
