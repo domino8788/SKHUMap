@@ -33,6 +33,11 @@ class FacilityFragment : Fragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         list_facility.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         list_facility.adapter = FavoritesAdapter(searchableFacilityList)
+
+        val radius = resources.getDimensionPixelSize(R.dimen.radius);
+        val dotsHeight = resources.getDimensionPixelSize(R.dimen.dots_height);
+        val color = resources.getColor(R.color.colorAccent);
+        list_facility.addItemDecoration(FavoritesAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
         PagerSnapHelper().attachToRecyclerView(list_facility)
     }
 }

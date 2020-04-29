@@ -43,7 +43,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_facility"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="90dp"
                 android:orientation="horizontal"
                 android:layout_gravity="top"
                 tools:listitem="@layout/item_favorites_list"
