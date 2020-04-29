@@ -3,6 +3,7 @@ package com.domino.skhumap
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.firestore.*
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Marker
 
 @IgnoreExtraProperties
@@ -16,6 +17,14 @@ data class Facility(
     var marker: Marker? = null
         @Exclude
         get
+
+    val resourceId
+        @Exclude
+        get() = TYPE.values().find{ TYPE -> TYPE.id == type }?.let { it.icon }?:R.drawable.ic_meeting_room_24px
+
+    val latLng
+        @Exclude
+        get() = LatLng(location!!.latitude, location!!.longitude)
 
     constructor(parcel: Parcel) : this() {
         parcel.run {
