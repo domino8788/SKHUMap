@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.SearchableFacility
+import com.domino.skhumap.manager.MapManager
 import kotlinx.android.synthetic.main.item_favorites_list.view.*
 import kotlinx.android.synthetic.main.item_favorites_list_item.view.*
 
@@ -33,6 +34,7 @@ class FavoritesAdapter(private val list: MutableList<SearchableFacility>) :
                     view.run {
                         item_favorites_icon.setImageResource(searchableFacility.facility.resourceId)
                         item_favorites_title.text = searchableFacility.facility.id
+                        setOnClickListener { MapManager.markMap(searchableFacility) }
                     }
                 } else{
                     view.run {
