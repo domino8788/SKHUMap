@@ -22,6 +22,9 @@ object MapManager {
     private val indoorBenchMarkSouthWest = LatLng(37.487033, 126.823269)
     private val indoorBenchMarkNorthEast = LatLng(37.48970638628553, 126.82803403021207)
     private val groundOverlay by lazy { GroundOverlay() }
+    private const val defaultZoom = 18.5
+    private const val defaultCampusImageBearing = 67.5
+
     val facilities: MutableList<Facility> = mutableListOf()
     lateinit var floorList: MutableList<Pair<String, Int>>
 
@@ -88,17 +91,11 @@ object MapManager {
                     /* 실내 지도 오버레이 */
                     groundOverlay.apply {
                         image = OverlayImage.fromResource(resourceId)
-                        bounds = LatLngBounds(
-                            indoorBenchMarkSouthWest,
-                            indoorBenchMarkNorthEast
-                        )
+                        bounds = LatLngBounds(indoorBenchMarkSouthWest, indoorBenchMarkNorthEast)
                     }
                     /* 마커 표시 */
                     DisplayMarker(
-                        FirestoreHelper.departmentReference(
-                            selectedDepartment!!.id,
-                            selectedFloor!!
-                        )
+                        FirestoreHelper.departmentReference(selectedDepartment!!.id, selectedFloor!!)
                     )
                 }
             }
@@ -129,13 +126,9 @@ object MapManager {
 
 
     var selectedDepartment: Facility? = null
-        set(department) {
-            field = department
-            department?.let {
-                levelPickerRenew(it)
-//                naverMap.cameraPosition = CameraPosition(
-//                    LatLng(it.location!!.latitude, it.location!!.longitude), defaultZoom, 0.0, defaultCampusImageBearing
-//                )
+        set(departmentId) {
+            field = departmentId
+            departmentId?.let {
                 selectedFloor = 1
             }
         }
@@ -146,8 +139,10 @@ object MapManager {
             if (floor == null) {
                 MainActivity.appCompatActivity.indoor_level_picker.visibility = View.GONE
                 mapMode = MODE.CAMPUS
-            } else
+            } else {
+                levelPickerRenew(selectedDepartment!!)
                 mapMode = MODE.INDOOR
+            }
         }
 
     fun back(){
