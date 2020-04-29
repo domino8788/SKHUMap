@@ -6,6 +6,8 @@ import com.domino.skhumap.Facility
 import com.domino.skhumap.R
 import com.domino.skhumap.activity.MainActivity
 import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.dto.SearchableFacility
+import com.domino.skhumap.fragment.FacilityFragment
 import com.google.firebase.firestore.CollectionReference
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
@@ -15,6 +17,7 @@ import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_facility.*
 import kotlin.math.abs
 
 object MapManager {
@@ -103,7 +106,7 @@ object MapManager {
             field = mode
         }
 
-    fun levelPickerRenew(facility: Facility) {
+    private fun levelPickerRenew(facility: Facility) {
         MainActivity.appCompatActivity.indoor_level_picker.run {
             value = 0
             val minFloor = (facility.info!!["minFloor"] as Long).toInt()
