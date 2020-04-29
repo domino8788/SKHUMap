@@ -171,24 +171,29 @@ object MapManager {
         FirestoreHelper.realTimeUpdate(target, ::makeMarkers)
     }
 
-    fun makeMarkers(facilities: MutableList<Facility>) {
-        this.facilities.addAll(facilities)
-        facilities.forEach { facility ->
-            facility.run {
-                marker = Marker().apply {
-                    captionText = "$id  $name"
-                    position = LatLng(location!!.latitude, location!!.longitude)
-                    icon = OverlayImage.fromResource(
-                        Facility.TYPE.values().find{ TYPE -> TYPE.id == type }?.let { it.icon }?:R.drawable.ic_meeting_room_24px
-                    )
-                    setOnClickListener {
-                        if (mapMode == MODE.CAMPUS)
-                            selectedDepartment = facility
-                        false
+    fun makeMarkers(facility: Facility) {
+        facility.run {
+            facilities.add(this)
+            marker = Marker().apply {
+                captionText = "$id  $name"
+                position = LatLng(location!!.latitude, location!!.longitude)
+                icon = OverlayImage.fromResource(resourceId)
+                setOnClickListener {
+                    if (mapMode == MODE.CAMPUS)
+                        selectedDepartment = facility
+                    else {
+                        FacilityFragment.instance.run {
+                            searchableFacilityList.add(SearchableFacility(selectedDepartment!!, selectedFloor!!, facility))
+                            this?.list_facility?.let {
+                                it.adapter?.notifyItemChanged((searchableFacilityList.size-1)/4)
+                                list_facility.smoothScrollToPosition((searchableFacilityList.size-1)/4)
+                            }
+                        }
                     }
-                    isHideCollidedSymbols = true
-                    map = naverMap
+                    false
                 }
+                isHideCollidedSymbols = true
+                map = naverMap
             }
         }
     }

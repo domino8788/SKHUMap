@@ -13,20 +13,18 @@ import com.naver.maps.map.overlay.Marker
 object FirestoreHelper {
     private var realTimeUpdateListener: ListenerRegistration? = null
 
-    fun realTimeUpdate(queryTarget: CollectionReference, callback: ((facilities:MutableList<Facility>) -> Unit)?) {
+    fun realTimeUpdate(queryTarget: CollectionReference ,callback: ((facilitiy:Facility) -> Unit)?) {
         realTimeUpdateListener?.remove()
         realTimeUpdateListener = queryTarget.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             for(change in querySnapshot?.documentChanges!!){
                 change.run {
                     when (type) {
                         DocumentChange.Type.ADDED -> {
-                            MapManager.facilities.add(newIndex, document.toObject(Facility::class.java).also { (callback)?.let { func -> func(
-                                mutableListOf(it)) } })
+                            MapManager.facilities.add(newIndex, document.toObject(Facility::class.java).also { (callback)?.let { func -> func(it) } })
                         }
                         DocumentChange.Type.MODIFIED -> {
                             MapManager.facilities[oldIndex].marker?.map = null
-                            MapManager.facilities[newIndex] = document.toObject(Facility::class.java).also { (callback)?.let { func -> func(
-                                mutableListOf(it)) } }
+                            MapManager.facilities[newIndex] = document.toObject(Facility::class.java).also { (callback)?.let { func -> func(it) } }
                         }
                         DocumentChange.Type.REMOVED -> {
                             MapManager.facilities[oldIndex].removeMarker()
