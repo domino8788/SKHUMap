@@ -133,6 +133,7 @@ object MapManager {
             field = departmentId
             departmentId?.let {
                 selectedFloor = 1
+                levelPickerRenew(selectedDepartment!!)
             }
         }
 
@@ -143,7 +144,6 @@ object MapManager {
                 MainActivity.appCompatActivity.indoor_level_picker.visibility = View.GONE
                 mapMode = MODE.CAMPUS
             } else {
-                levelPickerRenew(selectedDepartment!!)
                 mapMode = MODE.INDOOR
             }
         }
@@ -160,12 +160,12 @@ object MapManager {
         naverMap.cameraPosition = CameraPosition(searchableFacility.facility.latLng, defaultZoom, 0.0, if(mapMode == MODE.CAMPUS) defaultCampusImageBearing else 0.0)
     }
 
-    fun getFloorName(floorNumber: Int): String =
-        "${if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"}"
+    fun getFloorName(floorNumber: Int): String = if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"
+
 
     fun getFloorList(minFloor: Int, maxFloor: Int): MutableList<Pair<String, Int>> =
         mutableListOf<Pair<String, Int>>().apply {
-            (minFloor..maxFloor).forEach { add(getFloorName(it) to it) }
+            (minFloor..maxFloor).forEach { if(it!=0) add(getFloorName(it) to it) }
         }
 
 
