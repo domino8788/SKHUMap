@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <include
+        android:id="@+id/favorites1"
+        layout="@layout/item_favorites_list_item" />
+
+    <include
+        android:id="@+id/favorites2"
+        layout="@layout/item_favorites_list_item" />
+
+    <include
+        android:id="@+id/favorites3"
+        layout="@layout/item_favorites_list_item" />
+
+    <include
+        android:id="@+id/favorites4"
+        layout="@layout/item_favorites_list_item" />
+
+</LinearLayout>
