@@ -21,6 +21,11 @@ class EditFavoritesActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        FacilityFragment.instance.list_facility.adapter?.notifyDataSetChanged()
+        super.onDestroy()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
