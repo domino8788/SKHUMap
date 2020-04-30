@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/favorites_container_size"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/edit_item_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/edit_item_img_icon"
+        android:layout_width="@dimen/favorites_icon_size"
+        android:layout_height="@dimen/favorites_icon_size"
+        tools:src="@drawable/ic_cafe"/>
+    <TextView
+        android:id="@+id/edit_item_txt_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/list_item_spacing"
+        tools:text="카페" />
+    <ImageView
+        android:id="@+id/edit_item_btn_move"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_unfold_more_24px"
+        />
+</LinearLayout>
