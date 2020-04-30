@@ -5,7 +5,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 
 import com.domino.skhumap.R
+import com.domino.skhumap.adapter.EditFacilityItemTouchHelperCallback
+import com.domino.skhumap.adapter.EditFacilityListAdapter
+import com.domino.skhumap.fragment.FacilityFragment
 
+import kotlinx.android.synthetic.main.activity_edit_favorites.*
+import kotlinx.android.synthetic.main.fragment_facility.*
 
 class EditFavoritesActivity : AppCompatActivity() {
 
@@ -19,6 +24,14 @@ class EditFavoritesActivity : AppCompatActivity() {
             title = ""
         }
 
+
+
+        edit_check_box_all_select.setOnCheckedChangeListener { buttonView, isChecked ->
+            (edit_facility_list.adapter as EditFacilityListAdapter).run {
+                isSelectAll = isChecked
+                notifyDataSetChanged()
+            }
+        }
     }
 
     override fun onDestroy() {
