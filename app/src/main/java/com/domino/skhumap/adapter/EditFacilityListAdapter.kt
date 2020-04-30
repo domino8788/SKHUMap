@@ -69,6 +69,8 @@ class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>)
     }
 
     override fun onItemDismiss(position: Int) {
+        list.removeAt(position)
+        notifyItemRemoved(position)
     }
 
 }
@@ -89,7 +91,8 @@ class EditFacilityItemTouchHelperCallback(private val mAdapter: ItemTouchHelperA
     ): Int {
         if (viewHolder.itemViewType == 1) {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-            return makeMovementFlags(dragFlags, 0)
+            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+            return makeMovementFlags(dragFlags, swipeFlags)
         }
         return 0
     }
