@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:id="@+id/my_page_menu_layout"
+    android:layout_marginTop="@dimen/list_item_spacing"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:id="@+id/my_page_menu_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="24dp"
+        tools:src="@drawable/ic_signs"/>
+    <TextView
+        android:id="@+id/my_page_menu_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/default_text_size"
+        tools:text ="로그아웃"/>
+</LinearLayout>
