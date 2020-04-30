@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         main_bottom_sheet.initView()
         main_view_pager.run {
             adapter = MenuAdapter(supportFragmentManager, 0)
-            setOnTouchListener { v, event ->  true }
         }
         main_tab_layout.let{
             it.setupWithViewPager(main_view_pager)
