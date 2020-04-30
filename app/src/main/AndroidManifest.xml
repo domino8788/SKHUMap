@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.EditFavoritesActivity"
-            android:label="@string/title_activity_edit_favorites"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
