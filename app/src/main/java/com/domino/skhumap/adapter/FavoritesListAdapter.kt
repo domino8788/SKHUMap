@@ -19,9 +19,8 @@ import com.domino.skhumap.manager.MapManager
 import kotlinx.android.synthetic.main.item_favorites_list.view.*
 import kotlinx.android.synthetic.main.item_favorites_list_item.view.*
 
-
-class FavoritesAdapter(private val list: MutableList<SearchableFacility>) :
-    RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
+class FavoritesListAdapter(private val list: MutableList<SearchableFacility>) :
+    RecyclerView.Adapter<FavoritesListAdapter.FavoritesViewHolder>() {
 
     inner class FavoritesViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_favorites_list, parent, false)
