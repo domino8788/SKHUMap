@@ -3,13 +3,17 @@ package com.domino.skhumap.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.domino.skhumap.Interface.ItemTouchHelperAdapter
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.SearchableFacility
 import kotlinx.android.synthetic.main.item_favorites_edit_list_item.view.*
+import java.util.*
 
-class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>): RecyclerView.Adapter<EditFacilityListAdapter.EditFacilityViewHolder>()  {
+class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>): RecyclerView.Adapter<EditFacilityListAdapter.EditFacilityViewHolder>(), ItemTouchHelperAdapter  {
 
+    lateinit var touchHelper:ItemTouchHelper
     val checkedList = mutableListOf<Int>()
     var isSelectAll:Boolean? = null
 
@@ -38,8 +42,10 @@ class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>)
             holder.run {
                 txt_title.text = list[position].facility.id
                 img_icon.setImageResource(list[position].facility.resourceId)
-
-
+                btn_move.setOnTouchListener { v, event ->
+                    touchHelper.startDrag(holder)
+                    false
+                }
                 check_box_select.run {
                     isSelectAll?.let { isChecked = it }
                     setOnCheckedChangeListener { buttonView, isChecked ->
@@ -56,6 +62,14 @@ class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>)
 
     override fun getItemViewType(position: Int): Int = if(list.size == 0) 0 else 1
 
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        Collections.swap(list, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+        return true
+    }
+
+    override fun onItemDismiss(position: Int) {
+    }
 
 }
 
