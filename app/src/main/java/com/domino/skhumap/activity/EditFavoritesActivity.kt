@@ -3,7 +3,9 @@ package com.domino.skhumap.activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.domino.skhumap.Interface.ItemTouchHelperAdapter
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.EditFacilityItemTouchHelperCallback
 import com.domino.skhumap.adapter.EditFacilityListAdapter
@@ -24,6 +26,10 @@ class EditFavoritesActivity : AppCompatActivity() {
             title = ""
         }
 
+        edit_facility_list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        edit_facility_list.adapter = EditFacilityListAdapter(FacilityFragment.instance.searchableFacilityList).apply {
+            touchHelper = ItemTouchHelper(EditFacilityItemTouchHelperCallback(this as ItemTouchHelperAdapter)).apply { attachToRecyclerView(edit_facility_list) }
+        }
 
 
         edit_check_box_all_select.setOnCheckedChangeListener { buttonView, isChecked ->
