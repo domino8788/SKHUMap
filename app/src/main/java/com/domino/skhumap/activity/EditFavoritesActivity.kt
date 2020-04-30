@@ -31,6 +31,13 @@ class EditFavoritesActivity : AppCompatActivity() {
             touchHelper = ItemTouchHelper(EditFacilityItemTouchHelperCallback(this as ItemTouchHelperAdapter)).apply { attachToRecyclerView(edit_facility_list) }
         }
 
+        edit_btn_delete.setOnClickListener {
+            (edit_facility_list.adapter as EditFacilityListAdapter).run {
+                checkedList.sorted().reversed().forEach {
+                    onItemDismiss(it)
+                }
+            }
+        }
 
         edit_check_box_all_select.setOnCheckedChangeListener { buttonView, isChecked ->
             (edit_facility_list.adapter as EditFacilityListAdapter).run {
