@@ -75,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
                     login_progress_bar.visibility = View.GONE
                     Log.d("WebView", it)
                     if(it == "null"){
+                        Toast.makeText(applicationContext, "로그인 실패. 아이디와 비밀번호를 다시 한번 확인하세요.", Toast.LENGTH_SHORT).show()
                     } else {
                         val result = it.trim().split(" ", "(",")")
                         val studentNumber = result[2]
