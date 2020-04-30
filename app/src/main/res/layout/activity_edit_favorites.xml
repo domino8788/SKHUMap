@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/edit_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/app_icon_size"
+    />
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/edit_check_box_all_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전체 선택"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/edit_facility_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/item_favorites_edit_list_item"
+        tools:orientation="horizontal"  />
+
+    <Button
+        android:id="@+id/edit_btn_delete"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:text="삭제"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccent"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="20sp"
+        />
+
+</LinearLayout>
