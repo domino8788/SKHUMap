@@ -58,3 +58,41 @@ class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>)
 
 
 }
+
+class EditFacilityItemTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+
+    override fun isLongPressDragEnabled(): Boolean {
+        return false
+    }
+
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return true
+    }
+
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
+        if (viewHolder.itemViewType == 1) {
+            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+            return makeMovementFlags(dragFlags, 0)
+        }
+        return 0
+    }
+
+    override fun onMove(
+        recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean =
+        if (viewHolder.itemViewType == 1) {
+            mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+            true
+        } else
+            false
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        if (viewHolder.itemViewType == 1)
+            mAdapter.onItemDismiss(viewHolder.adapterPosition)
+    }
+
+}
