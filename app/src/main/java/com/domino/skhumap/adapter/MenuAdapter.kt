@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.domino.skhumap.fragment.FacilityFragment
+import com.domino.skhumap.fragment.MyPageFragment
 
 class MenuAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm, behavior) {
     val fragments = ArrayList<Fragment>()
@@ -12,7 +13,7 @@ class MenuAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm,
         fragments.add(FacilityFragment.instance)
         fragments.add(Fragment())
         fragments.add(Fragment())
-        fragments.add(Fragment())
+        fragments.add(MyPageFragment.instance)
 
     }
 
