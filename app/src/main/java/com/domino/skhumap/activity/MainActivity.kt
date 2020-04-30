@@ -111,4 +111,5 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
         }
     }
+
 }

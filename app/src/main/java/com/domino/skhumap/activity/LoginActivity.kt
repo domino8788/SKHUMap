@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.webkit.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.domino.skhumap.fragment.MyPageFragment
 import java.net.URLEncoder
 
 class LoginActivity : AppCompatActivity() {
@@ -93,6 +94,14 @@ class LoginActivity : AppCompatActivity() {
                 }
                 status = 0
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MyPageFragment.instance.run {
+            if(isLogin)
+                initLoginInfo()
         }
     }
 
