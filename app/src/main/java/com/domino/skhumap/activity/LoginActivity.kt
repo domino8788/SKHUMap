@@ -1,5 +1,6 @@
 package com.domino.skhumap.activity
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -81,6 +82,13 @@ class LoginActivity : AppCompatActivity() {
                         val studentNumber = result[2]
                         val name = result[4]
                         Toast.makeText(applicationContext, "로그인 성공. $studentNumber $name 으로 로그인 되셨습니다.", Toast.LENGTH_SHORT).show()
+                        getSharedPreferences("login_info", Context.MODE_PRIVATE).edit().run {
+                            putString("id", login_id.text.toString())
+                            putString("password", login_password.text.toString())
+                            putString("name", name)
+                            commit()
+                        }
+                        finish()
                     }
                 }
                 status = 0
