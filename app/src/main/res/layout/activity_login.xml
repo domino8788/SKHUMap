@@ -7,13 +7,13 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="16dp"
+    android:background="@android:color/white"
     tools:context=".activity.LoginActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/login_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <FrameLayout
-        android:id="@+id/login_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
@@ -35,7 +35,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:startIconDrawable="@id/login_logo"
         app:errorEnabled="true"
         android:layout_marginTop="12dp">
         <com.google.android.material.textfield.TextInputEditText
@@ -66,7 +65,7 @@
         android:id="@+id/my_page_btn_login"
         android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/bg_round_button"
         android:text="로그인"
         android:textSize="@dimen/default_large_text_size"
