@@ -28,6 +28,7 @@ class MyPageMenuAdapter: RecyclerView.Adapter<MyPageMenuAdapter.MyPageMenuViewHo
                     img_icon.setImageResource(R.drawable.ic_signs)
                     txt_title.text = "로그아웃"
                     layout.setOnClickListener {
+                        android.webkit.CookieManager.getInstance().removeAllCookie()
                         MainActivity.context!!.getSharedPreferences("login_info", Context.MODE_PRIVATE).edit().run {
                             remove("id")
                             remove("name")
