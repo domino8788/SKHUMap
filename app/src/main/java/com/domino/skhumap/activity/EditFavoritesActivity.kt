@@ -37,11 +37,12 @@ class EditFavoritesActivity : AppCompatActivity() {
                     if(checkedList[i])
                         onItemDismiss(i)
             }
+            edit_check_box_all_select.isChecked = false
         }
 
-        edit_check_box_all_select.setOnCheckedChangeListener { buttonView, isChecked ->
+        edit_check_box_all_select.setOnClickListener {
             (edit_facility_list.adapter as EditFacilityListAdapter).run {
-                checkedList.forEachIndexed { index, b -> checkedList[index] = isChecked }
+                checkedList.forEachIndexed { index, b -> checkedList[index] = edit_check_box_all_select.isChecked }
                 notifyDataSetChanged()
             }
         }
