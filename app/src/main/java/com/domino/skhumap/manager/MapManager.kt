@@ -29,7 +29,7 @@ object MapManager {
     private const val defaultCampusImageBearing = 67.5
 
     val facilities: MutableList<Facility> = mutableListOf()
-    lateinit var floorList: MutableList<Pair<String, Int>>
+    var floorList: MutableList<Pair<String, Int>> = mutableListOf()
 
     val resourceId: Int
         get() = MainActivity.context.resources.getIdentifier(
@@ -108,13 +108,11 @@ object MapManager {
 
     private fun levelPickerRenew(facility: Facility) {
         MainActivity.appCompatActivity.indoor_level_picker.run {
-            value = 0
             val minFloor = (facility.info!!["minFloor"] as Long).toInt()
             val maxFloor = (facility.info!!["maxFloor"] as Long).toInt()
 
             floorList = getFloorList(minFloor, maxFloor)
             minValue = 0
-            value = abs(minFloor) + if (minFloor > 0) -1 else 0
 
             if (floorList.size> maxValue){
                 displayedValues =  floorList.map { it -> it.first }.toTypedArray()
@@ -132,8 +130,8 @@ object MapManager {
         set(departmentId) {
             field = departmentId
             departmentId?.let {
-                selectedFloor = 1
                 levelPickerRenew(selectedDepartment!!)
+                selectedFloor = 1
             }
         }
 
@@ -144,6 +142,7 @@ object MapManager {
                 MainActivity.appCompatActivity.indoor_level_picker.visibility = View.GONE
                 mapMode = MODE.CAMPUS
             } else {
+                MainActivity.appCompatActivity.indoor_level_picker.value = floorList.indexOfFirst { floor -> floor.second == field }
                 mapMode = MODE.INDOOR
             }
         }
