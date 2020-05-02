@@ -10,7 +10,6 @@ import com.domino.skhumap.R
 import com.domino.skhumap.adapter.EditFacilityItemTouchHelperCallback
 import com.domino.skhumap.adapter.EditFacilityListAdapter
 import com.domino.skhumap.fragment.FacilityFragment
-
 import kotlinx.android.synthetic.main.activity_edit_favorites.*
 import kotlinx.android.synthetic.main.fragment_facility.*
 
@@ -25,23 +24,24 @@ class EditFavoritesActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = ""
         }
-
-        edit_facility_list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        edit_facility_list.adapter = EditFacilityListAdapter(FacilityFragment.instance.searchableFacilityList).apply {
-            touchHelper = ItemTouchHelper(EditFacilityItemTouchHelperCallback(this as ItemTouchHelperAdapter)).apply { attachToRecyclerView(edit_facility_list) }
+        edit_facility_list.run {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = EditFacilityListAdapter(FacilityFragment.instance.searchableFacilityList).apply {
+                touchHelper = ItemTouchHelper(EditFacilityItemTouchHelperCallback(this as ItemTouchHelperAdapter)).apply { attachToRecyclerView(edit_facility_list) }
+            }
         }
 
         edit_btn_delete.setOnClickListener {
             (edit_facility_list.adapter as EditFacilityListAdapter).run {
-                checkedList.sorted().reversed().forEach {
-                    onItemDismiss(it)
-                }
+                for(i in checkedList.size-1 downTo 0)
+                    if(checkedList[i])
+                        onItemDismiss(i)
             }
         }
 
         edit_check_box_all_select.setOnCheckedChangeListener { buttonView, isChecked ->
             (edit_facility_list.adapter as EditFacilityListAdapter).run {
-                isSelectAll = isChecked
+                checkedList.forEachIndexed { index, b -> checkedList[index] = isChecked }
                 notifyDataSetChanged()
             }
         }

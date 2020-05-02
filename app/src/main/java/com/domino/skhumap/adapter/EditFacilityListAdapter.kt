@@ -14,8 +14,7 @@ import java.util.*
 class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>): RecyclerView.Adapter<EditFacilityListAdapter.EditFacilityViewHolder>(), ItemTouchHelperAdapter  {
 
     lateinit var touchHelper:ItemTouchHelper
-    val checkedList = mutableListOf<Int>()
-    var isSelectAll:Boolean? = null
+    val checkedList = MutableList(list.size) { index -> false}
 
     inner class EditFacilityViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_favorites_edit_list_item, parent, false)) {
         val check_box_select = itemView.edit_item_check_box
@@ -47,13 +46,9 @@ class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>)
                     false
                 }
                 check_box_select.run {
-                    isSelectAll?.let { isChecked = it }
+                    isChecked = checkedList[position]
                     setOnCheckedChangeListener { buttonView, isChecked ->
-                        if(isChecked) {
-                            checkedList.add(position)
-                        } else {
-                            checkedList.remove(position)
-                        }
+                        checkedList[adapterPosition] = isChecked
                     }
                 }
             }
@@ -70,6 +65,7 @@ class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>)
 
     override fun onItemDismiss(position: Int) {
         list.removeAt(position)
+        checkedList.removeAt(position)
         notifyItemRemoved(position)
     }
 
