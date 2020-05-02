@@ -11,6 +11,6 @@ class ScrollunableViewPager(context: Context, attrs: AttributeSet?): ViewPager(c
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean = false
 
-    override fun onTouchEvent(ev: MotionEvent?): Boolean = false
+    override fun onTouchEvent(ev: MotionEvent?): Boolean = true
 
 }
