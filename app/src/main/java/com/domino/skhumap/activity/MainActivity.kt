@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                 item_menu_title.setTextColor(resources.getColor(R.color.colorAccent))
             }
         }
-        main_bottom_sheet.level = MultipleLevelBottomSheetView.STATE.HALF_EXPANDED
+        main_bottom_sheet.level = MultipleLevelBottomSheetView.State.HALF_EXPANDED
     }
 
     override fun onBackPressed() {

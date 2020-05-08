@@ -38,7 +38,7 @@ object MapManager {
             MainActivity.context.packageName
         )
 
-    enum class MODE(val id: Int) {
+    enum class Mode(val id: Int) {
         CAMPUS(0),
         INDOOR(1)
     }
@@ -59,13 +59,13 @@ object MapManager {
             }
             backgroundColor = Color.WHITE
         }
-        mapMode = MapManager.MODE.CAMPUS
+        mapMode = MapManager.Mode.CAMPUS
     }
 
-    var mapMode: MODE = MODE.CAMPUS
+    var mapMode: Mode = Mode.CAMPUS
         set(mode) {
             when (mode) {
-                MODE.CAMPUS -> {
+                Mode.CAMPUS -> {
                     /* 지도 기본 설정 */
                     naverMap.run {
                         mapType = NaverMap.MapType.Basic
@@ -84,7 +84,7 @@ object MapManager {
                     /* 마커 표시 */
                     DisplayMarker(FirestoreHelper.campusReference)
                 }
-                MODE.INDOOR -> {
+                Mode.INDOOR -> {
                     /* 지도 기본 설정 */
                     naverMap.run {
                         mapType = NaverMap.MapType.None
@@ -140,10 +140,10 @@ object MapManager {
             field = floor
             if (floor == null) {
                 MainActivity.appCompatActivity.indoor_level_picker.visibility = View.GONE
-                mapMode = MODE.CAMPUS
+                mapMode = Mode.CAMPUS
             } else {
                 MainActivity.appCompatActivity.indoor_level_picker.value = floorList.indexOfFirst { floor -> floor.second == field }
-                mapMode = MODE.INDOOR
+                mapMode = Mode.INDOOR
             }
         }
 
@@ -156,7 +156,7 @@ object MapManager {
         back()
         selectedDepartment = searchableFacility.department
         selectedFloor = searchableFacility.floorNumber
-        naverMap.cameraPosition = CameraPosition(searchableFacility.facility.latLng, defaultZoom, 0.0, if(mapMode == MODE.CAMPUS) defaultCampusImageBearing else 0.0)
+        naverMap.cameraPosition = CameraPosition(searchableFacility.facility.latLng, defaultZoom, 0.0, if(mapMode == Mode.CAMPUS) defaultCampusImageBearing else 0.0)
     }
 
     fun getFloorName(floorNumber: Int): String = if (floorNumber > 0) "f${floorNumber}" else "b${abs(floorNumber)}"
@@ -182,7 +182,7 @@ object MapManager {
                 position = LatLng(location!!.latitude, location!!.longitude)
                 icon = OverlayImage.fromResource(resourceId)
                 setOnClickListener {
-                    if (mapMode == MODE.CAMPUS)
+                    if (mapMode == Mode.CAMPUS)
                         selectedDepartment = facility
                     else {
                         FacilityFragment.instance.run {

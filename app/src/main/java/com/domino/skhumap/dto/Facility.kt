@@ -20,7 +20,7 @@ data class Facility(
 
     val resourceId
         @Exclude
-        get() = TYPE.values().find{ TYPE -> TYPE.id == type }?.let { it.icon }?:R.drawable.ic_meeting_room_24px
+        get() = Type.values().find{ TYPE -> TYPE.id == type }?.let { it.icon }?:R.drawable.ic_meeting_room_24px
 
     val latLng
         @Exclude
@@ -36,7 +36,7 @@ data class Facility(
         }
     }
 
-    enum class TYPE(val id:Int, val icon:Int){
+    enum class Type(val id:Int, val icon:Int){
         DEPARTMENT(0, R.drawable.ic_apartment_black_24dp),
         LECTUREROOM(1, R.drawable.ic_lecture_room),
         LIBRARY(2, R.drawable.ic_book),
