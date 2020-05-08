@@ -9,9 +9,9 @@ import com.domino.skhumap.Interface.ItemTouchHelperAdapter
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.EditFacilityItemTouchHelperCallback
 import com.domino.skhumap.adapter.EditFacilityListAdapter
+import com.domino.skhumap.contract.Code
 import com.domino.skhumap.fragment.FacilityFragment
 import kotlinx.android.synthetic.main.activity_edit_favorites.*
-import kotlinx.android.synthetic.main.fragment_facility.*
 
 class EditFavoritesActivity : AppCompatActivity() {
 
@@ -46,11 +46,7 @@ class EditFavoritesActivity : AppCompatActivity() {
                 notifyDataSetChanged()
             }
         }
-    }
-
-    override fun onDestroy() {
-        FacilityFragment.instance.list_facility.adapter?.notifyDataSetChanged()
-        super.onDestroy()
+        setResult(Code.RESULT_REQUEST_FAVORITES_RENEWAL)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

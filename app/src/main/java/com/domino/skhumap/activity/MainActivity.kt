@@ -1,6 +1,7 @@
 package com.domino.skhumap.activity
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -10,11 +11,15 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
+import com.domino.skhumap.contract.Code
 import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.fragment.FacilityFragment
+import com.domino.skhumap.fragment.MyPageFragment
 import com.domino.skhumap.manager.MapManager
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_facility.*
 import kotlinx.android.synthetic.main.item_menu_tab.view.*
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
@@ -112,4 +117,12 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(resultCode){
+            Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> MyPageFragment.instance.initLoginInfo()
+            Code.RESULT_REQUEST_FAVORITES_RENEWAL -> FacilityFragment.instance.list_facility.adapter?.notifyDataSetChanged()
+
+        }
+    }
 }

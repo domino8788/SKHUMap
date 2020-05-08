@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.domino.skhumap.R
 import com.domino.skhumap.activity.LoginActivity
 import com.domino.skhumap.adapter.MyPageMenuAdapter
+import com.domino.skhumap.contract.Code
 import kotlinx.android.synthetic.main.fragment_my_page.*
 
 class MyPageFragment(): Fragment() {
@@ -44,7 +45,7 @@ class MyPageFragment(): Fragment() {
         }else {
             my_page_btn_login.run {
                 visibility = View.VISIBLE
-                setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
+                setOnClickListener { startActivityForResult(Intent(context, LoginActivity::class.java), Code.REQUEST_LOGIN) }
             }
             my_page_logged_in.visibility = View.INVISIBLE
         }

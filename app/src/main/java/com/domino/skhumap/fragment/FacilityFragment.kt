@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.domino.skhumap.R
 import com.domino.skhumap.activity.EditFavoritesActivity
 import com.domino.skhumap.adapter.FavoritesListAdapter
+import com.domino.skhumap.contract.Code
 import com.domino.skhumap.dto.SearchableFacility
 import kotlinx.android.synthetic.main.fragment_facility.*
 
@@ -39,6 +40,6 @@ class FacilityFragment() : Fragment() {
         list_facility.addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
         PagerSnapHelper().attachToRecyclerView(list_facility)
 
-        btn_edit.setOnClickListener { startActivity(Intent(context, EditFavoritesActivity::class.java)) }
+        btn_edit.setOnClickListener { startActivityForResult(Intent(context, EditFavoritesActivity::class.java), Code.REQUEST_EDIT_FAVORITES) }
     }
 }

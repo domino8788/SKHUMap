@@ -14,7 +14,7 @@ import android.view.View
 import android.view.WindowManager
 import android.webkit.*
 import android.widget.Toast
-import com.domino.skhumap.fragment.MyPageFragment
+import com.domino.skhumap.contract.Code
 import java.net.URLEncoder
 
 class LoginActivity : AppCompatActivity() {
@@ -122,20 +122,13 @@ class LoginActivity : AppCompatActivity() {
                                 putString("name", name)
                                 commit()
                             }
+                            setResult(Code.RESULT_REQUEST_MY_PAGE_RENEWAL)
                             finish()
                         }
                         status = 0
                     }
                 }
             }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        MyPageFragment.instance.run {
-            if (isLogin)
-                initLoginInfo()
         }
     }
 
