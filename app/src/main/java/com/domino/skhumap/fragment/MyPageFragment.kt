@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_my_page.*
 class MyPageFragment(): Fragment() {
 
     companion object{
-        val instance = MyPageFragment()
+        lateinit var instance:MyPageFragment
     }
 
     override fun onCreateView(

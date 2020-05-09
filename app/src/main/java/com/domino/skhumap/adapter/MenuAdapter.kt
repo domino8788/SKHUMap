@@ -10,11 +10,13 @@ class MenuAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm,
     val fragments = ArrayList<Fragment>()
 
     init {
+        FacilityFragment.instance = FacilityFragment()
+        MyPageFragment.instance = MyPageFragment()
+
         fragments.add(FacilityFragment.instance)
         fragments.add(Fragment())
         fragments.add(Fragment())
         fragments.add(MyPageFragment.instance)
-
     }
 
     override fun getItem(position: Int): Fragment {

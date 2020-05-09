@@ -20,7 +20,7 @@ class FacilityFragment() : Fragment() {
     val searchableFacilityList:MutableList<SearchableFacility> = mutableListOf()
 
     companion object{
-        val instance = FacilityFragment()
+        lateinit var instance:FacilityFragment
     }
 
     override fun onCreateView(
