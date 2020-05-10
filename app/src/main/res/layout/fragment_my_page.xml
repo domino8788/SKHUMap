@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -16,9 +18,6 @@
         android:textColor="@color/design_default_color_on_primary" />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/my_page_logged_in"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
@@ -50,11 +49,7 @@
             android:textStyle="bold"
             tools:text="201432003" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_page_menu_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_my_page_menu_list"/>
+
     </LinearLayout>
 
 </LinearLayout>
