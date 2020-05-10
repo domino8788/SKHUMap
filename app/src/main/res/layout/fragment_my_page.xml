@@ -49,6 +49,11 @@
             android:textStyle="bold"
             tools:text="201432003" />
 
+        <fragment
+            android:id="@+id/my_page_preference"
+            android:name="com.domino.skhumap.fragment.MyPagePreferenceFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
