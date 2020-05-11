@@ -9,17 +9,9 @@
 
     <fragment
         android:id="@+id/main_map"
-        class="com.domino.skhumap.fragment.NaverMapFragment"
+        android:name="com.domino.skhumap.fragment.NaverMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <NumberPicker
-        android:id="@+id/indoor_level_picker"
-        android:background="@drawable/bg_level_picker_border"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center_vertical" />
 
     <com.domino.skhumap.view.MultipleLevelBottomSheetView
         android:id="@+id/main_bottom_sheet"
