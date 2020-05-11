@@ -1,19 +1,17 @@
 package com.domino.skhumap.activity
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.NumberPicker
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
 import com.domino.skhumap.contract.Code
 import com.domino.skhumap.db.FirestoreHelper
-import com.domino.skhumap.fragment.FacilityFragment
 import com.domino.skhumap.fragment.MyPageFragment
 import com.domino.skhumap.manager.MapManager
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
@@ -25,22 +23,8 @@ import kotlinx.android.synthetic.main.item_menu_tab.view.*
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     private var doubleBackToExitPressedOnce = false
-
-    init {
-        instance = this
-    }
-
-    companion object {
-        private var instance: AppCompatActivity? = null
-        val context: Context
-            get() {
-                return instance!!.applicationContext
-            }
-        val appCompatActivity: AppCompatActivity
-            get() {
-                return instance!!
-            }
-    }
+    private lateinit var favoritesViewModel: FavoritesViewModel
+    private lateinit var mapViewModel: MapViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +39,8 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             it.addOnTabSelectedListener(this)
             initTab()
         }
-        indoor_level_picker.run {
-            setOnValueChangedListener { picker, oldVal, newVal ->
-                MapManager.selectedFloor = MapManager.floorList[newVal].second
-            }
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            wrapSelectorWheel = false
-        }
+        favoritesViewModel = ViewModelProvider(this)[FavoritesViewModel::class.java]
+        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
     }
 
     private fun initTab(){
@@ -77,7 +56,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             }
             getTabAt(1)?.select()
             getTabAt(0)?.select()
-
         }
     }
 
@@ -94,7 +72,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabSelected(tab: TabLayout.Tab) {
-        main_view_pager.currentItem = tab.position
         tab.apply {
             customView!!.run {
                 item_menu_icon.setColorFilter(resources.getColor(R.color.colorAccent))
@@ -105,16 +82,16 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onBackPressed() {
-        if (MapManager.selectedFloor != null) {
-            MapManager.back()
-        } else {
-            if (doubleBackToExitPressedOnce) {
-                return super.onBackPressed()
+            if ( mapViewModel.selectedDepartment!= null) {
+                mapViewModel.selectedDepartment = null
+            } else {
+                if (doubleBackToExitPressedOnce) {
+                    return super.onBackPressed()
+                }
+                doubleBackToExitPressedOnce = true
+                Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
             }
-            this.doubleBackToExitPressedOnce = true
-            Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
