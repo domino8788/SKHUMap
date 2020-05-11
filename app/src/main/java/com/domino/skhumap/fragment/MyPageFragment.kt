@@ -15,10 +15,6 @@ import kotlinx.android.synthetic.main.fragment_my_page.*
 
 class MyPageFragment(): Fragment() {
 
-    companion object{
-        lateinit var instance:MyPageFragment
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

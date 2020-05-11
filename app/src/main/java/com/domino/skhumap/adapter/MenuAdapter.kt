@@ -7,16 +7,13 @@ import com.domino.skhumap.fragment.FacilityFragment
 import com.domino.skhumap.fragment.MyPageFragment
 
 class MenuAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm, behavior) {
-    val fragments = ArrayList<Fragment>()
+    private val fragments = ArrayList<Fragment>()
 
     init {
-        FacilityFragment.instance = FacilityFragment()
-        MyPageFragment.instance = MyPageFragment()
-
-        fragments.add(FacilityFragment.instance)
+        fragments.add(FacilityFragment())
         fragments.add(Fragment())
         fragments.add(Fragment())
-        fragments.add(MyPageFragment.instance)
+        fragments.add(MyPageFragment())
     }
 
     override fun getItem(position: Int): Fragment {

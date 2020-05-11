@@ -12,16 +12,14 @@ import com.domino.skhumap.R
 import com.domino.skhumap.activity.EditFavoritesActivity
 import com.domino.skhumap.adapter.FavoritesListAdapter
 import com.domino.skhumap.contract.Code
-import com.domino.skhumap.dto.SearchableFacility
+import com.domino.skhumap.model.FavoritesViewModel
+import com.domino.skhumap.model.MapViewModel
 import kotlinx.android.synthetic.main.fragment_facility.*
 
 class FacilityFragment() : Fragment() {
 
-    val searchableFacilityList:MutableList<SearchableFacility> = mutableListOf()
-
-    companion object{
-        lateinit var instance:FacilityFragment
-    }
+    private lateinit var favoritesViewModel: FavoritesViewModel
+    private lateinit var mapViewModel : MapViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
