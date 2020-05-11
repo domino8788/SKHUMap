@@ -2,37 +2,36 @@ package com.domino.skhumap.db
 
 import android.content.Context
 import com.domino.skhumap.Facility
-import com.domino.skhumap.manager.MapManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.naver.maps.map.overlay.Marker
 
 object FirestoreHelper {
     private var realTimeUpdateListener: ListenerRegistration? = null
 
-    fun realTimeUpdate(queryTarget: CollectionReference ,callback: ((facilitiy:Facility) -> Unit)?) {
+    fun realTimeUpdate(facilities:MutableList<Facility> ,queryTarget: CollectionReference ,callback: (() -> Unit)?) {
         realTimeUpdateListener?.remove()
         realTimeUpdateListener = queryTarget.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             for(change in querySnapshot?.documentChanges!!){
                 change.run {
                     when (type) {
                         DocumentChange.Type.ADDED -> {
-                            MapManager.facilities.add(newIndex, document.toObject(Facility::class.java).also { (callback)?.let { func -> func(it) } })
+                            facilities.add(newIndex, document.toObject(Facility::class.java))
                         }
                         DocumentChange.Type.MODIFIED -> {
-                            MapManager.facilities[oldIndex].marker?.map = null
-                            MapManager.facilities[newIndex] = document.toObject(Facility::class.java).also { (callback)?.let { func -> func(it) } }
+                            facilities[oldIndex].marker?.map = null
+                            facilities[newIndex] = document.toObject(Facility::class.java)
                         }
                         DocumentChange.Type.REMOVED -> {
-                            MapManager.facilities[oldIndex].removeMarker()
-                            MapManager.facilities.removeAt(oldIndex)
+                            facilities[oldIndex].removeMarker()
+                            facilities.removeAt(oldIndex)
                         }
                     }
                 }
             }
+            (callback)?.let { func -> func() }
         }
     }
 
