@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.SearchableFacility
-import com.domino.skhumap.manager.MapManager
+import com.domino.skhumap.model.MapViewModel
 import kotlinx.android.synthetic.main.item_favorites_list.view.*
 import kotlinx.android.synthetic.main.item_favorites_list_item.view.*
 
-class FavoritesListAdapter(private val list: MutableList<SearchableFacility>) :
+class FavoritesListAdapter(private val list: MutableList<SearchableFacility>, private val mapViewModel: MapViewModel) :
     RecyclerView.Adapter<FavoritesListAdapter.FavoritesViewHolder>() {
 
     inner class FavoritesViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -38,9 +38,9 @@ class FavoritesListAdapter(private val list: MutableList<SearchableFacility>) :
                 if(listIndex < list.size) {
                     val searchableFacility = list[position * 4 + index]
                     view.run {
-                        item_favorites_icon.setImageResource(searchableFacility.facility.resourceId)
-                        item_favorites_title.text = searchableFacility.facility.id
-                        setOnClickListener { MapManager.markMap(searchableFacility) }
+                        item_favorites_icon.setImageResource(searchableFacility.facility!!.resourceId)
+                        item_favorites_title.text = searchableFacility.facility!!.id
+                        setOnClickListener { mapViewModel.markMapLivdeData.value = searchableFacility  }
                     }
                 } else{
                     view.run {
