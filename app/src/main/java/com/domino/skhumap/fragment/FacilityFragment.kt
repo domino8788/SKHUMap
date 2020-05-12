@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.domino.skhumap.R
@@ -29,15 +31,27 @@ class FacilityFragment() : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        list_facility.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        list_facility.adapter = FavoritesListAdapter(searchableFacilityList)
+        favoritesViewModel = ViewModelProvider(requireActivity())[FavoritesViewModel::class.java]
+        mapViewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java]
 
-        val radius = resources.getDimensionPixelSize(R.dimen.radius);
-        val dotsHeight = resources.getDimensionPixelSize(R.dimen.dots_height);
-        val color = resources.getColor(R.color.colorAccent);
-        list_facility.addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
-        PagerSnapHelper().attachToRecyclerView(list_facility)
+        list_facility.run {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = FavoritesListAdapter(favoritesViewModel.favoritesLiveData.value!!, mapViewModel)
+            favoritesViewModel.favoritesLiveData.observe(requireActivity(), Observer {
+                adapter?.notifyDataSetChanged()
+                list_facility?.smoothScrollToPosition((it.size-1)/4)
+            }
+            )
 
-        btn_edit.setOnClickListener { startActivityForResult(Intent(context, EditFavoritesActivity::class.java), Code.REQUEST_EDIT_FAVORITES) }
+            val radius = resources.getDimensionPixelSize(R.dimen.radius);
+            val dotsHeight = resources.getDimensionPixelSize(R.dimen.dots_height);
+            val color = resources.getColor(R.color.colorAccent);
+            addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
+            PagerSnapHelper().attachToRecyclerView(this)
+        }
+
+        btn_edit.setOnClickListener { startActivityForResult(Intent(context, EditFavoritesActivity::class.java).apply {
+            putParcelableArrayListExtra("favorites", favoritesViewModel.favoritesLiveData.value!!)
+        }, Code.REQUEST_EDIT_FAVORITES) }
     }
 }
