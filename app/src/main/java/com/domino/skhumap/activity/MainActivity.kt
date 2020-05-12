@@ -12,7 +12,7 @@ import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
 import com.domino.skhumap.contract.Code
 import com.domino.skhumap.db.FirestoreHelper
-import com.domino.skhumap.fragment.MyPageFragment
+import com.domino.skhumap.model.AuthViewModel
 import com.domino.skhumap.model.FavoritesViewModel
 import com.domino.skhumap.model.MapViewModel
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private var doubleBackToExitPressedOnce = false
     private lateinit var favoritesViewModel: FavoritesViewModel
     private lateinit var mapViewModel: MapViewModel
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
         favoritesViewModel = ViewModelProvider(this)[FavoritesViewModel::class.java]
         mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
     }
 
     private fun initTab(){
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                 Code.RESULT_REQUEST_FAVORITES_RENEWAL -> {
                     data?.let { favoritesViewModel.addAll(it.getParcelableArrayListExtra("favorites")) }
                 }
-                Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> (getItem(3) as MyPageFragment).initLoginInfo()
+                Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> authViewModel.loadLoginInfo()
             }
             true
         }
