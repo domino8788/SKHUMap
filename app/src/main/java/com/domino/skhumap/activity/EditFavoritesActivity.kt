@@ -1,5 +1,6 @@
 package com.domino.skhumap.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,23 +11,28 @@ import com.domino.skhumap.R
 import com.domino.skhumap.adapter.EditFacilityItemTouchHelperCallback
 import com.domino.skhumap.adapter.EditFacilityListAdapter
 import com.domino.skhumap.contract.Code
-import com.domino.skhumap.fragment.FacilityFragment
+import com.domino.skhumap.dto.SearchableFacility
 import kotlinx.android.synthetic.main.activity_edit_favorites.*
 
 class EditFavoritesActivity : AppCompatActivity() {
 
+    lateinit var favorites:ArrayList<SearchableFacility>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_favorites)
+
+        favorites = intent.getParcelableArrayListExtra("favorites")
 
         setSupportActionBar(edit_tool_bar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
             title = ""
         }
+
         edit_facility_list.run {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = EditFacilityListAdapter(FacilityFragment.instance.searchableFacilityList).apply {
+            adapter = EditFacilityListAdapter(favorites).apply {
                 touchHelper = ItemTouchHelper(EditFacilityItemTouchHelperCallback(this as ItemTouchHelperAdapter)).apply { attachToRecyclerView(edit_facility_list) }
             }
         }
@@ -46,7 +52,10 @@ class EditFavoritesActivity : AppCompatActivity() {
                 notifyDataSetChanged()
             }
         }
-        setResult(Code.RESULT_REQUEST_FAVORITES_RENEWAL)
+
+        setResult(Code.RESULT_REQUEST_FAVORITES_RENEWAL, Intent().apply {
+            putParcelableArrayListExtra("favorites", favorites)
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
