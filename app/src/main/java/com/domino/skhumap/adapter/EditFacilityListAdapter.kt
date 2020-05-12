@@ -11,8 +11,9 @@ import com.domino.skhumap.dto.SearchableFacility
 import kotlinx.android.synthetic.main.activity_edit_favorites.view.*
 import kotlinx.android.synthetic.main.item_favorites_edit_list_item.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-class EditFacilityListAdapter(private val list: MutableList<SearchableFacility>): RecyclerView.Adapter<EditFacilityListAdapter.EditFacilityViewHolder>(), ItemTouchHelperAdapter  {
+class EditFacilityListAdapter(private val list: ArrayList<SearchableFacility>): RecyclerView.Adapter<EditFacilityListAdapter.EditFacilityViewHolder>(), ItemTouchHelperAdapter  {
 
     lateinit var touchHelper:ItemTouchHelper
     val checkedList = MutableList(list.size) { index -> false}
