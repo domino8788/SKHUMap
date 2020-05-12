@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import java.lang.Exception
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback {
-    lateinit var naverMap: NaverMap
+    private lateinit var naverMap: NaverMap
     private val indoorBenchMarkSouthWest = LatLng(37.487033, 126.823269)
     private val indoorBenchMarkNorthEast = LatLng(37.48970638628553, 126.82803403021207)
     private val groundOverlay by lazy { GroundOverlay() }
