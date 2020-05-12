@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_edit_favorites.*
 
 class EditFavoritesActivity : AppCompatActivity() {
 
-    lateinit var favorites:ArrayList<SearchableFacility>
+    private lateinit var favorites:ArrayList<SearchableFacility>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
