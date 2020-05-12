@@ -40,16 +40,16 @@ class AuthViewModel(val app: Application): AndroidViewModel(app) {
     }
 
     val isLogin:Boolean
-    get() = (app?.getSharedPreferences("login_info", Context.MODE_PRIVATE)?.getString("password", "") != "")
+    get() = (app.getSharedPreferences("login_info", Context.MODE_PRIVATE)?.getString("password", "") != "")
 
     fun logout() {
         CookieManager.getInstance().removeAllCookie()
-        app?.getSharedPreferences("login_info", Context.MODE_PRIVATE)!!.edit().clear().commit()
+        app.getSharedPreferences("login_info", Context.MODE_PRIVATE)!!.edit().clear().commit()
         loadLoginInfo()
     }
 
     fun loadLoginInfo() {
-        app?.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
+        app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
             idLiveData.postValue(getString("id", ""))
             passwordLiveData.postValue(getString("password", ""))
             nameLiveData.postValue(getString("name",""))
@@ -57,7 +57,7 @@ class AuthViewModel(val app: Application): AndroidViewModel(app) {
     }
 
     private fun setLoginInfo(id:String, password:String, name:String) {
-        app?.getSharedPreferences("login_info", Context.MODE_PRIVATE).edit().run {
+        app.getSharedPreferences("login_info", Context.MODE_PRIVATE).edit().run {
             putString("id", id)
             putString("password", password)
             putString("name", name)
