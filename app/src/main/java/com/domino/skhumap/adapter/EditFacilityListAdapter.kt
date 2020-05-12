@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 class EditFacilityListAdapter(private val list: ArrayList<SearchableFacility>): RecyclerView.Adapter<EditFacilityListAdapter.EditFacilityViewHolder>(), ItemTouchHelperAdapter  {
 
     lateinit var touchHelper:ItemTouchHelper
-    val checkedList = MutableList(list.size) { index -> false}
+    val checkedList = MutableList(list.size) { false }
 
     inner class EditFacilityViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_favorites_edit_list_item, parent, false)) {
         val check_box_select = itemView.edit_item_check_box
