@@ -13,11 +13,11 @@ import com.domino.skhumap.adapter.MenuAdapter
 import com.domino.skhumap.contract.Code
 import com.domino.skhumap.db.FirestoreHelper
 import com.domino.skhumap.fragment.MyPageFragment
-import com.domino.skhumap.manager.MapManager
+import com.domino.skhumap.model.FavoritesViewModel
+import com.domino.skhumap.model.MapViewModel
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_facility.*
 import kotlinx.android.synthetic.main.item_menu_tab.view.*
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
@@ -96,10 +96,14 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(resultCode){
-            Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> MyPageFragment.instance.initLoginInfo()
-            Code.RESULT_REQUEST_FAVORITES_RENEWAL -> FacilityFragment.instance.list_facility.adapter?.notifyDataSetChanged()
-
+        (main_view_pager.adapter as MenuAdapter).run {
+            when(resultCode){
+                Code.RESULT_REQUEST_FAVORITES_RENEWAL -> {
+                    data?.let { favoritesViewModel.addAll(it.getParcelableArrayListExtra("favorites")) }
+                }
+                Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> (getItem(3) as MyPageFragment).initLoginInfo()
+            }
+            true
         }
     }
 }
