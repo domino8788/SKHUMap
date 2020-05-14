@@ -71,27 +71,38 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
+
+    private fun loginSuccess(id: String, password: String, name: String){
+        setLoginInfo(id, password, name)
+        toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
+        loadLoginInfo()
+    }
+
     private fun firebaseAuth(id: String, password: String, name: String) {
         user ?: let {
-            auth.createUserWithEmailAndPassword("${id}${idSuffix}", password)
+            auth.signInWithEmailAndPassword("${id}${idSuffix}", password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        user = auth.currentUser
-                        setLoginInfo(id, password, name)
-                        toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
-                        loadLoginInfo()
+                        loginSuccess(id, password, name)
                     } else {
-                        toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
+                        auth.createUserWithEmailAndPassword("${id}${idSuffix}", password)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    loginSuccess(id, password, name)
+                                } else {
+                                    toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
+                                }
+                            }
                     }
                 }
         }
     }
 
-    private enum class Status{
+    private enum class Status {
         FINISH, GET_COOKIE, SELECT_ACTION, LOGIN_SEQUENCE
     }
 
-    private enum class Action{
+    private enum class Action {
         LOGIN
     }
 
@@ -126,7 +137,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                     status = Status.SELECT_ACTION
                 }
                 Status.SELECT_ACTION -> {
-                    when(action){
+                    when (action) {
                         Action.LOGIN -> {
                             status = Status.LOGIN_SEQUENCE
                             Handler().postDelayed({ view.loadUrl("http://sam.skhu.ac.kr") }, 1000)
