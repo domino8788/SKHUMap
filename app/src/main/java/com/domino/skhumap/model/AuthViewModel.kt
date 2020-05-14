@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Handler
 import android.webkit.*
 import androidx.lifecycle.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import java.net.URLEncoder
 
 class AuthViewModel(val app: Application): AndroidViewModel(app) {
@@ -14,6 +16,8 @@ class AuthViewModel(val app: Application): AndroidViewModel(app) {
     val nameLiveData:MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val passwordLiveData:MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val toastLiveData:MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    private val auth = FirebaseAuth.getInstance()
+    private var user:FirebaseUser? = auth.currentUser
 
     fun login(id:String, password: String):WebViewClient?{
         val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -40,7 +44,7 @@ class AuthViewModel(val app: Application): AndroidViewModel(app) {
     }
 
     val isLogin:Boolean
-    get() = (app.getSharedPreferences("login_info", Context.MODE_PRIVATE)?.getString("password", "") != "")
+    get() = user != null
 
     fun logout() {
         CookieManager.getInstance().removeAllCookie()
