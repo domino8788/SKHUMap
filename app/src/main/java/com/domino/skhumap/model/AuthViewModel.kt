@@ -9,6 +9,7 @@ import android.webkit.*
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import java.net.URLEncoder
 
 class AuthViewModel(val app: Application) : AndroidViewModel(app) {
@@ -72,7 +73,6 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-
     private fun loginSuccess(id: String, password: String, name: String){
         setLoginInfo(id, password, name)
         toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
@@ -89,6 +89,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                         auth.createUserWithEmailAndPassword("${id}${idSuffix}", password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
+                                    user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
                                     loginSuccess(id, password, name)
                                 } else {
                                     toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
