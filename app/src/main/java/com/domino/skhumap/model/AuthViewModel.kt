@@ -11,13 +11,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.net.URLEncoder
 
-class AuthViewModel(val app: Application): AndroidViewModel(app) {
-    val idLiveData:MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val nameLiveData:MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val passwordLiveData:MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val toastLiveData:MutableLiveData<String> by lazy { MutableLiveData<String>() }
+class AuthViewModel(val app: Application) : AndroidViewModel(app) {
+    val idLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val nameLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val passwordLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val toastLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     private val auth = FirebaseAuth.getInstance()
     private var user:FirebaseUser? = auth.currentUser
+    private val idSuffix = "@skhu.ac.kr"
 
     fun login(id:String, password: String):WebViewClient?{
         val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -53,6 +54,7 @@ class AuthViewModel(val app: Application): AndroidViewModel(app) {
     }
 
     fun loadLoginInfo() {
+        user = auth.currentUser
         app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
             idLiveData.postValue(getString("id", ""))
             passwordLiveData.postValue(getString("password", ""))
@@ -67,7 +69,22 @@ class AuthViewModel(val app: Application): AndroidViewModel(app) {
             putString("name", name)
             commit()
         }
-        loadLoginInfo()
+    }
+
+    private fun firebaseAuth(id: String, password: String, name: String) {
+        user ?: let {
+            auth.createUserWithEmailAndPassword("${id}${idSuffix}", password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        user = auth.currentUser
+                        setLoginInfo(id, password, name)
+                        toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
+                        loadLoginInfo()
+                    } else {
+                        toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
+                    }
+                }
+        }
     }
 
     private enum class Status{
@@ -119,12 +136,11 @@ class AuthViewModel(val app: Application): AndroidViewModel(app) {
                 Status.LOGIN_SEQUENCE -> {
                     view.evaluateJavascript("document.getElementsByClassName('btn btn-sm')[0].innerText") {
                         if (it == "null") {
-                            toastLiveData.postValue("로그인 실패. 아이디와 비밀번호를 다시 한번 확인하세요.")
                             cookieManager.removeAllCookie()
+                            toastLiveData.postValue("로그인 실패. 아이디와 비밀번호를 다시 한번 확인하세요.")
                         } else {
                             val name = it.trim().split(" ", "(", ")")[4]
-                            toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
-                            setLoginInfo(id, password, name)
+                            firebaseAuth(id, password, name)
                         }
                     }
                     status = Status.FINISH
