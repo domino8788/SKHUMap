@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.domino.skhumap.contract.Code
 import com.domino.skhumap.model.AuthViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -34,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, notice, Toast.LENGTH_SHORT).show()
             })
             nameLiveData.observe(this@LoginActivity, Observer {
-                setResult(com.domino.skhumap.contract.Code.RESULT_REQUEST_MY_PAGE_RENEWAL)
+                setResult(Code.RESULT_REQUEST_MY_PAGE_RENEWAL)
                 finish()
             })
             login_web_view.run {
