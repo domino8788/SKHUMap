@@ -50,6 +50,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     fun logout() {
         CookieManager.getInstance().removeAllCookie()
         app.getSharedPreferences("login_info", Context.MODE_PRIVATE)!!.edit().clear().commit()
+        auth.signOut()
         loadLoginInfo()
     }
 
