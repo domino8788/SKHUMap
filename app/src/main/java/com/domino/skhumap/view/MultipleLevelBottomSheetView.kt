@@ -25,7 +25,7 @@ class MultipleLevelBottomSheetView : LinearLayout {
 
     fun initView(){
         bottomSheetView.run {
-            halfExpandedRatio = 0.35f
+            halfExpandedRatio = 0.40f
             addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
                     if(slideOffset>0.25 && slideOffset<0.4)
