@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     private fun initTab(){
         val titles = resources.getStringArray(R.array.menu)
-        val icons = arrayOf(R.drawable.ic_location_on_black_24dp, R.drawable.ic_chat_black_24dp, R.drawable.ic_calendar_black_24dp ,R.drawable.ic_account_circle_black_24dp)
+        val icons = arrayOf(R.drawable.ic_location_on_black_24dp, R.drawable.ic_calendar_black_24dp ,R.drawable.ic_account_circle_black_24dp)
 
         main_tab_layout.run {
             for(i in  0..tabCount) {
