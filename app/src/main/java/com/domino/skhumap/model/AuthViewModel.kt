@@ -19,7 +19,6 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     val toastLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     private val auth = FirebaseAuth.getInstance()
     private var user:FirebaseUser? = auth.currentUser
-    private val idSuffix = "@skhu.ac.kr"
 
     fun login(id:String, password: String):WebViewClient?{
         val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -81,12 +80,12 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun firebaseAuth(id: String, password: String, name: String) {
         user ?: let {
-            auth.signInWithEmailAndPassword("${id}${idSuffix}", password)
+            auth.signInWithEmailAndPassword("${id}@${name}.com", password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         loginSuccess(id, password, name)
                     } else {
-                        auth.createUserWithEmailAndPassword("${id}${idSuffix}", password)
+                        auth.createUserWithEmailAndPassword("${id}@${name}.com", password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
