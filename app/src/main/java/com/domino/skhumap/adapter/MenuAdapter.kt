@@ -12,7 +12,6 @@ class MenuAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm,
     init {
         fragments.add(FacilityFragment())
         fragments.add(Fragment())
-        fragments.add(Fragment())
         fragments.add(MyPageFragment())
     }
 
