@@ -2,7 +2,6 @@
     <string name="app_name">SKHU MAP</string>
     <string-array name="menu">
         <item>교내지도</item>
-        <item>성공회톡</item>
         <item>캘린더</item>
         <item>마이페이지</item>
     </string-array>
