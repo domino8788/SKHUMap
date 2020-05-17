@@ -42,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, notice, Toast.LENGTH_SHORT).show()
             })
             nameLiveData.observe(this@LoginActivity, Observer {
-                setResult(Code.RESULT_REQUEST_MY_PAGE_RENEWAL)
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
             })
             login_web_view.run {
