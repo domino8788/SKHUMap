@@ -9,10 +9,6 @@
     android:padding="16dp"
     android:background="@android:color/white"
     tools:context=".activity.LoginActivity">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/login_tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <FrameLayout
         android:layout_width="200dp"
         android:layout_height="75dp">
