@@ -22,12 +22,8 @@
             android:name=".activity.EditFavoritesActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
         <activity android:name=".activity.MainActivity" />
-
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="ha6f0suz9a" />
