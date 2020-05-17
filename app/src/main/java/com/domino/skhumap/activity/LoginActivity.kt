@@ -1,8 +1,9 @@
 package com.domino.skhumap.activity
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import com.domino.skhumap.R
 import kotlinx.android.synthetic.main.activity_login.*
 import android.view.View
@@ -10,7 +11,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.domino.skhumap.contract.Code
 import com.domino.skhumap.model.AuthViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -20,15 +20,20 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        setSupportActionBar(login_tool_bar)
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
             title = ""
         }
-
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java].apply {
+            idLiveData.observe(this@LoginActivity, Observer { id ->
+                login_id.setText(id)
+            })
+            passwordLiveData.observe(this@LoginActivity, Observer { password ->
+                login_password.setText(password)
+            })
             toastLiveData.observe(this@LoginActivity, Observer { notice ->
                 login_btn.isEnabled = true
                 login_id.isEnabled = true
@@ -59,17 +64,13 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
+            if(isLogin) {
+                app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
+                    login_id.setText(getString("id", ""))
+                    login_password.setText(getString("password", ""))
+                    login_btn.performClick()
+                }
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 }

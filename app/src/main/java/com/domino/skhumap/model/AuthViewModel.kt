@@ -7,9 +7,7 @@ import android.os.Build
 import android.os.Handler
 import android.webkit.*
 import androidx.lifecycle.*
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import java.net.URLEncoder
 
 class AuthViewModel(val app: Application) : AndroidViewModel(app) {
@@ -17,7 +15,11 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     val nameLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val passwordLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val toastLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    private val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance().apply {
+        addAuthStateListener {state ->
+            user = state.currentUser
+        }
+    }
     private var user:FirebaseUser? = auth.currentUser
 
     fun login(id:String, password: String):WebViewClient?{
@@ -38,9 +40,6 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
             return null
         }
 
-        this.idLiveData.postValue(id)
-        this.passwordLiveData.postValue(password)
-
         return WebClient(id, password, Action.LOGIN)
     }
 
@@ -51,11 +50,9 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         CookieManager.getInstance().removeAllCookie()
         app.getSharedPreferences("login_info", Context.MODE_PRIVATE)!!.edit().clear().commit()
         auth.signOut()
-        loadLoginInfo()
     }
 
     fun loadLoginInfo() {
-        user = auth.currentUser
         app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
             idLiveData.postValue(getString("id", ""))
             passwordLiveData.postValue(getString("password", ""))
@@ -79,24 +76,33 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     private fun firebaseAuth(id: String, password: String, name: String) {
-        user ?: let {
-            auth.signInWithEmailAndPassword("${id}@${name}.com", password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        loginSuccess(id, password, name)
-                    } else {
-                        auth.createUserWithEmailAndPassword("${id}@${name}.com", password)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
-                                    loginSuccess(id, password, name)
-                                } else {
-                                    toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
+        auth.signInWithEmailAndPassword("${id}@${name}.com", password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    loginSuccess(id, password, name)
+                } else {
+                    when(task.exception){
+                        /* 비밀번호 변경 감지 */
+                        is FirebaseAuthInvalidCredentialsException -> {
+
+                        }
+                        /* 신규가입 */
+                        is FirebaseAuthInvalidUserException -> {
+                            auth.createUserWithEmailAndPassword("${id}@${name}.com", password)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        user?.updateProfile(
+                                            UserProfileChangeRequest.Builder().setDisplayName(name).build()
+                                        )
+                                        loginSuccess(id, password, name)
+                                    } else {
+                                        toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
-        }
+            }
     }
 
     private enum class Status {
