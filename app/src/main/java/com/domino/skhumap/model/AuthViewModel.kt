@@ -15,6 +15,9 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     val nameLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val passwordLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val toastLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    /* 이름, 비밀번호 */
+    val callResetPassword: MutableLiveData<Pair<String, String>> by lazy { MutableLiveData<Pair<String, String>>() }
+
     private val auth = FirebaseAuth.getInstance().apply {
         addAuthStateListener {state ->
             user = state.currentUser
@@ -75,6 +78,33 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         setLoginInfo(id, password, name)
         toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
         loadLoginInfo()
+    }
+
+    fun resetPassword(id:String, name:String, previousPassword:String, newPassword:String){
+        /* 입력한 password로 로그인 시도 */
+        auth.signInWithEmailAndPassword(getEmail(id, name), previousPassword).addOnCompleteListener { task ->
+            /* 로그인 성공 */
+            if(task.isSuccessful){
+                /* 비밀번호 갱신 */
+                user?.updatePassword(newPassword)!!.addOnCompleteListener { task ->
+                    /* 갱신 성공 */
+                    if(task.isSuccessful) {
+                        loginSuccess(id, newPassword, name)
+                    }
+                    /* 갱신 실패 */
+                    else {
+                        callResetPassword.postValue(name to newPassword)
+                        toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
+                    }
+                }
+            }
+            /* 로그인 실패 */
+            else {
+                /* 인증 재시도 */
+                callResetPassword.postValue(name to newPassword)
+                toastLiveData.postValue("로그인 실패. 비밀번호를 다시 한번 확인하세요.")
+            }
+        }
     }
 
     private fun firebaseAuth(id: String, password: String, name: String) {
