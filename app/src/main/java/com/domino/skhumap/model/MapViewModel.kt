@@ -33,7 +33,7 @@ class MapViewModel:ViewModel(){
 
     private fun query(target: CollectionReference) {
         FirestoreHelper.realTimeUpdate(facilities, target){
-            facilitiesLiveData.value = facilities
+            facilitiesLiveData.postValue(facilities)
         }
     }
 

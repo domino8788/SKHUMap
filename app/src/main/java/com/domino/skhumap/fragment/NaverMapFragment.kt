@@ -199,7 +199,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private fun removeMarkers() {
         mapViewModel.facilities.run {
             for (facility in this) {
-                facility.marker!!.map = null
+                facility.marker?.map = null
             }
             clear()
         }
