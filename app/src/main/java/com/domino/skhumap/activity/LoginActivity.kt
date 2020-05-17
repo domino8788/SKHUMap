@@ -31,6 +31,8 @@ class LoginActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java].apply {
             toastLiveData.observe(this@LoginActivity, Observer { notice ->
                 login_btn.isEnabled = true
+                login_id.isEnabled = true
+                login_password.isEnabled = true
                 login_progress_bar.visibility = View.GONE
                 Toast.makeText(this@LoginActivity, notice, Toast.LENGTH_SHORT).show()
             })
@@ -47,6 +49,8 @@ class LoginActivity : AppCompatActivity() {
             }
             login_btn.setOnClickListener {
                 login_btn.isEnabled = false
+                login_id.isEnabled = false
+                login_password.isEnabled = false
                 login_progress_bar.visibility = View.VISIBLE
                 login(login_id.text.toString(), login_password.text.toString())?.let {
                     login_web_view.run {
