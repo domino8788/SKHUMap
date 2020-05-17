@@ -84,7 +84,8 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                     when(task.exception){
                         /* 비밀번호 변경 감지 */
                         is FirebaseAuthInvalidCredentialsException -> {
-
+                            toastLiveData.postValue("비밀번호 변경이 감지 되었습니다. 갱신을 위해 이전 비밀번호를 입력해주세요.")
+                            callResetPassword.postValue(name to password)
                         }
                         /* 신규가입 */
                         is FirebaseAuthInvalidUserException -> {
