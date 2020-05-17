@@ -22,6 +22,8 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     }
     private var user:FirebaseUser? = auth.currentUser
 
+    fun getEmail(id:String, name:String) = "${id}@${name}.com"
+
     fun login(id:String, password: String):WebViewClient?{
         val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var isNetworkConnected:Boolean = false
@@ -76,7 +78,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     private fun firebaseAuth(id: String, password: String, name: String) {
-        auth.signInWithEmailAndPassword("${id}@${name}.com", password)
+        auth.signInWithEmailAndPassword(getEmail(id, name), password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     loginSuccess(id, password, name)
