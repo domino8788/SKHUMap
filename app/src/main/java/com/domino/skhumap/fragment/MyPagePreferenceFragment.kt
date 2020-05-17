@@ -1,10 +1,12 @@
 package com.domino.skhumap.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.domino.skhumap.R
+import com.domino.skhumap.activity.LoginActivity
 import com.domino.skhumap.model.AuthViewModel
 
 class MyPagePreferenceFragment:PreferenceFragmentCompat(){
@@ -20,6 +22,10 @@ class MyPagePreferenceFragment:PreferenceFragmentCompat(){
         when(preference?.key){
             "logout" -> {
                 authViewModel.logout()
+                startActivity(Intent(requireActivity(), LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                })
+                requireActivity().finish()
             }
         }
         return super.onPreferenceTreeClick(preference)
