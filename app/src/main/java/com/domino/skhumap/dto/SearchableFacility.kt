@@ -56,4 +56,12 @@ data class SearchableFacility(val department: Facility?, val floorNumber:Int=0, 
             return arrayOfNulls(size)
         }
     }
+
+    override fun equals(other: Any?): Boolean =
+        if(other is SearchableFacility) {
+            (department?.id?:"null"==other.department?.id?:"null"
+                    && floorNumber == other.floorNumber
+                    && facility.id == other.facility.id)
+        } else
+            super.equals(other)
 }
