@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         (main_view_pager.adapter as MenuAdapter).run {
             when(resultCode){
                 Code.RESULT_REQUEST_FAVORITES_RENEWAL -> {
-                    data?.let { favoritesViewModel.addAll(it.getParcelableArrayListExtra("favorites")) }
+                    data?.let { favoritesViewModel.updateAll(it.getParcelableArrayListExtra("favorites")) }
                 }
                 Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> authViewModel.loadLoginInfo()
             }
