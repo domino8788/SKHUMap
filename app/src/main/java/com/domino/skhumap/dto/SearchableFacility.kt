@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.domino.skhumap.Facility
 import com.domino.skhumap.db.FirestoreHelper
-import com.domino.skhumap.db.FirestoreHelper.campusReference
 
 data class SearchableFacility(val department: Facility?, val floorNumber:Int=0, val facility:Facility):Parcelable {
     constructor(parcel: Parcel) : this(
@@ -13,29 +12,14 @@ data class SearchableFacility(val department: Facility?, val floorNumber:Int=0, 
         parcel.readParcelable(Facility::class.java.classLoader)!!
     )
 
+    private val documentId
+    get() = "${department?.id?:"null"}_${floorNumber}_${facility!!.id}"
+
     /* 검색가능한 시설객체를 DB에 저장하는 규격인 Favorites 객체로 변환 */
-    fun toFavorites(index:Int) = Favorites(
-        index,
-        /* department 값이 null이면 null 아니면 해당 건물의 DocumentReference 를 반환한다. */
-        department?.let { department ->
-            campusReference.document(department.id)
-        } ?: null,
-        floorNumber,
-        /*
-        department 값이 null 이면 campus 지도상의 시설이라는 뜻이다.
-        department 값이 null 이 아니면 indoor 지도상의 시설이라는 뜻이다.
-        */
-        department?.let { department ->
-        campusReference.document(department.id)
-                .collection(floorNumber.toString())
-                .document(facility.id)
-        } ?: campusReference.document(facility.id)
-    )
+    fun toFavorites(index:Int) = Favorites(index, documentId)
 
     /* SearchableFacility 객체의 정보로 해당 정보가 담겨있는 DocumentReference 를 반환한다. */
-    fun toReference() = FirestoreHelper.favoritesReference.document(
-        "${department?.id?:"null"}_${floorNumber}_${facility.id}"
-    )
+    fun toReference() = FirestoreHelper.favoritesReference.document(documentId)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(department, flags)
@@ -59,9 +43,7 @@ data class SearchableFacility(val department: Facility?, val floorNumber:Int=0, 
 
     override fun equals(other: Any?): Boolean =
         if(other is SearchableFacility) {
-            (department?.id?:"null"==other.department?.id?:"null"
-                    && floorNumber == other.floorNumber
-                    && facility.id == other.facility.id)
+            documentId == other.documentId
         } else
             super.equals(other)
 }
