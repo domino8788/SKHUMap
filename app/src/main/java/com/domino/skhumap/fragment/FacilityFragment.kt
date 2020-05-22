@@ -34,20 +34,21 @@ class FacilityFragment() : Fragment() {
         favoritesViewModel = ViewModelProvider(requireActivity())[FavoritesViewModel::class.java]
         mapViewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java]
 
-        list_facility.run {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = FavoritesListAdapter(favoritesViewModel.favoritesLiveData.value!!, mapViewModel)
-            favoritesViewModel.favoritesLiveData.observe(requireActivity(), Observer {
-                adapter?.notifyDataSetChanged()
+        favoritesViewModel.run {
+            favoritesLiveData.observe(requireActivity(), Observer {
+                list_facility.adapter?.notifyDataSetChanged()
                 list_facility?.smoothScrollToPosition((it.size-1)/4)
-            }
-            )
+            })
+            list_facility.run {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = FavoritesListAdapter(favoritesViewModel.favoritesLiveData.value!!, mapViewModel)
 
-            val radius = resources.getDimensionPixelSize(R.dimen.radius);
-            val dotsHeight = resources.getDimensionPixelSize(R.dimen.dots_height);
-            val color = resources.getColor(R.color.colorAccent);
-            addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
-            PagerSnapHelper().attachToRecyclerView(this)
+                val radius = resources.getDimensionPixelSize(R.dimen.radius);
+                val dotsHeight = resources.getDimensionPixelSize(R.dimen.dots_height);
+                val color = resources.getColor(R.color.colorAccent);
+                addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
+                PagerSnapHelper().attachToRecyclerView(this)
+            }
         }
 
         btn_edit.setOnClickListener { startActivityForResult(Intent(context, EditFavoritesActivity::class.java).apply {
