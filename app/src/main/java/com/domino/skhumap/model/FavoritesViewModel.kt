@@ -54,4 +54,16 @@ class FavoritesViewModel : ViewModel() {
             }
         }
     }
+
+    fun updateAll(newFavorites: ArrayList<SearchableFacility>) {
+        favorites.removeAll(newFavorites)
+        db.runBatch {batch ->
+            favorites.forEach { batch.delete(it.toReference()) }
+            newFavorites.forEachIndexed { index, searchableFacility -> batch.update(searchableFacility.toReference(), mapOf("index" to index)) }
+        }
+        favorites.clear()
+        favorites.addAll(newFavorites)
+        favoritesLiveData.postValue(favorites)
+    }
+
 }
