@@ -4,21 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.domino.skhumap.dto.SearchableFacility
 
-class FavoritesViewModel: ViewModel() {
-    private val favorites:ArrayList<SearchableFacility> = ArrayList()
-    val favoritesLiveData: MutableLiveData<ArrayList<SearchableFacility>> = MutableLiveData<ArrayList<SearchableFacility>>().also {
-        it.value = favorites
-    }
+class FavoritesViewModel : ViewModel() {
+    private val favorites: ArrayList<SearchableFacility> = ArrayList()
 
-    fun add(favoritesItem:SearchableFacility){
-        favorites.add(favoritesItem)
-        favoritesLiveData.value = favorites
-    }
+    val favoritesLiveData: MutableLiveData<ArrayList<SearchableFacility>> = MutableLiveData<ArrayList<SearchableFacility>>(favorites)
 
-    fun addAll(favoritesList:ArrayList<SearchableFacility>){
-        favorites.clear()
-        favorites.addAll(favoritesList)
-        favoritesLiveData.value = favorites
-    }
+
 
 }
