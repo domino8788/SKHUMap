@@ -186,7 +186,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         val favoritesViewModel = activity?.run {
                             ViewModelProvider(this)[FavoritesViewModel::class.java]
                         }?:throw Exception("FavoritesViewModel not exists")
-                        favoritesViewModel.add(mapViewModel.getCurrentSelectToSearchableFacility(facility))
+                        favoritesViewModel.insert(mapViewModel.getCurrentSelectToSearchableFacility(facility))
                     }
                     false
                 }
