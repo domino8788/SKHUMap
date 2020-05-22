@@ -32,7 +32,7 @@ class MapViewModel:ViewModel(){
     }
 
     private fun query(target: CollectionReference) {
-        FirestoreHelper.realTimeUpdate(facilities, target){
+        FirestoreHelper.naverMapRealTimeUpdate(facilities, target){
             facilitiesLiveData.postValue(facilities)
         }
     }
