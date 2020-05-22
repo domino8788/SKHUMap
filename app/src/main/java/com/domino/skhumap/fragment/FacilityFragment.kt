@@ -49,6 +49,7 @@ class FacilityFragment() : Fragment() {
                 addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
                 PagerSnapHelper().attachToRecyclerView(this)
             }
+            query()
         }
 
         btn_edit.setOnClickListener { startActivityForResult(Intent(context, EditFavoritesActivity::class.java).apply {
