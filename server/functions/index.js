@@ -40,7 +40,7 @@ const generateKeywords = (id, names) => {
 }
 
 exports.allKeywordsGenerate =  functions.https.onRequest(async (req, res) => {
-    let log = "execute onceGenerate\n"
+    let log = "execute allKeywordsGenerate\n"
 
     const departments = await db.collection('facilities').listDocuments()
     const departmentsPromise = []
@@ -73,6 +73,6 @@ exports.allKeywordsGenerate =  functions.https.onRequest(async (req, res) => {
             })
         })
     })
-    log+="complete onceGenerate\n"
+    log+="complete allKeywordsGenerate\n"
     res.send(302, `<pre>${log}</pre>`)
 })
