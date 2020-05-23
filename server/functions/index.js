@@ -76,3 +76,21 @@ exports.allKeywordsGenerate =  functions.https.onRequest(async (req, res) => {
     log+="complete allKeywordsGenerate\n"
     res.send(302, `<pre>${log}</pre>`)
 })
+
+exports.facilityChange = functions.firestore
+.document('facilities/{department}/{floor}/{facility}')
+.onWrite((change, context) => {
+    const target = db.doc(`search/${context.params.department}_${context.params.floor}_${context.params.facility}`)
+    const value = change.after
+    if(value.exists) {
+        const data = value.data()
+        console.log(value.id)
+        target.set({
+            keyword : [value.id].concat(data["name"]),
+            keywords: generateKeywords(value.id, data["name"])
+         })
+    }
+    else{
+        target.delete()
+    }
+})
