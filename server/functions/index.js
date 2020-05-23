@@ -15,3 +15,13 @@ exports.createUser = functions.auth.user().onCreate((user) => {
 
     console.info(`${id} ${userName} 회원가입 \nuid : ${user.uid}`)
 })
+
+const createKeywords = (keyword) => {
+    const arr = []
+    let cur = ''
+    keyword.split('').forEach((letter) => {
+        cur += letter
+        arr.push(cur)
+    })
+    return arr
+}
