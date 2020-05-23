@@ -3,12 +3,12 @@ const admin = require('firebase-admin')
 admin.initializeApp()
 const db = admin.firestore()
 
-exports.createUser = functions.auth.user().onCreate(async (user) => {
+exports.createUser = functions.auth.user().onCreate((user) => {
     const userInfo= user.email.split(/[@.]/g)
     const id = userInfo[0]
     const userName = userInfo[1]
     
-    await db.doc(`users/${id}`).set({
+    db.doc(`users/${id}`).set({
         uid : user.uid,
         name : userName
     })
