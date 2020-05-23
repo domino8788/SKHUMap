@@ -25,3 +25,16 @@ const createKeywords = (keyword) => {
     })
     return arr
 }
+
+const generateKeywords = (id, names) => {
+    let keywordsArray = createKeywords(id)
+    if(names){
+        names.forEach((name) => {
+            createKeywords(name).forEach((word) => {
+                if(keywordsArray.indexOf(word) === -1)
+                    keywordsArray.push(word)
+            }) 
+        })
+    }
+    return keywordsArray
+}
