@@ -38,7 +38,9 @@
         <com.domino.skhumap.view.ScrollunableViewPager
             android:id="@+id/main_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:padding="@dimen/fragment_in_view_pager_padding"
+            />
     </com.domino.skhumap.view.MultipleLevelBottomSheetView>
 
 
