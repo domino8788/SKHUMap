@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@color/cardview_light_background"
+        app:iconifiedByDefault="false"
         app:queryHint="시설 검색"
         />
     <NumberPicker

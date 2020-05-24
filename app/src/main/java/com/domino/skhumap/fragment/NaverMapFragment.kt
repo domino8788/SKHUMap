@@ -130,7 +130,6 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
         }
-        search_view.setIconifiedByDefault(false)
         mapViewModel.selectedDepartment = null
     }
 
