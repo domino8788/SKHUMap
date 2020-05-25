@@ -19,10 +19,13 @@ exports.createUser = functions.auth.user().onCreate((user) => {
 const createKeywords = (keyword) => {
     const arr = []
     let cur = ''
-    keyword.split('').forEach((letter) => {
-        cur += letter
-        arr.push(cur)
-    })
+    for(let i=0;i<keyword.length;i++) {
+        for(let letter of keyword.slice(i).split('')){
+            cur += letter
+            arr.push(cur)
+        }
+        cur=""
+    }
     return arr
 }
 
