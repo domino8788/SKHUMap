@@ -11,10 +11,12 @@ object FirestoreHelper {
         firestoreSettings = FirebaseFirestoreSettings.Builder().setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED).build()
     } }
     private const val COLLECTION_FACILITIES = "facilities"
+    private const val COLLECTION_SEARCH = "search"
 
     lateinit var userReference: DocumentReference
     val campusReference by lazy { db.collection(COLLECTION_FACILITIES) }
     val favoritesReference by lazy { userReference.collection("favorites") }
+    val searchReference by lazy { db.collection(COLLECTION_SEARCH) }
     fun departmentReference(departmentId: String, floor: Int): CollectionReference =
         campusReference.document(departmentId).collection(floor.toString())
 
