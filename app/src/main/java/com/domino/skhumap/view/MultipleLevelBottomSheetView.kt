@@ -11,7 +11,12 @@ class MultipleLevelBottomSheetView : LinearLayout {
     private val bottomSheetView by lazy { BottomSheetBehavior.from(this) }
     var level: State = State.COLLAPSED
     set(value) {
-        bottomSheetView.state = value.state
+        if(value == State.HIDDEN){
+            visibility = View.GONE
+        } else {
+            bottomSheetView.state = value.state
+            visibility = View.VISIBLE
+        }
         field = value
     }
 
@@ -20,7 +25,10 @@ class MultipleLevelBottomSheetView : LinearLayout {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int):super(context, attrs, defStyleAttr)
 
     enum class State(val state:Int) {
-        COLLAPSED(BottomSheetBehavior.STATE_COLLAPSED), EXPANDED(BottomSheetBehavior.STATE_EXPANDED), HALF_EXPANDED(BottomSheetBehavior.STATE_HALF_EXPANDED)
+        COLLAPSED(BottomSheetBehavior.STATE_COLLAPSED),
+        EXPANDED(BottomSheetBehavior.STATE_EXPANDED),
+        HALF_EXPANDED(BottomSheetBehavior.STATE_HALF_EXPANDED),
+        HIDDEN(BottomSheetBehavior.STATE_HIDDEN)
     }
 
     fun initView(){
