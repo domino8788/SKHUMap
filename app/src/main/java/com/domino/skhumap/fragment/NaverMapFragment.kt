@@ -1,20 +1,21 @@
 package com.domino.skhumap.fragment
 
 import android.graphics.Color
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.annotation.UiThread
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.Facility
 import com.domino.skhumap.R
 import com.domino.skhumap.model.FavoritesViewModel
+import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
+import com.domino.skhumap.model.SearchViewModel
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -25,7 +26,6 @@ import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.fragment_map.*
-import java.lang.Exception
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
@@ -35,6 +35,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private val defaultZoom = 18.5
     private val defaultCampusImageBearing = 67.5
     private lateinit var mapViewModel:MapViewModel
+    private lateinit var searchViewModel:SearchViewModel
 
     val resourceId: Int
         get() = resources.getIdentifier(
@@ -130,6 +131,15 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             wrapSelectorWheel = false
         }
+
+        searchViewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java].apply {
+            floating_search_view.run {
+                setOnQueryChangeListener { oldQuery, newQuery ->
+                    searchViewModel.queryText(newQuery)
+                }
+            }
+        }
+
         mapViewModel.selectedDepartment = null
     }
 
