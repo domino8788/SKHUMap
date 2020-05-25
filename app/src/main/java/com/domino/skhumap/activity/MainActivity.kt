@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
@@ -15,6 +16,7 @@ import com.domino.skhumap.contract.Code
 import com.domino.skhumap.db.FirestoreHelper
 import com.domino.skhumap.model.AuthViewModel
 import com.domino.skhumap.model.FavoritesViewModel
+import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import com.google.android.material.tabs.TabLayout
@@ -27,10 +29,19 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private lateinit var favoritesViewModel: FavoritesViewModel
     private lateinit var mapViewModel: MapViewModel
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        favoritesViewModel = ViewModelProvider(this)[FavoritesViewModel::class.java]
+        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java].apply {
+            bottomSheetStateLiveData.observe(this@MainActivity, Observer { state ->
+                main_bottom_sheet.level = state
+            })
+        }
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         FirestoreHelper.init(this)
         main_bottom_sheet.initView()
@@ -42,9 +53,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             it.addOnTabSelectedListener(this)
             initTab()
         }
-        favoritesViewModel = ViewModelProvider(this)[FavoritesViewModel::class.java]
-        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
     }
 
     private fun initTab(){
@@ -82,7 +90,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                 item_menu_title.setTextColor(resources.getColor(R.color.colorAccent))
             }
         }
-        main_bottom_sheet.level = MultipleLevelBottomSheetView.State.HALF_EXPANDED
+        mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HALF_EXPANDED)
     }
 
     override fun onBackPressed() {
