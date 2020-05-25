@@ -55,7 +55,7 @@ exports.allKeywordsGenerate =  functions.https.onRequest(async (req, res) => {
     const floorsPromise = []
     allFloors.forEach(floors => {
         floors.forEach(floor => {
-            floorsPromise.push(floor.get());
+            floorsPromise.push(floor.where("type","in",[0,1,2,3,4,5,14,15,16,17]).get());
         })
     })
 
