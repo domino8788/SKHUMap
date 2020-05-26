@@ -10,12 +10,14 @@ import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.arlib.floatingsearchview.FloatingSearchView
 import com.domino.skhumap.Facility
 import com.domino.skhumap.R
 import com.domino.skhumap.model.FavoritesViewModel
 import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
 import com.domino.skhumap.model.SearchViewModel
+import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -36,6 +38,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private val defaultCampusImageBearing = 67.5
     private lateinit var mapViewModel:MapViewModel
     private lateinit var searchViewModel:SearchViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     val resourceId: Int
         get() = resources.getIdentifier(
@@ -109,6 +112,8 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
             })
         }
 
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+
         naverMap.run {
             extent = LatLngBounds(
                 LatLng(37.486033, 126.823969),
@@ -137,6 +142,16 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                 setOnQueryChangeListener { oldQuery, newQuery ->
                     searchViewModel.queryText(newQuery)
                 }
+                setOnFocusChangeListener(object:FloatingSearchView.OnFocusChangeListener{
+                    override fun onFocusCleared() {
+                        mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HALF_EXPANDED)
+                    }
+
+                    override fun onFocus() {
+                        mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HIDDEN)
+                    }
+
+                })
             }
         }
 
