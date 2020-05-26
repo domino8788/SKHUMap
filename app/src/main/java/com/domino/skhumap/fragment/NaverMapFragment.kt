@@ -139,6 +139,9 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
 
         searchViewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java].apply {
             floating_search_view.run {
+                searchListMapLivdeData.observe(requireActivity(), Observer {
+                    swapSuggestions(it)
+                })
                 setOnQueryChangeListener { oldQuery, newQuery ->
                     searchViewModel.queryText(newQuery)
                 }
