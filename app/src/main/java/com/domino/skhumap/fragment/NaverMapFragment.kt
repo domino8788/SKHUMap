@@ -2,6 +2,7 @@ package com.domino.skhumap.fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -148,6 +149,18 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                 })
                 setOnQueryChangeListener { oldQuery, newQuery ->
                     searchViewModel.queryText(newQuery)
+                }
+                setOnBindSuggestionCallback { suggestionView, leftIcon, textView, item, itemPosition ->
+                    val colorSuggestion:Search  = item as Search
+
+                    val textColor = "#000000"
+                    val textLight ="#787878"
+
+                    textView.setTextColor(Color.parseColor(textColor))
+                    val text = "${colorSuggestion.idToLocationInfo} ${colorSuggestion.body
+                        .toUpperCase()
+                        .replaceFirst(query, "<font color=\"$textLight\">$query</font>")}"
+                    textView.text = Html.fromHtml(text)
                 }
                 setOnFocusChangeListener(object:FloatingSearchView.OnFocusChangeListener{
                     override fun onFocusCleared() {
