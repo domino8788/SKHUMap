@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.arlib.floatingsearchview.FloatingSearchView
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.domino.skhumap.Facility
 import com.domino.skhumap.R
 import com.domino.skhumap.model.FavoritesViewModel
@@ -154,6 +155,14 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HIDDEN)
                     }
 
+                })
+                setOnSearchListener(object:FloatingSearchView.OnSearchListener{
+                    override fun onSearchAction(currentQuery: String?) {
+                    }
+
+                    override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+                        clearSearchFocus()
+                    }
                 })
             }
         }
