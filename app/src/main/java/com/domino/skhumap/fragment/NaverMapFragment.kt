@@ -148,7 +148,8 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                     swapSuggestions(it)
                 })
                 setOnQueryChangeListener { oldQuery, newQuery ->
-                    searchViewModel.queryText(newQuery)
+                    if(newQuery != "")
+                        searchViewModel.queryText(newQuery)
                 }
                 setOnBindSuggestionCallback { suggestionView, leftIcon, textView, item, itemPosition ->
                     val colorSuggestion:Search  = item as Search
@@ -164,10 +165,12 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                 }
                 setOnFocusChangeListener(object:FloatingSearchView.OnFocusChangeListener{
                     override fun onFocusCleared() {
+                        clearQuery()
                         mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HALF_EXPANDED)
                     }
 
                     override fun onFocus() {
+                        clearQuery()
                         mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HIDDEN)
                     }
 
