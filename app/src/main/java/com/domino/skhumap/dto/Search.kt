@@ -42,6 +42,26 @@ data class Search(@DocumentId var id: String="", @PropertyName("keyword") var ke
         }
     }
 
+    val idToLocationInfo:String
+    get() = id.split("_").let{
+            if(it[0]!="null")
+                "${when(it[0]){
+                    "0"->"구두인관"
+                    "1"->"승연관"
+                    "2"->"일만관"
+                    "3"->"월당관"
+                    "5"->"나눔관"
+                    "6"->"이천환기념관"
+                    "7"->"새천년관"
+                    "8"->"중앙도서관"
+                    "9"->"성미가엘성당"
+                    "m"->"미가엘관"
+                    else->""
+                }} ${it[1]}층"
+            else
+                it[2]
+        }
+
     override fun getBody(): String = "${keyword!!.joinToString(" ","","")}"
 
     companion object CREATOR : Parcelable.Creator<Search> {
