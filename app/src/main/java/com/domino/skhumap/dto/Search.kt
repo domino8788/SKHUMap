@@ -9,6 +9,7 @@ import com.google.firebase.firestore.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import kotlin.math.absoluteValue
 
 @IgnoreExtraProperties
 data class Search(@DocumentId var id: String="", @PropertyName("keyword") var keyword:List<String>? = null):SearchSuggestion {
@@ -57,7 +58,7 @@ data class Search(@DocumentId var id: String="", @PropertyName("keyword") var ke
                     "9"->"성미가엘성당"
                     "m"->"미가엘관"
                     else->""
-                }} ${it[1]}층"
+                }} ${if(it[1].toInt() > 0) "F${it[1]}" else "B${it[1].toInt().absoluteValue}"}층"
             else
                 it[2]
         }
