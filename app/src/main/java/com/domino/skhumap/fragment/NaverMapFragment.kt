@@ -14,6 +14,7 @@ import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.domino.skhumap.Facility
 import com.domino.skhumap.R
+import com.domino.skhumap.dto.Search
 import com.domino.skhumap.model.FavoritesViewModel
 import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
@@ -161,7 +162,9 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                     }
 
                     override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+                        searchSuggestion as Search
                         clearSearchFocus()
+                        searchSuggestion.keyword?.find { it -> it.contains(query) }?.let { setSearchText(it) }
                     }
                 })
             }
