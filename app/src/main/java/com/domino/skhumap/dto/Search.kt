@@ -3,7 +3,12 @@ package com.domino.skhumap.dto
 import android.os.Parcel
 import android.os.Parcelable
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
+import com.domino.skhumap.Facility
+import com.domino.skhumap.db.FirestoreHelper
 import com.google.firebase.firestore.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 @IgnoreExtraProperties
 data class Search(@DocumentId var id: String="", @PropertyName("keyword") var keyword:List<String>? = null):SearchSuggestion {
@@ -20,6 +25,21 @@ data class Search(@DocumentId var id: String="", @PropertyName("keyword") var ke
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    suspend fun toSearchableFacility():SearchableFacility{
+        id.split("_").let { infoValues ->
+            val department: DocumentReference? = if(infoValues[0] != "null") FirestoreHelper.campusReference.document(infoValues[0]) else null
+            val floorNumber:Int = infoValues[1].toInt()
+            val facility: DocumentReference? =  department?.let { it.collection(infoValues[1]).document(infoValues[2]) }?: FirestoreHelper.campusReference.document(infoValues[2])
+            return withContext(Dispatchers.IO) {
+                SearchableFacility(
+                    department?.get()!!.await().toObject(Facility::class.java) ?: null,
+                    floorNumber,
+                    facility!!.get().await().toObject(Facility::class.java)!!
+                )
+            }
+        }
     }
 
     override fun getBody(): String = "${keyword!!.joinToString(" ","","")}"
