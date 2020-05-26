@@ -30,6 +30,8 @@ import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
@@ -165,6 +167,9 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         searchSuggestion as Search
                         clearSearchFocus()
                         searchSuggestion.keyword?.find { it -> it.contains(query) }?.let { setSearchText(it) }
+                        GlobalScope.launch {
+                            mapViewModel.markMapLivdeData.postValue(searchSuggestion.toSearchableFacility())
+                        }
                     }
                 })
             }
