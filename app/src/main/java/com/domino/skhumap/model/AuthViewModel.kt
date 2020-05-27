@@ -225,7 +225,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                         RetrofitHelper.getSchedule().create(RetrofitService::class.java)
                     view.evaluateJavascript("document.getElementsByTagName(\"body\")[0].attributes[\"ncg-request-verification-token\"].value") {
                         val call = networkService.getStudentSchedule(
-                            it, DateVO("2020", "Z0101",  "1학기"),
+                            it.replace("\"",""), DateVO("2020", "Z0101",  "1학기"),
                             cookieManager.getCookie(url)
                         )
                         call.enqueue(object : Callback<StudentScheduleVO> {
