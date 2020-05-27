@@ -4,10 +4,22 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
-import android.os.Handler
 import android.webkit.*
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.vo.DateVO
+import com.domino.skhumap.vo.StudentScheduleVO
 import com.google.firebase.auth.*
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.*
 import java.net.URLEncoder
 
 class AuthViewModel(val app: Application) : AndroidViewModel(app) {
@@ -48,6 +60,12 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         return WebClient(id, password, Action.LOGIN)
     }
 
+    fun queryStudentSchedule(): WebViewClient {
+        app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
+            return WebClient(getString("id", "")!!, getString("password", "")!!, Action.STUDENT_SCHEDULE)
+        }
+    }
+
     val isLogin:Boolean
     get() = user != null
 
@@ -76,6 +94,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun loginSuccess(id: String, password: String, name: String){
         setLoginInfo(id, password, name)
+        FirestoreHelper.userReference = FirestoreHelper.db.document("users/${id}")
         toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
         loadLoginInfo()
     }
@@ -138,12 +157,14 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
             }
     }
 
+
+
     private enum class Status {
-        FINISH, GET_COOKIE, SELECT_ACTION, LOGIN_SEQUENCE
+        FINISH, GET_COOKIE, SELECT_ACTION, LOGIN_SEQUENCE, GET_STUDENT_SCHEDULE_SEQUENCE
     }
 
     private enum class Action {
-        LOGIN
+        LOGIN, STUDENT_SCHEDULE
     }
 
     private inner class WebClient(private val id: String, private val password:String, private val action:Action) : WebViewClient() {
@@ -167,20 +188,23 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         override fun onPageFinished(view: WebView, url: String) {
             when (status) {
                 Status.GET_COOKIE -> {
-                    Handler().postDelayed({
-                        val url = "http://cas.skhu.ac.kr/SSO/AuthenticateLogin"
-                        val post =
-                            "ID=" + URLEncoder.encode(id, "UTF-8"
+                    val url = "http://cas.skhu.ac.kr/SSO/AuthenticateLogin"
+                    val post =
+                        "ID=" + URLEncoder.encode(
+                            id, "UTF-8"
                         ) + "&PW=" + URLEncoder.encode(password, "UTF-8")
-                        view.postUrl(url, post.toByteArray())
-                    }, 1000)
+                    view.postUrl(url, post.toByteArray())
                     status = Status.SELECT_ACTION
                 }
                 Status.SELECT_ACTION -> {
                     when (action) {
                         Action.LOGIN -> {
                             status = Status.LOGIN_SEQUENCE
-                            Handler().postDelayed({ view.loadUrl("http://sam.skhu.ac.kr") }, 1000)
+                            view.loadUrl("http://sam.skhu.ac.kr")
+                        }
+                        Action.STUDENT_SCHEDULE -> {
+                            status = Status.GET_STUDENT_SCHEDULE_SEQUENCE
+                            view.loadUrl("http://sam.skhu.ac.kr/SSE/SSEAD/SSEAD03")
                         }
                     }
                 }
@@ -196,7 +220,60 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                     }
                     status = Status.FINISH
                 }
+                Status.GET_STUDENT_SCHEDULE_SEQUENCE -> {
+                    val networkService =
+                        RetrofitHelper.getSchedule().create(RetrofitService::class.java)
+                    view.evaluateJavascript("document.getElementsByTagName(\"body\")[0].attributes[\"ncg-request-verification-token\"].value") {
+                        val call = networkService.getStudentSchedule(
+                            it, DateVO("2020", "Z0101",  "1학기"),
+                            cookieManager.getCookie(url)
+                        )
+                        call.enqueue(object : Callback<StudentScheduleVO> {
+                            override fun onFailure(
+                                call: Call<StudentScheduleVO>,
+                                t: Throwable
+                            ) {}
+
+                            override fun onResponse(
+                                call: Call<StudentScheduleVO>,
+                                response: Response<StudentScheduleVO>
+                            ) {
+                                response.body()
+                            }
+
+                        })
+                    }
+                    status = Status.FINISH
+                }
             }
         }
     }
+}
+
+private class RetrofitHelper {
+    companion object {
+        fun getSchedule(): Retrofit {
+            val gson = GsonBuilder().setLenient().create()
+            val httpClient = OkHttpClient.Builder().apply {
+                val interceptor = HttpLoggingInterceptor()
+                interceptor.level = HttpLoggingInterceptor.Level.BODY
+                interceptors().add(interceptor)
+            }.build()
+
+            return Retrofit.Builder()
+                .baseUrl("http://sam.skhu.ac.kr/SSE/SSEAD/")
+                .client(httpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+        }
+    }
+}
+
+interface RetrofitService {
+    @Headers(
+        "content-type: application/json;charset=UTF-8",
+        "X-Requested-With: XMLHttpRequest"
+    )
+    @POST("SSEAD03_GetList")
+    fun getStudentSchedule(@Header("RequestVerificationToken") token:String, @Body date:DateVO, @Header("Cookie")cookie:String): Call<StudentScheduleVO>
 }

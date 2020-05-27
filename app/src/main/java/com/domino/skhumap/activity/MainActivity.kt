@@ -53,6 +53,15 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             it.addOnTabSelectedListener(this)
             initTab()
         }
+        main_web_view.run {
+            settings.run {
+                javaScriptEnabled = true
+                setAppCacheEnabled(true)
+                domStorageEnabled = true
+            }
+            webViewClient = authViewModel.queryStudentSchedule()
+            main_web_view.loadUrl("http://sam.skhu.ac.kr")
+        }
     }
 
     private fun initTab(){
