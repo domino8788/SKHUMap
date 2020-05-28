@@ -1,4 +1,4 @@
-package com.domino.skhumap.db
+package com.domino.skhumap.repository
 
 import android.content.Context
 import com.domino.skhumap.Facility

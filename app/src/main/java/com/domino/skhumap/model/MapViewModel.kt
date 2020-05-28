@@ -3,7 +3,7 @@ package com.domino.skhumap.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.domino.skhumap.Facility
-import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.repository.FirestoreHelper
 import com.domino.skhumap.dto.SearchableFacility
 import com.google.firebase.firestore.CollectionReference
 import kotlin.math.abs

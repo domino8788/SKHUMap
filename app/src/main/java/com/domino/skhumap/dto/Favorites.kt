@@ -1,8 +1,8 @@
 package com.domino.skhumap.dto
 
 import com.domino.skhumap.Facility
-import com.domino.skhumap.db.FirestoreHelper.campusReference
-import com.domino.skhumap.db.FirestoreHelper.favoritesReference
+import com.domino.skhumap.repository.FirestoreHelper.campusReference
+import com.domino.skhumap.repository.FirestoreHelper.favoritesReference
 import com.google.firebase.firestore.*
 import java.io.Serializable
 

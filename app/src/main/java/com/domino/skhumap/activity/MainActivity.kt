@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
 import com.domino.skhumap.contract.Code
-import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.repository.FirestoreHelper
 import com.domino.skhumap.model.AuthViewModel
 import com.domino.skhumap.model.FavoritesViewModel
 import com.domino.skhumap.model.MainViewModel

@@ -2,8 +2,8 @@ package com.domino.skhumap.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.domino.skhumap.db.FirestoreHelper.db
-import com.domino.skhumap.db.FirestoreHelper.favoritesReference
+import com.domino.skhumap.repository.FirestoreHelper.db
+import com.domino.skhumap.repository.FirestoreHelper.favoritesReference
 import com.domino.skhumap.dto.Favorites
 import com.domino.skhumap.dto.SearchableFacility
 import com.google.firebase.firestore.DocumentReference

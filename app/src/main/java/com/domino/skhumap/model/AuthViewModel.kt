@@ -4,10 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
-import android.os.Handler
 import android.webkit.*
 import androidx.lifecycle.*
-import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.repository.FirestoreHelper
 import com.google.firebase.auth.*
 import java.net.URLEncoder
 

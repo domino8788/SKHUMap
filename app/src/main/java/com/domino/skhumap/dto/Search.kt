@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.domino.skhumap.Facility
-import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.repository.FirestoreHelper
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await

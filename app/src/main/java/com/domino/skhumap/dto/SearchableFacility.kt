@@ -3,7 +3,7 @@ package com.domino.skhumap.dto
 import android.os.Parcel
 import android.os.Parcelable
 import com.domino.skhumap.Facility
-import com.domino.skhumap.db.FirestoreHelper
+import com.domino.skhumap.repository.FirestoreHelper
 
 data class SearchableFacility(val department: Facility?, val floorNumber:Int=0, val facility:Facility):Parcelable {
     constructor(parcel: Parcel) : this(

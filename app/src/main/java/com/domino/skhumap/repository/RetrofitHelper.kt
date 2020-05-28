@@ -1,4 +1,4 @@
-package com.domino.skhumap.db
+package com.domino.skhumap.repository
 
 import com.domino.skhumap.vo.Haggi
 import com.domino.skhumap.vo.StudentSchedule

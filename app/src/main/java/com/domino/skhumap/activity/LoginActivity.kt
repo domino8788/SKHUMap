@@ -12,7 +12,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.domino.skhumap.db.FirestoreHelper
 import com.domino.skhumap.model.AuthViewModel
 import kotlinx.android.synthetic.main.dialog_reset_password.view.*
 
