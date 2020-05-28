@@ -169,20 +169,18 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         override fun onPageFinished(view: WebView, url: String) {
             when (status) {
                 Status.GET_COOKIE -> {
-                    Handler().postDelayed({
-                        val url = "http://cas.skhu.ac.kr/SSO/AuthenticateLogin"
-                        val post =
-                            "ID=" + URLEncoder.encode(id, "UTF-8"
-                        ) + "&PW=" + URLEncoder.encode(password, "UTF-8")
-                        view.postUrl(url, post.toByteArray())
-                    }, 1000)
+                    val url = "http://cas.skhu.ac.kr/SSO/AuthenticateLogin"
+                    val post =
+                        "ID=" + URLEncoder.encode(id, "UTF-8"
+                    ) + "&PW=" + URLEncoder.encode(password, "UTF-8")
+                    view.postUrl(url, post.toByteArray())
                     status = Status.SELECT_ACTION
                 }
                 Status.SELECT_ACTION -> {
                     when (action) {
                         Action.LOGIN -> {
                             status = Status.LOGIN_SEQUENCE
-                            Handler().postDelayed({ view.loadUrl("http://sam.skhu.ac.kr") }, 1000)
+                            view.loadUrl("http://sam.skhu.ac.kr")
                         }
                     }
                 }
