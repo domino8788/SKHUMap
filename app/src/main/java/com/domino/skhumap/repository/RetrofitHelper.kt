@@ -1,5 +1,6 @@
 package com.domino.skhumap.repository
 
+import com.domino.skhumap.vo.CurrentHaggi
 import com.domino.skhumap.vo.Haggi
 import com.domino.skhumap.vo.StudentSchedule
 import com.google.gson.GsonBuilder
@@ -38,4 +39,14 @@ interface RetrofitService {
         @Header("RequestVerificationToken") token: String,
         @Header("Cookie") cookie: String
     ): Call<StudentSchedule>
+
+    @Headers(
+        "content-type: application/json;charset=UTF-8",
+        "X-Requested-With: XMLHttpRequest"
+    )
+    @POST("/SSE/SSEAD/GetYyHaggi")
+    fun getYyHaggi(
+        @Header("RequestVerificationToken") token: String,
+        @Header("Cookie") cookie: String
+    ): Call<CurrentHaggi>
 }
