@@ -45,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, notice, Toast.LENGTH_SHORT).show()
             })
             nameLiveData.observe(this@LoginActivity, Observer {
-                FirestoreHelper.userReference = FirestoreHelper.db.document("users/${login_id.text.toString()}")
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
             })

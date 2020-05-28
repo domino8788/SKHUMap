@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Handler
 import android.webkit.*
 import androidx.lifecycle.*
+import com.domino.skhumap.db.FirestoreHelper
 import com.google.firebase.auth.*
 import java.net.URLEncoder
 
@@ -76,6 +77,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun loginSuccess(id: String, password: String, name: String){
         setLoginInfo(id, password, name)
+        FirestoreHelper.userReference = FirestoreHelper.db.document("users/${id}")
         toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
         loadLoginInfo()
     }
