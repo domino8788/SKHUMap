@@ -4,7 +4,10 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <WebView
+        android:id="@+id/main_web_view"
+        android:layout_width="1dp"
+        android:layout_height="1dp"/>
     <fragment
         android:id="@+id/main_map"
         android:name="com.domino.skhumap.fragment.NaverMapFragment"
@@ -42,6 +45,5 @@
             android:padding="@dimen/fragment_in_view_pager_padding"
             />
     </com.domino.skhumap.view.MultipleLevelBottomSheetView>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

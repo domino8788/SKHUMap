@@ -53,6 +53,13 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             it.addOnTabSelectedListener(this)
             initTab()
         }
+        main_web_view.run {
+            settings.run {
+                javaScriptEnabled = true
+                setAppCacheEnabled(true)
+                domStorageEnabled = true
+            }
+        }
     }
 
     private fun initTab(){
