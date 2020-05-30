@@ -15,6 +15,7 @@ import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.android.synthetic.main.calendar_day.view.*
+import kotlinx.android.synthetic.main.calendar_day_legend.view.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
@@ -87,6 +88,10 @@ class CalendarFragment : Fragment() {
                     dotView.makeInVisible()
                 }
             }
+        }
+        /* 헤더(요일) 컨테이터 클래스 */
+        class MonthViewContainer(view: View) : ViewContainer(view) {
+            val legendLayout = view.legendLayout
         }
     }
 }
