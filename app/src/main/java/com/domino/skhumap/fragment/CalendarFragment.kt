@@ -1,10 +1,13 @@
 package com.domino.skhumap.fragment
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,11 +18,14 @@ import com.domino.skhumap.utils.setTextColorRes
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
+import com.kizitonwose.calendarview.model.InDateStyle
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
-import kotlinx.android.synthetic.main.calendar_day.view.*
+import com.kizitonwose.calendarview.utils.next
+import com.kizitonwose.calendarview.utils.yearMonth
 import kotlinx.android.synthetic.main.calendar_day_legend.view.*
+import kotlinx.android.synthetic.main.calendar_day.view.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.YearMonth
@@ -120,6 +126,58 @@ class CalendarFragment : Fragment() {
                     }
                 }
             }
+        }
+        /* 월 모드와 주 모드 토글 버튼 리스너 */
+        btn_calendar_mode_toggle.setOnClickListener {
+            btn_calendar_mode_toggle.isEnabled = false
+            monthToWeek = !monthToWeek
+
+            val firstDate = calendar_view.findFirstVisibleDay()?.date ?: return@setOnClickListener
+            val lastDate = calendar_view.findLastVisibleDay()?.date ?: return@setOnClickListener
+            val currentVisibleMonth = calendar_view.findFirstVisibleMonth()?.yearMonth ?: return@setOnClickListener
+
+            val oneWeekHeight = calendar_view.dayHeight
+            val oneMonthHeight = oneWeekHeight * 6
+
+            val oldHeight = if (monthToWeek) oneMonthHeight else oneWeekHeight
+            val newHeight = if (monthToWeek) oneWeekHeight else oneMonthHeight
+
+            val animator = ValueAnimator.ofInt(oldHeight, newHeight)
+            animator.addUpdateListener { animator ->
+                calendar_view.layoutParams = calendar_view.layoutParams.apply {
+                    height = animator.animatedValue as Int
+                }
+            }
+            animator.doOnStart {
+                if (!monthToWeek) {
+                    calendar_view.inDateStyle = InDateStyle.ALL_MONTHS
+                    calendar_view.maxRowCount = 6
+                    calendar_view.hasBoundaries = true
+                    btn_calendar_mode_toggle.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_black_24dp)
+                }
+            }
+            animator.doOnEnd {
+                if (monthToWeek) {
+                    calendar_view.inDateStyle = InDateStyle.FIRST_MONTH
+                    calendar_view.maxRowCount = 1
+                    calendar_view.hasBoundaries = false
+                    btn_calendar_mode_toggle.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_black_24dp)
+                }
+
+                if (monthToWeek) {
+                    if (today.yearMonth ==  currentVisibleMonth)
+                        calendar_view.scrollToDate(today)
+                    else
+                        calendar_view.scrollToDate(firstDate)
+                } else {
+                    if (firstDate.yearMonth == lastDate.yearMonth)
+                        calendar_view.scrollToMonth(firstDate.yearMonth)
+                    else
+                        calendar_view.scrollToMonth(minOf(firstDate.yearMonth.next, endMonth))
+                }
+            }
+            animator.duration = 250
+            animator.start()
         }
     }
 }
