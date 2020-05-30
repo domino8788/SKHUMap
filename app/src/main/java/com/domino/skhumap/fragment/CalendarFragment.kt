@@ -19,6 +19,9 @@ import androidx.core.animation.doOnStart
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.arlib.floatingsearchview.util.Util.dpToPx
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.EventListAdapter
@@ -261,6 +264,10 @@ class CalendarFragment : Fragment() {
             }
             animator.duration = 250
             animator.start()
+        }
+        /* 이벤트 추가 버튼 리스너 */
+        btn_add_event.setOnClickListener {
+            inputDialog.show()
         }
     }
     /* 이벤트 저장 */
