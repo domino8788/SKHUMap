@@ -211,6 +211,17 @@ class CalendarFragment : Fragment() {
             animator.start()
         }
     }
+    /* 이벤트 저장 */
+    private fun saveEvent(text: String) {
+        if (text.isBlank()) {
+            Toast.makeText(requireContext(), R.string.empty_input_text, Toast.LENGTH_LONG).show()
+        } else {
+            selectedDate?.let {
+                events[it] = events[it].orEmpty().plus(Event(UUID.randomUUID().toString(), text, it))
+                updateAdapterForDate(it)
+            }
+        }
+    }
     /* 캘린더 날짜 클릭 함수 */
     private fun selectDate(date: LocalDate) {
         if (selectedDate != date) {
