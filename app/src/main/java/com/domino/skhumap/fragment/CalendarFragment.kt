@@ -1,17 +1,27 @@
 package com.domino.skhumap.fragment
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.arlib.floatingsearchview.util.Util.dpToPx
 import com.domino.skhumap.R
+import com.domino.skhumap.adapter.EventListAdapter
 import com.domino.skhumap.dto.Event
 import com.domino.skhumap.utils.*
 import com.domino.skhumap.utils.setTextColorRes
@@ -30,9 +40,51 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.YearMonth
 import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 
 class CalendarFragment : Fragment() {
+    private val Context.inputMethodManager get() = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     private val events = mutableMapOf<LocalDate, List<Event>>()
+    private val eventsAdapter = EventListAdapter {
+        AlertDialog.Builder(requireContext())
+            .setMessage(R.string.dialog_event_delete_confirmation)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                deleteEvent(it)
+            }
+            .setNegativeButton(R.string.close, null)
+            .show()
+    }
+    private val inputDialog by lazy {
+        val editText = AppCompatEditText(requireContext())
+        val layout = FrameLayout(requireContext()).apply {
+            // Setting the padding on the EditText only pads the input area
+            // not the entire EditText so we wrap it in a FrameLayout.
+            val padding = dpToPx(20)
+            setPadding(padding, padding, padding, padding)
+            addView(editText, FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+        }
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.dialog_event_input_title))
+            .setView(layout)
+            .setPositiveButton(R.string.save) { _, _ ->
+                saveEvent(editText.text.toString())
+                // Prepare EditText for reuse.
+                editText.setText("")
+            }
+            .setNegativeButton(R.string.close, null)
+            .create()
+            .apply {
+                setOnShowListener {
+                    // Show the keyboard
+                    editText.requestFocus()
+                    context.inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                }
+                setOnDismissListener {
+                    // Hide the keyboard
+                    context.inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                }
+            }
+    }
 
     private var selectedDate: LocalDate? = null
     private val today = LocalDate.now()
