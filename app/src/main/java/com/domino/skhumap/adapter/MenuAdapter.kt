@@ -3,6 +3,7 @@ package com.domino.skhumap.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.domino.skhumap.fragment.CalendarFragment
 import com.domino.skhumap.fragment.FacilityFragment
 import com.domino.skhumap.fragment.MyPageFragment
 
@@ -11,7 +12,7 @@ class MenuAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm,
 
     init {
         fragments.add(FacilityFragment())
-        fragments.add(Fragment())
+        fragments.add(CalendarFragment())
         fragments.add(MyPageFragment())
     }
 
