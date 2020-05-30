@@ -4,14 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.domino.skhumap.R
+import com.domino.skhumap.dto.Event
+import com.domino.skhumap.utils.*
+import com.domino.skhumap.utils.setTextColorRes
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
+import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.android.synthetic.main.calendar_day.view.*
+import kotlinx.android.synthetic.main.fragment_calendar.*
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
+    private val events = mutableMapOf<LocalDate, List<Event>>()
+
+    private var selectedDate: LocalDate? = null
+    private val today = LocalDate.now()
+
+    private val selectionFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
+    private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
+    private var monthToWeek:Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
@@ -29,6 +45,46 @@ class CalendarFragment : Fragment() {
                     if (day.owner == DayOwner.THIS_MONTH) {
                         selectDate(day.date)
                     }
+                }
+            }
+        }
+        /* 캘린더 날짜 바인딩 */
+        calendar_view.dayBinder = object : DayBinder<DayViewContainer> {
+            override fun create(view: View) = DayViewContainer(view)
+            override fun bind(container: DayViewContainer, day: CalendarDay) {
+                container.day = day
+                val textView = container.textView
+                val dotView = container.dotView
+
+                textView.text = day.date.dayOfMonth.toString()
+
+                if (day.owner == DayOwner.THIS_MONTH) {
+                    textView.makeVisible()
+                    when (day.date) {
+                        today -> {
+                            textView.setTextColorRes(R.color.calendar_white)
+                            textView.setBackgroundResource(R.drawable.bg_calendar_today)
+                            dotView.makeInVisible()
+                        }
+                        selectedDate -> {
+                            textView.setTextColorRes(R.color.calendar_blue)
+                            textView.setBackgroundResource(R.drawable.bg_calendar_selected)
+                            dotView.makeInVisible()
+                        }
+                        else -> {
+                            textView.setTextColorRes(
+                                when(day.date.dayOfWeek.value){
+                                    6 -> R.color.calendar_saturday
+                                    7 -> R.color.calendar_sunday
+                                    else->R.color.calendar_black
+                                })
+                            textView.background = null
+                            dotView.isVisible = events[day.date].orEmpty().isNotEmpty()
+                        }
+                    }
+                } else {
+                    textView.makeInVisible()
+                    dotView.makeInVisible()
                 }
             }
         }
