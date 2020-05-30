@@ -106,6 +106,37 @@ class CalendarFragment : Fragment() {
                 }
             }
         }
+        /* 캘린더 스크롤에 따른 월 변경 바인딩 */
+        calendar_view.monthScrollListener = {
+            if (calendar_view.maxRowCount == 6) {
+                txt_one_year.text = it.yearMonth.year.toString()
+                txt_one_month.text = monthTitleFormatter.format(it.yearMonth)
+                if(today.yearMonth.toString() == it.yearMonth.toString())
+                    selectDate(today)
+                else
+                    selectDate(it.yearMonth.atDay(1))
+            } else {
+                val firstDate = it.weekDays.first().first().date
+                val lastDate = it.weekDays.last().last().date
+                if (firstDate.yearMonth == lastDate.yearMonth) {
+                    txt_one_year.text = firstDate.yearMonth.year.toString()
+                    txt_one_month.text = monthTitleFormatter.format(firstDate)
+                } else {
+                    txt_one_month.text =
+                        "${monthTitleFormatter.format(firstDate)} - ${monthTitleFormatter.format(lastDate)}"
+                    if (firstDate.year == lastDate.year) {
+                        txt_one_year.text = firstDate.yearMonth.year.toString()
+                    } else {
+                        txt_one_year.text = "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
+                    }
+                }
+                if(firstDate<=today && lastDate>=today)
+                    selectDate(today)
+                else
+                    selectDate(firstDate)
+            }
+            btn_calendar_mode_toggle.isEnabled = true
+        }
         /* 헤더(요일) 컨테이터 클래스 */
         class MonthViewContainer(view: View) : ViewContainer(view) {
             val legendLayout = view.legendLayout
