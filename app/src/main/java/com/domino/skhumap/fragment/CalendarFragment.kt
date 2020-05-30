@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.domino.skhumap.R
@@ -11,13 +13,16 @@ import com.domino.skhumap.dto.Event
 import com.domino.skhumap.utils.*
 import com.domino.skhumap.utils.setTextColorRes
 import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
+import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.android.synthetic.main.calendar_day.view.*
 import kotlinx.android.synthetic.main.calendar_day_legend.view.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.threeten.bp.LocalDate
+import org.threeten.bp.YearMonth
 import org.threeten.bp.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
@@ -36,6 +41,12 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val daysOfWeek = daysOfWeekFromLocale()
+        val currentMonth = YearMonth.now()
+        val startMonth = currentMonth.minusMonths(1)
+        val endMonth = currentMonth.plusMonths(10)
+
         /* 날짜 컨테이터 클래스 */
         class DayViewContainer(view: View) : ViewContainer(view) {
             lateinit var day: CalendarDay // Will be set when this container is bound.
@@ -92,6 +103,23 @@ class CalendarFragment : Fragment() {
         /* 헤더(요일) 컨테이터 클래스 */
         class MonthViewContainer(view: View) : ViewContainer(view) {
             val legendLayout = view.legendLayout
+        }
+        /* 캘린더 헤더 바인딩 */
+        calendar_view.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer> {
+            override fun create(view: View) = MonthViewContainer(view)
+            override fun bind(container: MonthViewContainer, month: CalendarMonth) {
+                if (container.legendLayout.tag == null) {
+                    container.legendLayout.tag = month.yearMonth
+                    container.legendLayout.children.map { it as TextView }.forEachIndexed { index, tv ->
+                        tv.text = daysOfWeek[index].name.first().toString()
+                        tv.setTextColorRes(when(index){
+                            0 -> R.color.calendar_sunday
+                            6 -> R.color.calendar_saturday
+                            else -> R.color.calendar_black
+                        })
+                    }
+                }
+            }
         }
     }
 }
