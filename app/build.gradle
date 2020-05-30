@@ -3,6 +3,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
+group='com.github.kizitonwose'
+def artifact = 'CalendarView'
+
 android {
     compileSdkVersion 29
 
@@ -22,7 +25,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += ['-module-name', "$group.$artifact"]
+    }
 }
 
 dependencies {
@@ -50,4 +60,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.7.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+    implementation 'com.github.kizitonwose:CalendarView:0.3.4'
 }
