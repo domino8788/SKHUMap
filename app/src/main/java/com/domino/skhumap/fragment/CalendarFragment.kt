@@ -108,6 +108,21 @@ class CalendarFragment : Fragment() {
         val startMonth = currentMonth.minusMonths(1)
         val endMonth = currentMonth.plusMonths(10)
 
+        /* week mode로 초기화 */
+        calendar_view.run {
+            setup(startMonth, endMonth, daysOfWeek.first())
+            inDateStyle = InDateStyle.FIRST_MONTH
+            maxRowCount = 1
+            hasBoundaries = false
+            scrollToDate(today)
+        }
+
+        if (savedInstanceState == null) {
+            calendar_view.post {
+                // Show today's events initially.
+                selectDate(today)
+            }
+        }
         /* 날짜 컨테이터 클래스 */
         class DayViewContainer(view: View) : ViewContainer(view) {
             lateinit var day: CalendarDay // Will be set when this container is bound.
