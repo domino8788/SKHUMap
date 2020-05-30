@@ -180,4 +180,15 @@ class CalendarFragment : Fragment() {
             animator.start()
         }
     }
+    /* 캘린더 날짜 클릭 함수 */
+    private fun selectDate(date: LocalDate) {
+        if (selectedDate != date) {
+            val oldDate = selectedDate
+            selectedDate = date
+            calendar_view.post {
+                oldDate?.let { calendar_view.notifyDateChanged(it) }
+                calendar_view.notifyDateChanged(date)
+            }
+        }
+    }
 }
