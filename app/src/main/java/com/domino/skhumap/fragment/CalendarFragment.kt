@@ -222,6 +222,12 @@ class CalendarFragment : Fragment() {
             }
         }
     }
+    /* 이벤트 삭제 */
+    private fun deleteEvent(event: Event) {
+        val date = event.date
+        events[date] = events[date].orEmpty().minus(event)
+        updateAdapterForDate(date)
+    }
     /* 어댑터 업데이트 */
     private fun updateAdapterForDate(date: LocalDate) {
         eventsAdapter.events.clear()
