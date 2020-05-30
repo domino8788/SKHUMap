@@ -20,6 +20,7 @@ import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import com.google.android.material.tabs.TabLayout
+import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_menu_tab.view.*
 
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        AndroidThreeTen.init(this)
         favoritesViewModel = ViewModelProvider(this)[FavoritesViewModel::class.java]
         mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
