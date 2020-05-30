@@ -7,4 +7,15 @@
     </string-array>
     <string name="studentNumber">학번</string>
     <string name="password">비밀번호</string>
+
+   <string name="save">Save</string>
+    <string name="close">Close</string>
+    <string name="dialog_event_input_title">일정 정보를 입력하세요.</string>
+    <string name="empty_input_text">입력 값이 비어있습니다.</string>
+    <string name="dialog_event_delete_confirmation">일정을 삭제하시겠습니까?</string>
+    <string name="delete">Delete</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="clear">Clear</string>
+    <string name="week_mode">Week mode</string>
 </resources>
