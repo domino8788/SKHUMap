@@ -220,6 +220,7 @@ class CalendarFragment : Fragment() {
                 oldDate?.let { calendar_view.notifyDateChanged(it) }
                 calendar_view.notifyDateChanged(date)
             }
+            updateAdapterForDate(date)
         }
     }
     /* 이벤트 삭제 */
