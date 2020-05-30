@@ -103,6 +103,10 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        list_event.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        list_event.adapter = eventsAdapter
+        list_event.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+
         val daysOfWeek = daysOfWeekFromLocale()
         val currentMonth = YearMonth.now()
         val startMonth = currentMonth.minusMonths(1)
