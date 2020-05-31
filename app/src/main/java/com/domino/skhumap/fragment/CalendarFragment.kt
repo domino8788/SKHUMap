@@ -19,13 +19,17 @@ import androidx.core.animation.doOnStart
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arlib.floatingsearchview.util.Util.dpToPx
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.EventListAdapter
-import com.domino.skhumap.dto.Event
+import com.domino.skhumap.dto.Schedule
+import com.domino.skhumap.model.CalendarViewModel
+import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.utils.*
 import com.domino.skhumap.utils.setTextColorRes
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -49,6 +53,8 @@ class CalendarFragment : Fragment() {
     private val Context.inputMethodManager get() = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     private val events = hashMapOf<LocalDate, List<Schedule>>()
     private val weekEvents = hashMapOf<Int, List<Schedule>>()
+    private lateinit var calendarViewModel:CalendarViewModel
+    private lateinit var mainViewModel:MainViewModel
     private val eventsAdapter = EventListAdapter {
         AlertDialog.Builder(requireContext())
             .setMessage(R.string.dialog_event_delete_confirmation)
@@ -103,7 +109,16 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        calendarViewModel = ViewModelProvider(requireActivity())[CalendarViewModel::class.java].apply {
+            eventsLiveData.observe(requireActivity(), Observer { eventPair ->
+                events.putAll(eventPair.first)
+                weekEvents.putAll(eventPair.second)
+                calendar_view.notifyCalendarChanged()
+                updateAdapterForDate(today)
+            })
+            mainViewModel.requestHttp(this.loadSchedule())
+        }
         list_event.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         list_event.adapter = eventsAdapter
         list_event.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
