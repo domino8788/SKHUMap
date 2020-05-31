@@ -21,7 +21,15 @@ import java.util.*
 
 fun LocalDate.toTimestamp(): Timestamp = Timestamp(Date(this.year,this.monthValue,this.dayOfMonth))
 fun Timestamp.toLocalDate(): LocalDate = Instant.ofEpochMilli(toDate().time).atZone(ZoneId.systemDefault()).toLocalDate()
-
+fun String.yoilToNumber():Int = when(this){
+    "월" -> 1
+    "화" -> 2
+    "수" -> 3
+    "목" -> 4
+    "금" -> 5
+    "토" -> 6
+    else -> 7
+}
 fun View.makeVisible() {
     visibility = View.VISIBLE
 }
