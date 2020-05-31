@@ -13,11 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
 import com.domino.skhumap.contract.Code
+import com.domino.skhumap.model.*
 import com.domino.skhumap.repository.FirestoreHelper
-import com.domino.skhumap.model.AuthViewModel
-import com.domino.skhumap.model.FavoritesViewModel
-import com.domino.skhumap.model.MainViewModel
-import com.domino.skhumap.model.MapViewModel
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import com.google.android.material.tabs.TabLayout
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -31,6 +28,8 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private lateinit var mapViewModel: MapViewModel
     private lateinit var authViewModel: AuthViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var calendarViewModel:CalendarViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +41,18 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java].apply {
             bottomSheetStateLiveData.observe(this@MainActivity, Observer { state ->
                 main_bottom_sheet.level = state
+            })
+            webClientLiveData.observe(this@MainActivity, Observer { webClient->
+                main_web_view.webViewClient = webClient
+                main_web_view.loadUrl("http://sam.skhu.ac.kr")
+            })
+            toastLiveData.observe(this@MainActivity, Observer { message ->
+                Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+            })
+        }
+        calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java].apply {
+            toastLiveData.observe(this@MainActivity, Observer { message ->
+                Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
             })
         }
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
