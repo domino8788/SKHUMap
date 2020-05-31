@@ -37,13 +37,20 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
     val toastLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     var currentHaggi:Haggi? = null
 
-    fun loadStudentSchedule():WebViewClient =app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
+    fun loadSchedule():WebViewClient =app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
             return WebClient(getString("id", "")!!, getString("password", "")!!, Action.GET_STUDENT_SCHEDULE)
         }
 
-    fun setLectureList(list:MutableList<Lecture>) {
+    suspend fun setSchedule(list:MutableList<Lecture>) {
         lectureList = list
-        studentScheduleLiveData.postValue(lectureList)
+        list.forEach { lecture ->
+            weekEventMap[lecture.yoilNm.yoilToNumber()]!!.add(lecture.toSchedule)
+        }
+        queryScheduleList()
+    }
+
+    fun queryScheduleList() {
+        eventsLiveData.postValue(eventMap to weekEventMap)
     }
 
     enum class Status {
