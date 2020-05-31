@@ -17,6 +17,7 @@ object FirestoreHelper {
     val campusReference by lazy { db.collection(COLLECTION_FACILITIES) }
     val favoritesReference by lazy { userReference.collection("favorites") }
     val searchReference by lazy { db.collection(COLLECTION_SEARCH) }
+    val calendarReference by lazy { userReference.collection("calendar") }
     fun departmentReference(departmentId: String, floor: Int): CollectionReference =
         campusReference.document(departmentId).collection(floor.toString())
 
