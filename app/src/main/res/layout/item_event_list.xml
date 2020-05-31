@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
+    android:orientation="vertical"
     android:background="?attr/selectableItemBackground"
     xmlns:tools="http://schemas.android.com/tools">
 
 
     <TextView
-        android:id="@+id/txt_event"
+        android:id="@+id/txt_event_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        tools:text="Play football with friends" />
+        tools:text="소프트웨어 캡스톤 디자인" />
+    <TextView
+        android:id="@+id/txt_event_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        tools:text="글로컬 IT 실습실" />
+    <TextView
+        android:id="@+id/txt_event_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        tools:text="12:00 ~ 14:00" />
 
-</FrameLayout>
+
+</LinearLayout>
