@@ -47,7 +47,8 @@ import java.util.*
 
 class CalendarFragment : Fragment() {
     private val Context.inputMethodManager get() = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    private val events = mutableMapOf<LocalDate, List<Event>>()
+    private val events = hashMapOf<LocalDate, List<Schedule>>()
+    private val weekEvents = hashMapOf<Int, List<Schedule>>()
     private val eventsAdapter = EventListAdapter {
         AlertDialog.Builder(requireContext())
             .setMessage(R.string.dialog_event_delete_confirmation)
