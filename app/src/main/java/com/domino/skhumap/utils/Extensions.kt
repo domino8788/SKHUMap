@@ -11,10 +11,13 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
+import com.google.firebase.Timestamp
 import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalDate
 import org.threeten.bp.temporal.WeekFields
 import java.util.*
 
+fun LocalDate.toTimestamp(): Timestamp = Timestamp(Date(this.year,this.monthValue,this.dayOfMonth))
 
 fun View.makeVisible() {
     visibility = View.VISIBLE
