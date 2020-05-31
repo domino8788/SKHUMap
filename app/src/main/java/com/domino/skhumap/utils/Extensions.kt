@@ -30,6 +30,15 @@ fun String.yoilToNumber():Int = when(this){
     "토" -> 6
     else -> 7
 }
+fun Int.toDayOfWeek() = when(this){
+    1 -> "월"
+    2 -> "화"
+    3 -> "수"
+    4 -> "목"
+    5 -> "금"
+    6 -> "토"
+    else-> "일"
+}
 fun View.makeVisible() {
     visibility = View.VISIBLE
 }
