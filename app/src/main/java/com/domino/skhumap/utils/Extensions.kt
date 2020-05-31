@@ -13,11 +13,14 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import com.google.firebase.Timestamp
 import org.threeten.bp.DayOfWeek
+import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
+import org.threeten.bp.ZoneId
 import org.threeten.bp.temporal.WeekFields
 import java.util.*
 
 fun LocalDate.toTimestamp(): Timestamp = Timestamp(Date(this.year,this.monthValue,this.dayOfMonth))
+fun Timestamp.toLocalDate(): LocalDate = Instant.ofEpochMilli(toDate().time).atZone(ZoneId.systemDefault()).toLocalDate()
 
 fun View.makeVisible() {
     visibility = View.VISIBLE
