@@ -1,6 +1,9 @@
 package com.domino.skhumap.vo
 
+import com.domino.skhumap.dto.Schedule
+import com.google.firebase.Timestamp
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class Lecture (
     @SerializedName("Yy")
@@ -52,4 +55,31 @@ data class Lecture (
 
     @SerializedName("RoomName")
     val roomName: String
-)
+){
+     val toSchedule:Schedule
+    get() {
+        val calendar = Calendar.getInstance()
+        var startDate:Timestamp? = null
+        var endDate:Timestamp? = null
+        when(haggi){
+            "Z0101" -> {
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR), 3, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR), 6, 30))
+            }
+            "Z0102" -> {
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR), 9, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR), 12, 31))
+            }
+            "Z0103" -> {
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR), 7, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR), 7, 14))
+            }
+            "Z0104" -> {
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)+1, 1, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)+1, 1, 15))
+            }
+        }
+        return Schedule(1, gwamogKorNm, "$gyosuNm\n$roomName", mutableListOf(yoilNm),
+            startDate, endDate, true, adjustFrTm, adjustToTm, frTm, toTm)
+    }
+}
