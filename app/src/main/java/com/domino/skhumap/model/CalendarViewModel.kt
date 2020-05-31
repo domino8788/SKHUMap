@@ -6,8 +6,10 @@ import android.webkit.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.domino.skhumap.dto.Schedule
+import com.domino.skhumap.repository.FirestoreHelper
 import com.domino.skhumap.repository.RetrofitHelper
 import com.domino.skhumap.repository.RetrofitService
+import com.domino.skhumap.utils.toLocalDate
 import com.domino.skhumap.vo.Haggi
 import com.domino.skhumap.vo.Lecture
 import kotlinx.coroutines.GlobalScope
@@ -17,10 +19,21 @@ import java.net.URLEncoder
 import kotlin.Exception
 
 class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
-    private lateinit var lectureList: MutableList<Lecture>
-    private lateinit var scheduleList: MutableList<Schedule>
-    val studentScheduleLiveData: MutableLiveData<List<Lecture>> by lazy { MutableLiveData<List<Lecture>>() }
-    val personalScheduleLiveData: MutableLiveData<List<Schedule>> by lazy { MutableLiveData<List<Schedule>>() }
+    lateinit var lectureList: MutableList<Lecture>
+    lateinit var scheduleList: MutableList<Schedule>
+    var eventMap: HashMap<LocalDate, MutableList<Schedule>> = hashMapOf()
+    var weekEventMap: HashMap<Int, MutableList<Schedule>> = hashMapOf(
+        1 to mutableListOf(),
+        2 to mutableListOf(),
+        3 to mutableListOf(),
+        4 to mutableListOf(),
+        5 to mutableListOf(),
+        6 to mutableListOf(),
+        7 to mutableListOf()
+    )
+
+    val eventsLiveData: MutableLiveData<Pair<HashMap<LocalDate, MutableList<Schedule>>, HashMap<Int, MutableList<Schedule>>>> by lazy { MutableLiveData<Pair<HashMap<LocalDate, MutableList<Schedule>>, HashMap<Int, MutableList<Schedule>>>>() }
+
     val toastLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     var currentHaggi:Haggi? = null
 
