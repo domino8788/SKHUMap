@@ -10,10 +10,13 @@ import com.domino.skhumap.repository.FirestoreHelper
 import com.domino.skhumap.repository.RetrofitHelper
 import com.domino.skhumap.repository.RetrofitService
 import com.domino.skhumap.utils.toLocalDate
+import com.domino.skhumap.utils.yoilToNumber
 import com.domino.skhumap.vo.Haggi
 import com.domino.skhumap.vo.Lecture
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import org.threeten.bp.LocalDate
 import java.io.InvalidObjectException
 import java.net.URLEncoder
 import kotlin.Exception
@@ -49,8 +52,32 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
         queryScheduleList()
     }
 
-    fun queryScheduleList() {
-        eventsLiveData.postValue(eventMap to weekEventMap)
+    suspend fun queryScheduleList() {
+        GlobalScope.launch {
+            scheduleList = FirestoreHelper.calendarReference.orderBy("startDate").get().await().toObjects(Schedule::class.java)
+            scheduleList.forEach {schedule ->
+                /* 개인 일정일 때 */
+                if(schedule.type.toInt() == 0) {
+                    /* 매주 진행하는 일정일 때 */
+                    if(schedule.everyWeek) {
+                        schedule.yoil!!.forEach { yoil -> weekEventMap[yoil.yoilToNumber()]!!.add(schedule) }
+                    }
+                    /* 당일만 진행하는 일정일 때때*/
+                    else {
+                        eventMap[schedule.startDate!!.toLocalDate()]?.add(schedule)?:let { eventMap[schedule.startDate!!.toLocalDate()] = mutableListOf(schedule) }
+                    }
+                }
+                /* 시간표 수정일 때 */
+                else {
+                    schedule.yoil!!.forEach { yoil ->
+                        weekEventMap[yoil.yoilToNumber()]!!.run {
+                            set(indexOfFirst { beforeSchedule: Schedule -> beforeSchedule.name == schedule.name && beforeSchedule.adjustFrTm == beforeSchedule.adjustFrTm} , schedule)
+                        }
+                    }
+                }
+            }
+            eventsLiveData.postValue(eventMap to weekEventMap)
+        }
     }
 
     enum class Status {
