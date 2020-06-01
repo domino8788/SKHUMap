@@ -527,8 +527,8 @@ class CalendarFragment : Fragment() {
     /* 어댑터 업데이트 */
     private fun updateAdapterForDate(date: LocalDate) {
         eventsAdapter.events.clear()
-        eventsAdapter.events.addAll(events[date].orEmpty())
-        eventsAdapter.events.addAll(weekEvents[date.dayOfWeek.value].orEmpty())
+        eventsAdapter.events.addAll(events[date].orEmpty().sortedBy { schedule -> schedule.frTm })
+        eventsAdapter.events.addAll(weekEvents[date.dayOfWeek.value].orEmpty().sortedBy { schedule -> schedule.frTm })
         eventsAdapter.notifyDataSetChanged()
         txt_selected_date.text = selectionFormatter.format(date)
     }
