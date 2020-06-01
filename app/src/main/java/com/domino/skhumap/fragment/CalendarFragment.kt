@@ -50,8 +50,8 @@ import org.threeten.bp.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
     private val Context.inputMethodManager get() = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    private val events = hashMapOf<LocalDate, List<Schedule>>()
-    private val weekEvents = hashMapOf<Int, List<Schedule>>()
+    private val events = hashMapOf<LocalDate, MutableList<Schedule>>()
+    private val weekEvents = hashMapOf<Int, MutableList<Schedule>>()
     private lateinit var calendarViewModel:CalendarViewModel
     private lateinit var mainViewModel:MainViewModel
     private val eventsAdapter = EventListAdapter {
