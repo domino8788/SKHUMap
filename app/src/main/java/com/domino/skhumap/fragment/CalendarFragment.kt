@@ -227,7 +227,6 @@ class CalendarFragment : Fragment() {
                 show()
                 getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
                     dialog.run {
-                        val yoil = mutableListOf<String>()
                         if (txt_title.text.trim().isBlank())
                             mainViewModel.toastLiveData.postValue("일정 제목을 입력하세요.")
                         else if (startHourOfDay == null || startMinute == null || endHourOfDay == null || endMinute == null)
