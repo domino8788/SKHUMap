@@ -186,7 +186,7 @@ class CalendarFragment : Fragment() {
                                     else->R.color.calendar_black
                                 })
                             textView.background = null
-                            dotView.isVisible = events[day.date].orEmpty().isNotEmpty()
+                            dotView.isVisible = (events[day.date].orEmpty().isNotEmpty() || weekEvents[day.date.dayOfWeek.value].orEmpty().isNotEmpty())
                         }
                     }
                 } else {
