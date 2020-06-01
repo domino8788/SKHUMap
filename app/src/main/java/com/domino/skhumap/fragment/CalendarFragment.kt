@@ -55,13 +55,7 @@ class CalendarFragment : Fragment() {
     private lateinit var calendarViewModel:CalendarViewModel
     private lateinit var mainViewModel:MainViewModel
     private val eventsAdapter = EventListAdapter {
-        AlertDialog.Builder(requireContext())
-            .setMessage(R.string.dialog_event_delete_confirmation)
-            .setPositiveButton(R.string.delete) { _, _ ->
-                deleteEvent(it)
-            }
-            .setNegativeButton(R.string.close, null)
-            .show()
+        getInputDialog(it)
     }
 
     fun termToString(startHourOfDay:Int, startMinute:Int, endHourOfDay:Int, endMinute: Int) =
