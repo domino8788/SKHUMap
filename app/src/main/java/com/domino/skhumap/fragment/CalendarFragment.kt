@@ -169,7 +169,7 @@ class CalendarFragment : Fragment() {
                     endHourOfDay = it[0].toInt()
                     endMinute = it[1].toInt()
                 }
-                txt_time.text=termToString(startHourOfDay!!, startMinute!!, endHourOfDay!!, endMinute!!)
+                txt_time.text="시간 : ${termToString(startHourOfDay!!, startMinute!!, endHourOfDay!!, endMinute!!)}"
                 schedule.everyWeek.let { everyWeek->
                     check_every_week.isChecked = everyWeek
                     if(everyWeek) {
