@@ -163,6 +163,38 @@ class CalendarFragment : Fragment() {
                 else
                     yoilList.remove("일")
             }
+
+            schedule?.let {
+                edit_title.setText(schedule.name)
+                edit_event_info.setText(schedule.info)
+                schedule.frTm.split(":").let {
+                    startHourOfDay = it[0].toInt()
+                    startMinute = it[1].toInt()
+                }
+                schedule.toTm.split(":").let {
+                    endHourOfDay = it[0].toInt()
+                    endMinute = it[1].toInt()
+                }
+                txt_time.text=termToString(startHourOfDay!!, startMinute!!, endHourOfDay!!, endMinute!!)
+                schedule.everyWeek.let { everyWeek->
+                    check_every_week.isChecked = everyWeek
+                    if(everyWeek) {
+                        endDate = schedule.endDate?.toLocalDate()
+                        txt_date.text = "${schedule.startDate!!.toLocalDate()}~${endDate.toString()}"
+                    }
+                    schedule.yoil?.forEach {yoil ->
+                        when(yoil){
+                            "월" -> check_monday.isChecked = true
+                            "화" -> check_tuesday.isChecked = true
+                            "수" -> check_wednesday.isChecked = true
+                            "목" -> check_thursday.isChecked = true
+                            "금" -> check_friday.isChecked = true
+                            "토" -> check_saturday.isChecked = true
+                            "월" -> check_sunday.isChecked = true
+                        }
+                    }
+                }
+            }
         }
 
         return AlertDialog.Builder(requireContext())
