@@ -188,6 +188,20 @@ class CalendarFragment : Fragment() {
                         }
                     }
                 }
+                when(schedule.type){
+                    Schedule.TYPE_STUDENT_SCHEDULE, Schedule.TYPE_EDIT_STUDENT_SCHEDULE -> {
+                        edit_title.isEnabled = false
+                        check_every_week.isEnabled = false
+                        btn_show_time_picker.isEnabled = false
+                        check_monday.isEnabled = false
+                        check_tuesday.isEnabled = false
+                        check_wednesday.isEnabled = false
+                        check_thursday.isEnabled = false
+                        check_friday.isEnabled = false
+                        check_saturday.isEnabled = false
+                        check_sunday.isEnabled = false
+                    }
+                }
             }
         }
 
