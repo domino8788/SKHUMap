@@ -420,7 +420,7 @@ class CalendarFragment : Fragment() {
         }
         /* 이벤트 추가 버튼 리스너 */
         btn_add_event.setOnClickListener {
-            inputDialog.show()
+            getInputDialog()
         }
     }
     /* 이벤트 저장 */
