@@ -195,7 +195,7 @@ class CalendarFragment : Fragment() {
             .setTitle(getString(R.string.dialog_event_input_title))
             .setView(dialog)
             .apply {
-                if(schedule != null && schedule.type == Schedule.TYPE_PERSONAL) {
+                if(schedule != null && (schedule.type != Schedule.TYPE_STUDENT_SCHEDULE)) {
                     this.setPositiveButton(R.string.delete) { _, listener ->
                         deleteEvent(schedule)
                     }
