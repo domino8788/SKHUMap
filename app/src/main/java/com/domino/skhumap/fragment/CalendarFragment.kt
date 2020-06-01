@@ -97,8 +97,7 @@ class CalendarFragment : Fragment() {
     }
 
     private var selectedDate: LocalDate? = null
-    private val today = LocalDate.now()
-
+    private val today by lazy { LocalDate.now() }
     private val selectionFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
     private var monthToWeek:Boolean = true
