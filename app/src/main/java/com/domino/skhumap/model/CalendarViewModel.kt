@@ -81,6 +81,14 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun insertSchedule(schedule: Schedule) {
+        GlobalScope.launch {
+            if(schedule.id == "")
+                schedule.id = FirestoreHelper.calendarReference.add(schedule).await().id
+            else
+                FirestoreHelper.calendarReference.document(schedule.id).set(schedule)
+        }
+    }
     enum class Status {
         FINISH, GET_COOKIE, SELECT_ACTION, SCHEDULE_SEQUENCE
     }
