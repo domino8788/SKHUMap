@@ -478,10 +478,19 @@ class CalendarFragment : Fragment() {
     }
     /* 이벤트 저장 */
     private fun saveEvent(event: Schedule) {
-        selectedDate?.let {
-            events[it] = events[it].orEmpty().plus(event)
-            updateAdapterForDate(it)
+        /* 매주 반복되는 일정일 때 */
+        if (event.everyWeek) {
+            event.yoil!!.forEach { yoil -> weekEvents[yoil.yoilToNumber()]!!.add(event) }
+            calendar_view.notifyCalendarChanged()
         }
+        /* 당일 일정일 때 */
+        else {
+            events[selectedDate]?.add(event) ?: let { _ ->
+                events[selectedDate!!] = mutableListOf(event)
+            }
+        }
+        calendarViewModel.insertSchedule(event)
+        updateAdapterForDate(selectedDate!!)
     }
     /* 캘린더 날짜 클릭 함수 */
     private fun selectDate(date: LocalDate) {
