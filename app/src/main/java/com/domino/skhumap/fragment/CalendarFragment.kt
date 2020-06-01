@@ -63,6 +63,10 @@ class CalendarFragment : Fragment() {
             .setNegativeButton(R.string.close, null)
             .show()
     }
+
+    fun termToString(startHourOfDay:Int, startMinute:Int, endHourOfDay:Int, endMinute: Int) =
+        "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute!! < 10) "0${startMinute}" else startMinute} ~ ${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute!! < 10) "0${endMinute}" else endMinute}"
+
     fun getInputDialog(schedule: Schedule? = null):AlertDialog {
         var startHourOfDay:Int?=null
         var startMinute:Int?=null
@@ -81,7 +85,7 @@ class CalendarFragment : Fragment() {
                             startMinute = sMinute
                             endHourOfDay = eHourOfDay
                             endMinute = eMinute
-                            txt_time.text = "시간 : $startHourOfDay:$startMinute ~ $endHourOfDay:$endMinute"
+                            txt_time.text = "시간 : ${termToString(startHourOfDay!!, startMinute!!, endHourOfDay!!, endMinute!!)}"
                         } else {
                             mainViewModel.toastLiveData.postValue("마감 시간은 시작 시간 보다 나중이어야 합니다.")
                         }
