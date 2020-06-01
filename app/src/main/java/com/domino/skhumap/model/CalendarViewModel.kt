@@ -89,6 +89,11 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
                 FirestoreHelper.calendarReference.document(schedule.id).set(schedule)
         }
     }
+
+    fun deleteSchedule(schedule: Schedule) {
+        FirestoreHelper.calendarReference.document(schedule.id).delete()
+    }
+
     enum class Status {
         FINISH, GET_COOKIE, SELECT_ACTION, SCHEDULE_SEQUENCE
     }
