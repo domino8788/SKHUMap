@@ -95,8 +95,8 @@ class CalendarFragment : Fragment() {
             btn_show_date_picker.setOnClickListener {
                 context.inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
                 DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    endDate = LocalDate.of(year, month, dayOfMonth)
-                    txt_date.text = "기간 : ${selectedDate.toString()} ~ ${year}-${month}-${dayOfMonth}"
+                    endDate = LocalDate.of(year, month+1, dayOfMonth)
+                    txt_date.text = "기간 : ${selectedDate.toString()} ~ ${year}-${month+1}-${dayOfMonth}"
                 }, selectedDate!!.year, selectedDate!!.monthValue-1, selectedDate!!.dayOfMonth).apply {
                     datePicker.minDate = selectedDate!!.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
                     setMessage("시작 날짜 : ${selectedDate.toString()}\n마감 날짜를 선택하세요.")
