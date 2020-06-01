@@ -337,6 +337,7 @@ class CalendarFragment : Fragment() {
     private fun updateAdapterForDate(date: LocalDate) {
         eventsAdapter.events.clear()
         eventsAdapter.events.addAll(events[date].orEmpty())
+        eventsAdapter.events.addAll(weekEvents[date.dayOfWeek.value].orEmpty())
         eventsAdapter.notifyDataSetChanged()
         txt_selected_date.text = selectionFormatter.format(date)
     }
