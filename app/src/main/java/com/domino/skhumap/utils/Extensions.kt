@@ -19,7 +19,7 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.temporal.WeekFields
 import java.util.*
 
-fun LocalDate.toTimestamp(): Timestamp = Timestamp(Date(this.year,this.monthValue,this.dayOfMonth))
+fun LocalDate.toTimestamp(): Timestamp = Timestamp(Date(this.year-1900,this.monthValue-1,this.dayOfMonth))
 fun Timestamp.toLocalDate(): LocalDate = Instant.ofEpochMilli(toDate().time).atZone(ZoneId.systemDefault()).toLocalDate()
 fun String.yoilToNumber():Int = when(this){
     "월" -> 1
