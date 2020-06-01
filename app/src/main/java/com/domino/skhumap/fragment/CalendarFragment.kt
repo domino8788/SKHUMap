@@ -133,7 +133,7 @@ class CalendarFragment : Fragment() {
                 else
                     yoilList.remove("수")
             }
-            check_tuesday.setOnCheckedChangeListener { buttonView, isChecked ->
+            check_thursday.setOnCheckedChangeListener { buttonView, isChecked ->
                 if(isChecked)
                     yoilList.add("목")
                 else
