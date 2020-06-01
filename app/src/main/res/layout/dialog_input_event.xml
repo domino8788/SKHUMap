@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="일정 제목"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_title"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title" />
+
+    <TextView
+        android:id="@+id/txt_event_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="일정 정보"
+        app:layout_constraintEnd_toEndOf="@+id/txt_title"
+        app:layout_constraintStart_toStartOf="@+id/txt_title"
+        app:layout_constraintTop_toBottomOf="@+id/edit_title" />
+
+    <EditText
+        android:id="@+id/edit_event_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_event_info"
+        app:layout_constraintTop_toBottomOf="@+id/txt_event_info" />
+
+    <TextView
+        android:id="@+id/txt_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="시간 : "
+        app:layout_constraintEnd_toEndOf="@+id/txt_event_info"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_event_info"
+        app:layout_constraintTop_toBottomOf="@+id/edit_event_info" />
+
+    <Button
+        android:id="@+id/btn_show_time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:background="@color/cardview_light_background"
+        android:text="시간 선택"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_time"
+        app:layout_constraintTop_toBottomOf="@+id/txt_time" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/check_every_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="매주 반복 "
+        android:checked="false"
+        app:layout_constraintEnd_toEndOf="@+id/txt_time"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_title"
+        app:layout_constraintTop_toBottomOf="@+id/btn_show_time_picker" />
+
+    <LinearLayout
+        android:id="@+id/legend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_title"
+        app:layout_constraintTop_toBottomOf="@+id/check_every_week">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="월" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="화" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_wednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="수" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_thursday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="목" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_friday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="금" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="토" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="일" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="기간 : "
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/check_every_week"
+        app:layout_constraintTop_toBottomOf="@+id/legend_list" />
+
+    <Button
+        android:id="@+id/btn_show_date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:background="@color/cardview_light_background"
+        android:text="기간 선택"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_date"
+        app:layout_constraintTop_toBottomOf="@+id/txt_date" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
