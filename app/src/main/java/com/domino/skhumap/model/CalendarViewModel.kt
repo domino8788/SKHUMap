@@ -140,19 +140,18 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
                                     it.replace("\"", ""),
                                     cookieManager.getCookie(url)
                                 ).execute().body()!!
+                                when(result.sts) {
+                                    0 -> {} // 정상 sts
+                                    409 -> { } // 너무 빠르게 재조회 했을 때 오는 sts
+                                    else -> throw InvalidObjectException("토큰이 유효하지 않습니다.")
+                                }
                             }catch (e:Exception) {
                                 when(e){
                                     is InvalidObjectException -> { toastLiveData.postValue(e.message) }
                                     else -> { toastLiveData.postValue("인터넷을 연결해주세요.") }
                                 }
                             }finally {
-                                result?.run {
-                                    if(sts == 0) {
-                                        setSchedule(schedules.toMutableList())
-                                    } else {
-                                        throw InvalidObjectException("토큰이 유효하지 않습니다.")
-                                    }
-                                }
+                                setSchedule(result.schedules.toMutableList())
                             }
                         }
                     }
