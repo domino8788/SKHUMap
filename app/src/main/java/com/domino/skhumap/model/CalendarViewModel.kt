@@ -45,7 +45,7 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
             return WebClient(getString("id", "")!!, getString("password", "")!!, Action.GET_STUDENT_SCHEDULE)
         }
 
-    suspend fun setSchedule(list:MutableList<Lecture>) {
+    private suspend fun setSchedule(list:MutableList<Lecture>) {
         lectureList = list
         list.forEach { lecture ->
             weekEventMap[lecture.yoilNm.yoilToNumber()]!!.add(lecture.toSchedule)
@@ -53,12 +53,12 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
         queryScheduleList()
     }
 
-    suspend fun queryScheduleList() {
+    private suspend fun queryScheduleList() {
         GlobalScope.launch {
             scheduleList = FirestoreHelper.calendarReference.orderBy("startDate").get().await().toObjects(Schedule::class.java)
             scheduleList.forEach {schedule ->
                 /* 개인 일정일 때 */
-                if(schedule.type.toInt() == 0) {
+                if(schedule.type == Schedule.TYPE_PERSONAL) {
                     /* 매주 진행하는 일정일 때 */
                     if(schedule.everyWeek) {
                         schedule.yoil!!.forEach { yoil -> weekEventMap[yoil.yoilToNumber()]!!.add(schedule) }
