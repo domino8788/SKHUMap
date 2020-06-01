@@ -41,6 +41,7 @@ import com.kizitonwose.calendarview.utils.yearMonth
 import kotlinx.android.synthetic.main.calendar_day_legend.view.*
 import kotlinx.android.synthetic.main.calendar_day.view.*
 import kotlinx.android.synthetic.main.dialog_input_event.view.*
+import kotlinx.android.synthetic.main.dialog_input_event.view.check_every_week
 import kotlinx.android.synthetic.main.dialog_input_event.view.edit_title
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.threeten.bp.LocalDate
@@ -236,11 +237,14 @@ class CalendarFragment : Fragment() {
                         else if (check_every_week.isChecked && endDate == null)
                             mainViewModel.toastLiveData.postValue("반복 할 기간을 선택하세요.")
                         else {
-                            if (yoil.isEmpty())
-                                yoil.add(selectedDate!!.dayOfWeek.value.toDayOfWeek())
-                            saveEvent(
-                                Schedule(
-                                    schedule?.let {
+                            if(!check_every_week.isChecked) {
+                                yoilList.clear()
+                                yoilList.add(selectedDate!!.dayOfWeek.value.toDayOfWeek())
+                            }
+                            schedule?.let {
+                                deleteEvent(it, false)
+                            }
+                            saveEvent(Schedule(schedule?.let {
                                         if (schedule.type == Schedule.TYPE_STUDENT_SCHEDULE)
                                             Schedule.TYPE_EDIT_STUDENT_SCHEDULE
                                         else
@@ -248,7 +252,7 @@ class CalendarFragment : Fragment() {
                                     } ?: Schedule.TYPE_PERSONAL,
                                     edit_title.text.toString().trim(),
                                     edit_event_info.text.toString().trim(),
-                                    yoil,
+                                    yoilList,
                                     selectedDate!!.toTimestamp(),
                                     endDate?.let { it.toTimestamp() } ?: null,
                                     check_every_week.isChecked,
