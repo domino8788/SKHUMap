@@ -1,19 +1,17 @@
 package com.domino.skhumap.fragment
 
 import android.animation.ValueAnimator
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.inputmethod.InputMethodManager
-import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.children
@@ -24,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.arlib.floatingsearchview.util.Util.dpToPx
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.EventListAdapter
 import com.domino.skhumap.dto.Schedule
@@ -43,11 +40,13 @@ import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import kotlinx.android.synthetic.main.calendar_day_legend.view.*
 import kotlinx.android.synthetic.main.calendar_day.view.*
+import kotlinx.android.synthetic.main.dialog_input_event.view.*
+import kotlinx.android.synthetic.main.dialog_input_event.view.edit_title
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.YearMonth
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
 
 class CalendarFragment : Fragment() {
     private val Context.inputMethodManager get() = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -64,34 +63,154 @@ class CalendarFragment : Fragment() {
             .setNegativeButton(R.string.close, null)
             .show()
     }
-    private val inputDialog by lazy {
-        val editText = AppCompatEditText(requireContext())
-        val layout = FrameLayout(requireContext()).apply {
-            // Setting the padding on the EditText only pads the input area
-            // not the entire EditText so we wrap it in a FrameLayout.
-            val padding = dpToPx(20)
-            setPadding(padding, padding, padding, padding)
-            addView(editText, FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+    fun getInputDialog(schedule: Schedule? = null):AlertDialog {
+        var startHourOfDay:Int?=null
+        var startMinute:Int?=null
+        var endHourOfDay:Int?=null
+        var endMinute:Int?=null
+        var endDate:LocalDate?=null
+        var yoilList:MutableList<String> = mutableListOf()
+
+        val dialog = layoutInflater.inflate(R.layout.dialog_input_event, null).apply {
+            btn_show_time_picker.setOnClickListener {
+                context.inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+                TimePickerDialog(requireActivity(), TimePickerDialog.OnTimeSetListener { view, sHourOfDay, sMinute ->
+                    TimePickerDialog(requireActivity(), TimePickerDialog.OnTimeSetListener { view, eHourOfDay, eMinute ->
+                        if(sHourOfDay < eHourOfDay || ((sHourOfDay == eHourOfDay) && (sMinute<eMinute))){
+                            startHourOfDay = sHourOfDay
+                            startMinute = sMinute
+                            endHourOfDay = eHourOfDay
+                            endMinute = eMinute
+                            txt_time.text = "시간 : $startHourOfDay:$startMinute ~ $endHourOfDay:$endMinute"
+                        } else {
+                            mainViewModel.toastLiveData.postValue("마감 시간은 시작 시간 보다 나중이어야 합니다.")
+                        }
+                    }, sHourOfDay, sMinute, false).apply {
+                        setMessage("시작 시간 : $sHourOfDay:$sMinute\n마감 시간 선택")
+                        show()
+                    }
+                }, 0, 0, false).apply {
+                    setMessage("시작 시간 선택")
+                    show()
+                }
+            }
+            btn_show_date_picker.setOnClickListener {
+                context.inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+                DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    endDate = LocalDate.of(year, month, dayOfMonth)
+                    txt_date.text = "기간 : ${selectedDate.toString()} ~ ${year}-${month}-${dayOfMonth}"
+                }, selectedDate!!.year, selectedDate!!.monthValue-1, selectedDate!!.dayOfMonth).apply {
+                    datePicker.minDate = selectedDate!!.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+                    setMessage("시작 날짜 : ${selectedDate.toString()}\n마감 날짜를 선택하세요.")
+                    show()
+                }
+            }
+            check_every_week.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked) {
+                    legend_list.visibility = View.VISIBLE
+                    txt_date.visibility = View.VISIBLE
+                    btn_show_date_picker.visibility = View.VISIBLE
+                }
+                else{
+                    legend_list.visibility = View.GONE
+                    txt_date.visibility = View.GONE
+                    btn_show_date_picker.visibility = View.GONE
+                }
+            }
+            check_monday.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked)
+                    yoilList.add("월")
+                else
+                    yoilList.remove("월")
+            }
+            check_tuesday.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked)
+                    yoilList.add("화")
+                else
+                    yoilList.remove("화")
+            }
+            check_wednesday.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked)
+                    yoilList.add("수")
+                else
+                    yoilList.remove("수")
+            }
+            check_tuesday.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked)
+                    yoilList.add("목")
+                else
+                    yoilList.remove("목")
+            }
+            check_friday.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked)
+                    yoilList.add("금")
+                else
+                    yoilList.remove("금")
+            }
+            check_saturday.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked)
+                    yoilList.add("토")
+                else
+                    yoilList.remove("토")
+            }
+            check_sunday.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked)
+                    yoilList.add("일")
+                else
+                    yoilList.remove("일")
+            }
         }
-        AlertDialog.Builder(requireContext())
+
+        return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_event_input_title))
-            .setView(layout)
-            .setPositiveButton(R.string.save) { _, _ ->
-                saveEvent(editText.text.toString())
-                // Prepare EditText for reuse.
-                editText.setText("")
+            .setView(dialog)
+            .apply {
+                if(schedule != null && schedule.type == Schedule.TYPE_PERSONAL) {
+                    this.setPositiveButton(R.string.delete) { _, listener ->
+                        deleteEvent(schedule)
+                    }
+                }
+            }
+            .setOnDismissListener {  }
+            .setNeutralButton(R.string.save){ dialogInterface: DialogInterface, i: Int ->
             }
             .setNegativeButton(R.string.close, null)
             .create()
             .apply {
-                setOnShowListener {
-                    // Show the keyboard
-                    editText.requestFocus()
-                    context.inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-                }
                 setOnDismissListener {
-                    // Hide the keyboard
-                    context.inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                    context.inputMethodManager.hideSoftInputFromWindow(dialog.windowToken, 0)
+                }
+                show()
+                getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+                    dialog.run{
+                        val yoil = mutableListOf<String>()
+                        if(txt_title.text.trim().isBlank())
+                            mainViewModel.toastLiveData.postValue("일정 제목을 입력하세요.")
+                        else if(startHourOfDay == null || startMinute == null || endHourOfDay == null || endMinute == null)
+                            mainViewModel.toastLiveData.postValue("시간을 입력 하세요.")
+                        else if(check_every_week.isChecked && yoilList.isEmpty())
+                            mainViewModel.toastLiveData.postValue("매주 반복 할 요일을 선택하세요.")
+                        else if(check_every_week.isChecked && endDate==null)
+                            mainViewModel.toastLiveData.postValue("반복 할 기간을 선택하세요.")
+                        else{
+                            if(yoil.isEmpty())
+                                yoil.add(selectedDate!!.dayOfWeek.value.toDayOfWeek())
+                            saveEvent(Schedule(
+                                Schedule.TYPE_PERSONAL,
+                                edit_title.text.toString(),
+                                edit_event_info.text.toString(),
+                                yoil,
+                                selectedDate!!.toTimestamp(),
+                                endDate?.let { it.toTimestamp() }?:null,
+                                check_every_week.isChecked,
+                                "${if(startHourOfDay!!<10) "0${startHourOfDay}" else  startHourOfDay}:00",
+                                "${if(endHourOfDay!!<10) "0${endHourOfDay}" else  endHourOfDay}:00",
+                                "${if(startHourOfDay!!<10) "0${startHourOfDay}" else  startHourOfDay}:${if(startMinute!!<10) "0${startMinute}" else startMinute}",
+                                "${if(endHourOfDay!!<10) "0${endHourOfDay}" else  endHourOfDay}:${if(endMinute!!<10) "0${endMinute}" else endMinute}"
+                            ))
+                            this@apply.dismiss()
+                        }
+                    }
                 }
             }
     }
