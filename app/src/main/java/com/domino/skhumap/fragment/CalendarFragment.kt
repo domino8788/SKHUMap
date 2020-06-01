@@ -182,34 +182,41 @@ class CalendarFragment : Fragment() {
                 }
                 show()
                 getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                    dialog.run{
+                    dialog.run {
                         val yoil = mutableListOf<String>()
-                        if(txt_title.text.trim().isBlank())
+                        if (txt_title.text.trim().isBlank())
                             mainViewModel.toastLiveData.postValue("일정 제목을 입력하세요.")
-                        else if(startHourOfDay == null || startMinute == null || endHourOfDay == null || endMinute == null)
+                        else if (startHourOfDay == null || startMinute == null || endHourOfDay == null || endMinute == null)
                             mainViewModel.toastLiveData.postValue("시간을 입력 하세요.")
-                        else if(check_every_week.isChecked && yoilList.isEmpty())
+                        else if (check_every_week.isChecked && yoilList.isEmpty())
                             mainViewModel.toastLiveData.postValue("매주 반복 할 요일을 선택하세요.")
-                        else if(check_every_week.isChecked && endDate==null)
+                        else if (check_every_week.isChecked && endDate == null)
                             mainViewModel.toastLiveData.postValue("반복 할 기간을 선택하세요.")
-                        else{
-                            if(yoil.isEmpty())
+                        else {
+                            if (yoil.isEmpty())
                                 yoil.add(selectedDate!!.dayOfWeek.value.toDayOfWeek())
-                            saveEvent(Schedule(
-                                Schedule.TYPE_PERSONAL,
-                                edit_title.text.toString(),
-                                edit_event_info.text.toString(),
-                                yoil,
-                                selectedDate!!.toTimestamp(),
-                                endDate?.let { it.toTimestamp() }?:null,
-                                check_every_week.isChecked,
-                                "${if(startHourOfDay!!<10) "0${startHourOfDay}" else  startHourOfDay}:00",
-                                "${if(endHourOfDay!!<10) "0${endHourOfDay}" else  endHourOfDay}:00",
-                                "${if(startHourOfDay!!<10) "0${startHourOfDay}" else  startHourOfDay}:${if(startMinute!!<10) "0${startMinute}" else startMinute}",
-                                "${if(endHourOfDay!!<10) "0${endHourOfDay}" else  endHourOfDay}:${if(endMinute!!<10) "0${endMinute}" else endMinute}"
-                            ))
-                            this@apply.dismiss()
+                            saveEvent(
+                                Schedule(
+                                    schedule?.let {
+                                        if (schedule.type == Schedule.TYPE_STUDENT_SCHEDULE)
+                                            Schedule.TYPE_EDIT_STUDENT_SCHEDULE
+                                        else
+                                            schedule.type
+                                    } ?: Schedule.TYPE_PERSONAL,
+                                    edit_title.text.toString().trim(),
+                                    edit_event_info.text.toString().trim(),
+                                    yoil,
+                                    selectedDate!!.toTimestamp(),
+                                    endDate?.let { it.toTimestamp() } ?: null,
+                                    check_every_week.isChecked,
+                                    "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:00",
+                                    "${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:00",
+                                    "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute!! < 10) "0${startMinute}" else startMinute}",
+                                    "${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute!! < 10) "0${endMinute}" else endMinute}"
+                                )
+                            )
                         }
+                        this@apply.dismiss()
                     }
                 }
             }
