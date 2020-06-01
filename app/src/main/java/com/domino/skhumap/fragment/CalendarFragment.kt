@@ -496,10 +496,24 @@ class CalendarFragment : Fragment() {
         }
     }
     /* 이벤트 삭제 */
-    private fun deleteEvent(event: Event) {
-        val date = event.date
-        events[date] = events[date].orEmpty().minus(event)
-        updateAdapterForDate(date)
+    private fun deleteEvent(event: Schedule, needUpdate:Boolean = true) {
+        /* 매주 반복 일정일 때 */
+        if(event.everyWeek){
+            event.yoil?.forEach { yoil -> weekEvents[yoil.yoilToNumber()]!!.remove(event) }
+            if(event.type == Schedule.TYPE_EDIT_STUDENT_SCHEDULE) {
+                event.yoil?.forEach { yoil ->
+                    weekEvents[yoil.yoilToNumber()]!!.add(calendarViewModel.lectureList.find { lecture -> (event.name == lecture.gwamogKorNm) && (event.adjustFrTm == lecture.adjustFrTm) }!!.toSchedule)
+                }
+            }
+            calendar_view.notifyCalendarChanged()
+        }
+        else {
+            events[event.startDate!!.toLocalDate()]?.remove(event)
+        }
+        if(needUpdate) {
+            calendarViewModel.deleteSchedule(event)
+            updateAdapterForDate(event.startDate!!.toLocalDate())
+        }
     }
     /* 어댑터 업데이트 */
     private fun updateAdapterForDate(date: LocalDate) {
