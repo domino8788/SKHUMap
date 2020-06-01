@@ -260,10 +260,9 @@ class CalendarFragment : Fragment() {
                                     "${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:00",
                                     "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute!! < 10) "0${startMinute}" else startMinute}",
                                     "${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute!! < 10) "0${endMinute}" else endMinute}"
-                                )
-                            )
+                                ).apply { schedule?.let { this.id = it.id } })
+                            this@apply.dismiss()
                         }
-                        this@apply.dismiss()
                     }
                 }
             }
