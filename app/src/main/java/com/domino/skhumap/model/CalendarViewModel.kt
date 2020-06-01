@@ -13,6 +13,7 @@ import com.domino.skhumap.utils.toLocalDate
 import com.domino.skhumap.utils.yoilToNumber
 import com.domino.skhumap.vo.Haggi
 import com.domino.skhumap.vo.Lecture
+import com.domino.skhumap.vo.StudentSchedule
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -127,28 +128,30 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
                 Status.SCHEDULE_SEQUENCE -> {
                     val networkService = RetrofitHelper.studentScheduleRetrofit.create(RetrofitService::class.java)
                     view.evaluateJavascript("document.getElementsByTagName(\"body\")[0].attributes[\"ncg-request-verification-token\"].value") {
+                        lateinit var result:StudentSchedule
                         GlobalScope.launch {
                             try {
                                 currentHaggi = networkService.getYyHaggi(
                                     it.replace("\"", ""),
                                     cookieManager.getCookie(url)
                                 ).execute().body()!!.haggi
-                                val studentSchedule = networkService.getStudentScheduleList(
+                                result = networkService.getStudentScheduleList(
                                     Haggi(currentHaggi!!.yy, currentHaggi!!.haggi, currentHaggi!!.haggiNm),
                                     it.replace("\"", ""),
                                     cookieManager.getCookie(url)
-                                ).execute().body()
-                                studentSchedule?.run {
-                                    if(msg != null) {
-                                        setLectureList(lectureList)
-                                    } else {
-                                        throw InvalidObjectException("토큰이 유효하지 않습니다.")
-                                    }
-                                }
+                                ).execute().body()!!
                             }catch (e:Exception) {
                                 when(e){
                                     is InvalidObjectException -> { toastLiveData.postValue(e.message) }
                                     else -> { toastLiveData.postValue("인터넷을 연결해주세요.") }
+                                }
+                            }finally {
+                                result?.run {
+                                    if(sts == 0) {
+                                        setSchedule(schedules.toMutableList())
+                                    } else {
+                                        throw InvalidObjectException("토큰이 유효하지 않습니다.")
+                                    }
                                 }
                             }
                         }
