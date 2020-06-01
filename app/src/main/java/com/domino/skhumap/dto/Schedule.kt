@@ -16,5 +16,9 @@ data class Schedule(
     var frTm:String = "",
     var toTm:String = ""
 ){
+    companion object{
+        const val TYPE_PERSONAL:Long = 0L
+        const val TYPE_EDIT_STUDENT_SCHEDULE:Long = 1L
+    }
     @DocumentId val id:String = ""
 }
