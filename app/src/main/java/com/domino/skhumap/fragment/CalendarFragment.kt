@@ -359,7 +359,14 @@ class CalendarFragment : Fragment() {
                                     else->R.color.calendar_black
                                 })
                             textView.background = null
-                            dotView.isVisible = (events[day.date].orEmpty().isNotEmpty() || weekEvents[day.date.dayOfWeek.value].orEmpty().isNotEmpty())
+                            dotView.isVisible = (events[day.date].orEmpty().isNotEmpty() ||
+                                    (weekEvents[day.date.dayOfWeek.value].orEmpty().isNotEmpty()
+                                            && (weekEvents[day.date.dayOfWeek.value]?.any {
+                                            schedule ->
+                                        (day.date.isAfter(schedule.startDate!!.toLocalDate()) || day.date.isEqual(schedule.startDate!!.toLocalDate()))
+                                                && (day.date.isBefore(schedule.endDate!!.toLocalDate()) || day.date.isEqual(schedule.endDate!!.toLocalDate()))
+                                        //schedule.startDate!!.toLocalDate().toString() <= day.date.toString() && schedule.endDate!!.toLocalDate().toString() >= day.date.toString()
+                                    }!!)))
                         }
                     }
                 } else {
@@ -531,7 +538,11 @@ class CalendarFragment : Fragment() {
     private fun updateAdapterForDate(date: LocalDate) {
         eventsAdapter.events.clear()
         eventsAdapter.events.addAll(events[date].orEmpty().sortedBy { schedule -> schedule.frTm })
-        eventsAdapter.events.addAll(weekEvents[date.dayOfWeek.value].orEmpty().sortedBy { schedule -> schedule.frTm })
+        eventsAdapter.events.addAll(weekEvents[date.dayOfWeek.value].orEmpty().filter { schedule ->
+            (date.isAfter(schedule.startDate!!.toLocalDate()) || date.isEqual(schedule.startDate!!.toLocalDate()))
+                    && (date.isBefore(schedule.endDate!!.toLocalDate()) || date.isEqual(schedule.endDate!!.toLocalDate()))
+            //schedule.startDate!!.toLocalDate().toString() <= day.date.toString() && schedule.endDate!!.toLocalDate().toString() >= day.date.toString()
+        }.sortedBy { schedule -> schedule.frTm })
         eventsAdapter.notifyDataSetChanged()
         txt_selected_date.text = selectionFormatter.format(date)
     }
