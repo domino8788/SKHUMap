@@ -3,11 +3,11 @@ package com.domino.skhumap.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.ScrollView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 
-class MultipleLevelBottomSheetView : LinearLayout {
+class MultipleLevelBottomSheetView : ScrollView {
     private val bottomSheetView by lazy { BottomSheetBehavior.from(this) }
     var level: State = State.COLLAPSED
     set(value) {
@@ -36,8 +36,10 @@ class MultipleLevelBottomSheetView : LinearLayout {
             halfExpandedRatio = 0.40f
             addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    if(slideOffset>0.25 && slideOffset<0.4)
-                        bottomSheetView.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                    if(slideOffset>0.25 && slideOffset<0.5){
+                        if(state != BottomSheetBehavior.STATE_DRAGGING)
+                            bottomSheetView.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                    }
                 }
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {

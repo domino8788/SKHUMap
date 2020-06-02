@@ -17,33 +17,37 @@
     <com.domino.skhumap.view.MultipleLevelBottomSheetView
         android:id="@+id/main_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_bottom_sheet_full_size"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_bottom_sheet_border"
         android:orientation="vertical"
+        android:fillViewport="true"
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/main_menu_size"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/main_tab_layout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/main_menu_size"
-            android:layout_gravity="bottom"
-            android:animateLayoutChanges="false"
-            android:background="@drawable/bg_tab_layout_border"
-            android:fillViewport="false"
-            app:tabGravity="center"
-            app:tabIconTint="@color/colorAccent"
-            app:tabIndicatorAnimationDuration="0"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="fixed" />
-
-        <com.domino.skhumap.view.ScrollunableViewPager
-            android:id="@+id/main_view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/fragment_in_view_pager_padding"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/main_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_menu_size"
+                android:animateLayoutChanges="false"
+                android:background="@drawable/bg_tab_layout_border"
+                app:tabGravity="center"
+                app:tabIconTint="@color/colorAccent"
+                app:tabIndicatorAnimationDuration="0"
+                app:tabIndicatorFullWidth="false"
+                app:tabMode="fixed" />
+            <com.domino.skhumap.view.ScrollunableViewPager
+                android:id="@+id/main_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="true"
+                android:paddingTop="@dimen/fragment_in_view_pager_padding"
+                android:paddingHorizontal="@dimen/fragment_in_view_pager_padding"
+                />
+        </LinearLayout>
     </com.domino.skhumap.view.MultipleLevelBottomSheetView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
