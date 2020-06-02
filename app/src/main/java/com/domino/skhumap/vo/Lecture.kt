@@ -79,7 +79,7 @@ data class Lecture (
                 endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 1, 15))
             }
         }
-        return Schedule(Schedule.TYPE_EDIT_STUDENT_SCHEDULE, gwamogKorNm, "$gyosuNm\n$roomName", mutableListOf(yoilNm),
+        return Schedule(Schedule.TYPE_STUDENT_SCHEDULE, gwamogKorNm, "$gyosuNm\n$hosilCd\n$roomName", mutableListOf(yoilNm),
             startDate, endDate, true, adjustFrTm, adjustToTm, frTm, toTm)
     }
 }
