@@ -481,7 +481,8 @@ class CalendarFragment : Fragment() {
         }
         /* 이벤트 추가 버튼 리스너 */
         btn_add_event.setOnClickListener {
-            getInputDialog()
+            if(today.isBefore(selectedDate) || today.isEqual(selectedDate))
+                getInputDialog()
         }
     }
     /* 이벤트 저장 */
