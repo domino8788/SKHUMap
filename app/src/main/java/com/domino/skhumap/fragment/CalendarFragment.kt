@@ -63,6 +63,7 @@ class CalendarFragment : Fragment() {
         "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute!! < 10) "0${startMinute}" else startMinute} ~ ${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute!! < 10) "0${endMinute}" else endMinute}"
 
     fun getInputDialog(schedule: Schedule? = null):AlertDialog {
+        val targetDate = schedule?.startDate?.toLocalDate()?:selectedDate
         var startHourOfDay:Int?=null
         var startMinute:Int?=null
         var endHourOfDay:Int?=null
@@ -97,10 +98,10 @@ class CalendarFragment : Fragment() {
                 context.inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
                 DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     endDate = LocalDate.of(year, month+1, dayOfMonth)
-                    txt_date.text = "기간 : ${selectedDate.toString()} ~ ${year}-${month+1}-${dayOfMonth}"
-                }, selectedDate!!.year, selectedDate!!.monthValue-1, selectedDate!!.dayOfMonth).apply {
-                    datePicker.minDate = selectedDate!!.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
-                    setMessage("시작 날짜 : ${selectedDate.toString()}\n마감 날짜를 선택하세요.")
+                    txt_date.text = "기간 : ${targetDate.toString()} ~ ${year}-${if((month+1)<10) "0" else ""}${month+1}-${dayOfMonth}"
+                }, selectedDate!!.year, targetDate!!.monthValue-1, targetDate!!.dayOfMonth).apply {
+                    datePicker.minDate = targetDate!!.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+                    setMessage("시작 날짜 : ${targetDate.toString()}\n마감 날짜를 선택하세요.")
                     show()
                 }
             }
@@ -175,7 +176,7 @@ class CalendarFragment : Fragment() {
                     check_every_week.isChecked = everyWeek
                     if(everyWeek) {
                         endDate = schedule.endDate?.toLocalDate()
-                        txt_date.text = "${schedule.startDate!!.toLocalDate()}~${endDate.toString()}"
+                        txt_date.text = "${targetDate}~${endDate.toString()}"
                     }
                     schedule.yoil?.forEach {yoil ->
                         when(yoil){
@@ -239,7 +240,7 @@ class CalendarFragment : Fragment() {
                         else {
                             if(!check_every_week.isChecked) {
                                 yoilList.clear()
-                                yoilList.add(selectedDate!!.dayOfWeek.value.toDayOfWeek())
+                                yoilList.add(targetDate!!.dayOfWeek.value.toDayOfWeek())
                             }
                             schedule?.let {
                                 deleteEvent(it, false)
@@ -253,7 +254,7 @@ class CalendarFragment : Fragment() {
                                     edit_title.text.toString().trim(),
                                     edit_event_info.text.toString().trim(),
                                     yoilList,
-                                    selectedDate!!.toTimestamp(),
+                                    targetDate!!.toTimestamp(),
                                     endDate?.let { it.toTimestamp() } ?: null,
                                     check_every_week.isChecked,
                                     "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:00",
@@ -478,6 +479,7 @@ class CalendarFragment : Fragment() {
     }
     /* 이벤트 저장 */
     private fun saveEvent(event: Schedule) {
+        val targetDate = event.startDate!!.toLocalDate()
         /* 매주 반복되는 일정일 때 */
         if (event.everyWeek) {
             event.yoil!!.forEach { yoil -> weekEvents[yoil.yoilToNumber()]!!.add(event) }
@@ -485,12 +487,12 @@ class CalendarFragment : Fragment() {
         }
         /* 당일 일정일 때 */
         else {
-            events[selectedDate]?.add(event) ?: let { _ ->
-                events[selectedDate!!] = mutableListOf(event)
+            events[targetDate]?.add(event) ?: let { _ ->
+                events[targetDate] = mutableListOf(event)
             }
         }
         calendarViewModel.insertSchedule(event)
-        updateAdapterForDate(selectedDate!!)
+        updateAdapterForDate(targetDate)
     }
     /* 캘린더 날짜 클릭 함수 */
     private fun selectDate(date: LocalDate) {
@@ -506,6 +508,7 @@ class CalendarFragment : Fragment() {
     }
     /* 이벤트 삭제 */
     private fun deleteEvent(event: Schedule, needUpdate:Boolean = true) {
+        val targetDate = event.startDate!!.toLocalDate()
         /* 매주 반복 일정일 때 */
         if(event.everyWeek){
             event.yoil?.forEach { yoil -> weekEvents[yoil.yoilToNumber()]!!.remove(event) }
@@ -517,11 +520,11 @@ class CalendarFragment : Fragment() {
             calendar_view.notifyCalendarChanged()
         }
         else {
-            events[event.startDate!!.toLocalDate()]?.remove(event)
+            events[targetDate]?.remove(event)
         }
         if(needUpdate) {
             calendarViewModel.deleteSchedule(event)
-            updateAdapterForDate(event.startDate!!.toLocalDate())
+            updateAdapterForDate(targetDate)
         }
     }
     /* 어댑터 업데이트 */
