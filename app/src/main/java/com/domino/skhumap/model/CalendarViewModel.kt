@@ -25,6 +25,8 @@ import kotlin.Exception
 class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
     lateinit var lectureList: MutableList<Lecture>
     lateinit var scheduleList: MutableList<Schedule>
+    private val today = LocalDate.now()
+
     var eventMap: HashMap<LocalDate, MutableList<Schedule>> = hashMapOf()
     var weekEventMap: HashMap<Int, MutableList<Schedule>> = hashMapOf(
         1 to mutableListOf(),
@@ -53,26 +55,38 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
         queryScheduleList()
     }
 
+    private fun isExpired(schedule: Schedule):Boolean =
+        if(schedule.everyWeek) {
+            schedule.endDate!!.toLocalDate().plusMonths(1).isBefore(today)
+        } else {
+            schedule.startDate!!.toLocalDate().plusMonths(1).isBefore(today)
+        }
+
     private suspend fun queryScheduleList() {
         GlobalScope.launch {
             scheduleList = FirestoreHelper.calendarReference.orderBy("startDate").get().await().toObjects(Schedule::class.java)
             scheduleList.forEach {schedule ->
-                /* 개인 일정일 때 */
-                if(schedule.type == Schedule.TYPE_PERSONAL) {
-                    /* 매주 진행하는 일정일 때 */
-                    if(schedule.everyWeek) {
-                        schedule.yoil!!.forEach { yoil -> weekEventMap[yoil.yoilToNumber()]!!.add(schedule) }
+                /* 만료된 일정일 때 */
+                if(isExpired(schedule)){
+                    deleteSchedule(schedule)
+                }else{
+                    /* 개인 일정일 때 */
+                    if(schedule.type == Schedule.TYPE_PERSONAL) {
+                        /* 매주 진행하는 일정일 때 */
+                        if(schedule.everyWeek) {
+                            schedule.yoil!!.forEach { yoil -> weekEventMap[yoil.yoilToNumber()]!!.add(schedule) }
+                        }
+                        /* 당일만 진행하는 일정일 때때*/
+                        else {
+                            eventMap[schedule.startDate!!.toLocalDate()]?.add(schedule)?:let { eventMap[schedule.startDate!!.toLocalDate()] = mutableListOf(schedule) }
+                        }
                     }
-                    /* 당일만 진행하는 일정일 때때*/
+                    /* 시간표 수정일 때 */
                     else {
-                        eventMap[schedule.startDate!!.toLocalDate()]?.add(schedule)?:let { eventMap[schedule.startDate!!.toLocalDate()] = mutableListOf(schedule) }
-                    }
-                }
-                /* 시간표 수정일 때 */
-                else {
-                    schedule.yoil!!.forEach { yoil ->
-                        weekEventMap[yoil.yoilToNumber()]!!.run {
-                            set(indexOfFirst { beforeSchedule: Schedule -> beforeSchedule.name == schedule.name && beforeSchedule.adjustFrTm == beforeSchedule.adjustFrTm} , schedule)
+                        schedule.yoil!!.forEach { yoil ->
+                            weekEventMap[yoil.yoilToNumber()]!!.run {
+                                set(indexOfFirst { beforeSchedule: Schedule -> beforeSchedule.name == schedule.name && beforeSchedule.adjustFrTm == beforeSchedule.adjustFrTm} , schedule)
+                            }
                         }
                     }
                 }
