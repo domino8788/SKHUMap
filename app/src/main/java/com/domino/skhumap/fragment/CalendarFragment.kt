@@ -520,17 +520,17 @@ class CalendarFragment : Fragment() {
         /* 매주 반복 일정일 때 */
         if(event.everyWeek){
             event.yoil?.forEach { yoil -> weekEvents[yoil.yoilToNumber()]!!.remove(event) }
-            if(event.type == Schedule.TYPE_EDIT_STUDENT_SCHEDULE) {
-                event.yoil?.forEach { yoil ->
-                    weekEvents[yoil.yoilToNumber()]!!.add(calendarViewModel.lectureList.find { lecture -> (event.name == lecture.gwamogKorNm) && (event.adjustFrTm == lecture.adjustFrTm) }!!.toSchedule)
-                }
-            }
             calendar_view.notifyCalendarChanged()
         }
         else {
             events[targetDate]?.remove(event)
         }
         if(needUpdate) {
+            if(event.type == Schedule.TYPE_EDIT_STUDENT_SCHEDULE) {
+                event.yoil?.forEach { yoil ->
+                    weekEvents[yoil.yoilToNumber()]!!.add(calendarViewModel.lectureList.find { lecture -> (event.name == lecture.gwamogKorNm) && (event.adjustFrTm == lecture.adjustFrTm) }!!.toSchedule)
+                }
+            }
             calendarViewModel.deleteSchedule(event)
             updateAdapterForDate(selectedDate!!)
         }
