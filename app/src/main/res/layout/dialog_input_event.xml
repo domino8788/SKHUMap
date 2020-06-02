@@ -83,63 +83,74 @@
 
     <LinearLayout
         android:id="@+id/legend_list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="left"
         android:visibility="gone"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/txt_title"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@+id/check_every_week"
         app:layout_constraintTop_toBottomOf="@+id/check_every_week">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/check_monday"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="월" />
+            android:orientation="horizontal">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/check_tuesday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="화" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="월"
+                android:textAlignment="center" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/check_wednesday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="수" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="화" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/check_thursday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="목" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="수" />
+        </LinearLayout>
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/check_friday"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="금" />
+            android:orientation="horizontal">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/check_saturday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="토" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="목" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/check_sunday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="일" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="금" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="토" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="일" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
