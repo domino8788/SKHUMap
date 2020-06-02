@@ -500,7 +500,7 @@ class CalendarFragment : Fragment() {
             }
         }
         calendarViewModel.insertSchedule(event)
-        updateAdapterForDate(targetDate)
+        updateAdapterForDate(selectedDate!!)
     }
     /* 캘린더 날짜 클릭 함수 */
     private fun selectDate(date: LocalDate) {
@@ -532,7 +532,7 @@ class CalendarFragment : Fragment() {
         }
         if(needUpdate) {
             calendarViewModel.deleteSchedule(event)
-            updateAdapterForDate(targetDate)
+            updateAdapterForDate(selectedDate!!)
         }
     }
     /* 어댑터 업데이트 */
