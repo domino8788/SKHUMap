@@ -44,6 +44,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapViewModel:MapViewModel
     private lateinit var searchViewModel:SearchViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var favoritesViewModel: FavoritesViewModel
 
     val resourceId: Int
         get() = resources.getIdentifier(
@@ -79,12 +80,11 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private fun init(){
         mapViewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java].apply {
 
-            facilitiesLiveData.observe(requireActivity(), Observer {
-                it.forEach { facility-> makeMarker(facility) }
+            facilityLiveData.observe(requireActivity(), Observer {
+                makeMarker(it)
             })
 
             selectedFloorLiveData.observe(requireActivity(), Observer {
-                removeMarkers()
                 it?.let {
                     indoor_level_picker.value = floorListLiveData.value!!.indexOfFirst { floor -> floor.second == it }
                     mapMode = Mode.INDOOR
@@ -114,6 +114,16 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                     setSelectedFloor(searchableFacility.floorNumber)
                 }
                 naverMap.cameraPosition = CameraPosition(searchableFacility.facility.latLng, defaultZoom, 0.0, if(mapMode == Mode.CAMPUS) defaultCampusImageBearing else 0.0)
+            })
+
+            previousFacilitiesLiveData.observe(requireActivity(), Observer { previousFacilities->
+                previousFacilities.forEach {
+                    it.marker?.map = null
+                }
+            })
+
+            touchMarkerLiveData.observe(requireActivity(), Observer { searchableFacility ->
+                favoritesViewModel.insert(searchableFacility)
             })
         }
 
@@ -191,6 +201,8 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
+        favoritesViewModel = ViewModelProvider(requireActivity())[FavoritesViewModel::class.java]
+
         mapViewModel.selectedDepartment = null
     }
 
@@ -244,25 +256,13 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         mapViewModel.selectedDepartment = facility
                     }
                     else {
-                        val favoritesViewModel = activity?.run {
-                            ViewModelProvider(this)[FavoritesViewModel::class.java]
-                        }?:throw Exception("FavoritesViewModel not exists")
-                        favoritesViewModel.insert(mapViewModel.getCurrentSelectToSearchableFacility(facility))
+                        mapViewModel.touchMarkerLiveData.postValue(mapViewModel.getCurrentSelectToSearchableFacility(facility))
                     }
                     false
                 }
                 isHideCollidedSymbols = true
                 map = naverMap
             }
-        }
-    }
-
-    private fun removeMarkers() {
-        mapViewModel.facilities.run {
-            for (facility in this) {
-                facility.marker?.map = null
-            }
-            clear()
         }
     }
 }
