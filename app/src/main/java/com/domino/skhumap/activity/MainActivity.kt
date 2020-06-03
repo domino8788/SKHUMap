@@ -57,12 +57,12 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         FirestoreHelper.init(this)
-        main_bottom_sheet.initView()
-        main_view_pager.run {
+        main_bottom_sheet.run {
+            initView()
             adapter = MenuAdapter(supportFragmentManager, 0)
         }
         main_tab_layout.let{
-            it.setupWithViewPager(main_view_pager)
+            it.setupWithViewPager(main_bottom_sheet)
             it.addOnTabSelectedListener(this)
             initTab()
         }
@@ -128,7 +128,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        (main_view_pager.adapter as MenuAdapter).run {
             when(resultCode){
                 Code.RESULT_REQUEST_FAVORITES_RENEWAL -> {
                     data?.let { favoritesViewModel.updateAll(it.getParcelableArrayListExtra("favorites")) }
@@ -136,6 +135,5 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                 Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> authViewModel.loadLoginInfo()
             }
             true
-        }
     }
 }
