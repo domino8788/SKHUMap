@@ -74,8 +74,8 @@
                     tools:text="2020년 6월 2일" />
                 <Button
                     android:id="@+id/btn_add_event"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:background="@drawable/ic_add"
                     app:backgroundTint="@color/colorAccent"/>
             </LinearLayout>
