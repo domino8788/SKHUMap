@@ -1,52 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".fragment.FacilityFragment">
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        style="@style/CardView.Light"
-        android:layout_margin="1dp"
+    android:layout_height="wrap_content">
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E4E3E3"
-        app:cardCornerRadius="4dp">
+        android:padding="@dimen/fragment_in_view_pager_padding"
+        android:clipToPadding="false"
+        android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                style="@style/CardView.Light"
+                android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
+                android:background="#E4E3E3"
+                app:cardElevation="3dp"
+                app:cardCornerRadius="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="즐겨찾기"
-                    android:layout_marginRight="8dp"
-                    />
-                <ImageView
-                    android:id="@+id/btn_edit"
-                    android:src="@drawable/ic_create_black_24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="즐겨찾기"
+                            android:layout_marginRight="8dp"
+                            />
+                        <ImageView
+                            android:id="@+id/btn_edit"
+                            android:src="@drawable/ic_create_black_24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+                    </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_facility"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:orientation="horizontal"
-                android:layout_gravity="top"
-                tools:listitem="@layout/item_favorites_list"
-                tools:orientation="horizontal" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_facility"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="top"
+                        android:overScrollMode="never"
+                        tools:listitem="@layout/item_favorites_list"
+                        android:nestedScrollingEnabled="false"
+                        tools:orientation="horizontal" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>
