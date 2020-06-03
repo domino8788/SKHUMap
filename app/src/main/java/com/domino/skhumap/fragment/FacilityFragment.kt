@@ -35,10 +35,6 @@ class FacilityFragment() : Fragment() {
         mapViewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java]
 
         favoritesViewModel.run {
-            favoritesLiveData.observe(requireActivity(), Observer {
-                list_facility.adapter?.notifyDataSetChanged()
-                list_facility?.smoothScrollToPosition((it.size-1)/4)
-            })
             list_facility.run {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = FavoritesListAdapter(favoritesViewModel.favoritesLiveData.value!!, mapViewModel)
@@ -49,6 +45,10 @@ class FacilityFragment() : Fragment() {
                 addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
                 PagerSnapHelper().attachToRecyclerView(this)
             }
+            favoritesLiveData.observe(requireActivity(), Observer {
+                list_facility?.adapter?.notifyDataSetChanged()
+                list_facility?.smoothScrollToPosition((it.size-1)/4)
+            })
             query()
         }
 
