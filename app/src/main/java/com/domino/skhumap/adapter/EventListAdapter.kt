@@ -40,10 +40,6 @@ class EventListAdapter(val onClick: (Schedule) -> Unit) : RecyclerView.Adapter<E
                 txt_event_title.text = event.name
                 txt_event_info.text = event.info
                 txt_event_time.text = "${event.frTm} ~ ${event.toTm}"
-                event.startDate!!.toLocalDate().let { startDate ->
-                    if (startDate.isBefore(today) && !events[adapterPosition].everyWeek)
-                        this.isEnabled = false
-                }
             }
         }
     }
