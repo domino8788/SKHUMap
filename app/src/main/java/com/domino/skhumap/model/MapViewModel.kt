@@ -6,14 +6,21 @@ import com.domino.skhumap.Facility
 import com.domino.skhumap.repository.FirestoreHelper
 import com.domino.skhumap.dto.SearchableFacility
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.ListenerRegistration
+import java.lang.Exception
 import kotlin.math.abs
 
 class MapViewModel:ViewModel(){
-    val facilities:MutableList<Facility> = mutableListOf()
-    val facilitiesLiveData:MutableLiveData<MutableList<Facility>> by lazy { MutableLiveData<MutableList<Facility>>() }
+    private var facilities:MutableList<Facility> = mutableListOf()
+    val facilityLiveData:MutableLiveData<Facility> by lazy { MutableLiveData<Facility>() }
+    val previousFacilitiesLiveData:MutableLiveData<MutableList<Facility>> by lazy { MutableLiveData<MutableList<Facility>>() }
     val floorListLiveData: MutableLiveData<MutableList<Pair<String, Int>>> by lazy { MutableLiveData<MutableList<Pair<String, Int>>>() }
     val selectedFloorLiveData:MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     val markMapLivdeData:MutableLiveData<SearchableFacility> by lazy { MutableLiveData<SearchableFacility>() }
+    private var mapListener: ListenerRegistration? = null
+    val touchMarkerLiveData: MutableLiveData<SearchableFacility> by lazy { MutableLiveData<SearchableFacility>() }
+
     var selectedDepartment:Facility? = null
     set(facility) {
         field = facility
@@ -32,8 +39,31 @@ class MapViewModel:ViewModel(){
     }
 
     private fun query(target: CollectionReference) {
-        FirestoreHelper.naverMapRealTimeUpdate(facilities, target){
-            facilitiesLiveData.postValue(facilities)
+        mapListener?.remove()
+        previousFacilitiesLiveData.postValue(facilities)
+        facilities = mutableListOf()
+        mapListener = target.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            try {
+                for (change in querySnapshot?.documentChanges!!) {
+                    change.run {
+                        when (type) {
+                            DocumentChange.Type.ADDED -> {
+                                facilities.add(newIndex, document.toObject(Facility::class.java).apply { facilityLiveData.value = this })
+                            }
+                            DocumentChange.Type.MODIFIED -> {
+                                facilities[oldIndex].marker?.map = null
+                                facilities[newIndex] = document.toObject(Facility::class.java)
+                            }
+                            DocumentChange.Type.REMOVED -> {
+                                facilities[oldIndex].removeMarker()
+                                facilities.removeAt(oldIndex)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                mapListener?.remove()
+            }
         }
     }
 
