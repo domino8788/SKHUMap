@@ -14,17 +14,17 @@ import com.domino.skhumap.utils.yoilToNumber
 import com.domino.skhumap.vo.Haggi
 import com.domino.skhumap.vo.Lecture
 import com.domino.skhumap.vo.StudentSchedule
+import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.threeten.bp.LocalDate
-import java.io.InvalidObjectException
 import java.net.URLEncoder
 import kotlin.Exception
 
 class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
-    lateinit var lectureList: MutableList<Lecture>
-    lateinit var scheduleList: MutableList<Schedule>
+    var lectureList: MutableList<Lecture> = mutableListOf()
+    private var scheduleList: MutableList<Schedule> = mutableListOf()
     private val today = LocalDate.now()
 
     var eventMap: HashMap<LocalDate, MutableList<Schedule>> = hashMapOf()
@@ -155,31 +155,42 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
                 Status.SCHEDULE_SEQUENCE -> {
                     val networkService = RetrofitHelper.studentScheduleRetrofit.create(RetrofitService::class.java)
                     view.evaluateJavascript("document.getElementsByTagName(\"body\")[0].attributes[\"ncg-request-verification-token\"].value") {
-                        lateinit var result:StudentSchedule
+                        var result:StudentSchedule? = null
                         GlobalScope.launch {
-                            try {
-                                currentHaggi = networkService.getYyHaggi(
-                                    it.replace("\"", ""),
-                                    cookieManager.getCookie(url)
-                                ).execute().body()!!.haggi
-                                result = networkService.getStudentScheduleList(
-                                    Haggi(currentHaggi!!.yy, currentHaggi!!.haggi, currentHaggi!!.haggiNm),
-                                    it.replace("\"", ""),
-                                    cookieManager.getCookie(url)
-                                ).execute().body()!!
-                                when(result.sts) {
-                                    0 -> {} // 정상 sts
-                                    409 -> { } // 너무 빠르게 재조회 했을 때 오는 sts
-                                    else -> throw InvalidObjectException("토큰이 유효하지 않습니다.")
+                            var retry = false
+                            do{
+                                try {
+                                    currentHaggi = networkService.getYyHaggi(
+                                        it.replace("\"", ""),
+                                        cookieManager.getCookie(url)
+                                    ).execute().body()!!.haggi
+                                    result = networkService.getStudentScheduleList(
+                                        Haggi(currentHaggi!!.yy, currentHaggi!!.haggi, currentHaggi!!.haggiNm),
+                                        it.replace("\"", ""),
+                                        cookieManager.getCookie(url)
+                                    ).execute().body()!!
+                                    when(result!!.sts) {
+                                        /*
+                                        0 : 정상 sts
+                                        409 : 너무 빠르게 재조회 했을 때 오는 sts
+                                        */
+                                        0, 409 -> { retry = false }
+                                    }
+                                }catch (e:Exception) {
+                                    when(e){
+                                        is JsonSyntaxException -> {
+                                            retry = !retry
+                                            if(!retry)
+                                                toastLiveData.postValue("토큰이 유효하지 않습니다.")
+                                        }
+                                        else -> {
+                                            toastLiveData.postValue("인터넷을 연결해주세요.")
+                                        }
+                                    }
+                                }finally {
+                                    result?.schedules?.let { setSchedule(it.toMutableList()) }
                                 }
-                            }catch (e:Exception) {
-                                when(e){
-                                    is InvalidObjectException -> { toastLiveData.postValue(e.message) }
-                                    else -> { toastLiveData.postValue("인터넷을 연결해주세요.") }
-                                }
-                            }finally {
-                                setSchedule(result.schedules.toMutableList())
-                            }
+                            }while(retry)
                         }
                     }
                     status = Status.FINISH
