@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="@dimen/outside_margin"
+        android:layout_marginStart="@dimen/fragment_in_view_pager_padding"
         android:layout_marginTop="80dp"
         android:background="@drawable/bg_level_picker_border" />
 
@@ -24,9 +24,9 @@
         android:id="@+id/floating_search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:floatingSearch_searchBarMarginLeft="@dimen/outside_margin"
-        app:floatingSearch_searchBarMarginTop="@dimen/outside_margin"
-        app:floatingSearch_searchBarMarginRight="@dimen/outside_margin"
+        app:floatingSearch_searchBarMarginLeft="@dimen/fragment_in_view_pager_padding"
+        app:floatingSearch_searchBarMarginTop="@dimen/fragment_in_view_pager_padding"
+        app:floatingSearch_searchBarMarginRight="@dimen/fragment_in_view_pager_padding"
         app:floatingSearch_searchHint="시설 검색..."
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_showSearchKey="false"
