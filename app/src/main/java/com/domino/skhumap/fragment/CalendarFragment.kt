@@ -304,7 +304,10 @@ class CalendarFragment : Fragment() {
                                     edit_title.text.toString().trim(),
                                     edit_event_info.text.toString().trim(),
                                     yoilList,
-                                    targetDate!!.toTimestamp(),
+                                /* 매주 반복 일정에서 당일 일정으로 변경했을때 현재 선택한 날짜를 startDate로 지정 */
+                                        if((schedule?.everyWeek == true) && !check_every_week.isChecked)
+                                            selectedDate!!.toTimestamp()
+                                        else targetDate!!.toTimestamp() ,
                                     endDate?.let { it.toTimestamp() } ?: null,
                                     check_every_week.isChecked,
                                     "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:00",
