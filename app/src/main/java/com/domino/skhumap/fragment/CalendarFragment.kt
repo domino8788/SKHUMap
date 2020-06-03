@@ -276,7 +276,7 @@ class CalendarFragment : Fragment() {
                         }
                     } }.setOnClickListener {
                     dialog.run {
-                        if (txt_title.text.trim().isBlank())
+                        if (edit_title.text.trim().isBlank())
                             mainViewModel.toastLiveData.postValue("일정 제목을 입력하세요.")
                         else if (startHourOfDay == null || startMinute == null || endHourOfDay == null || endMinute == null)
                             mainViewModel.toastLiveData.postValue("시간을 입력 하세요.")
