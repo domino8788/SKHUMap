@@ -72,6 +72,59 @@ class CalendarFragment : Fragment() {
         var yoilList:MutableList<String> = mutableListOf()
 
         val dialog = layoutInflater.inflate(R.layout.dialog_input_event, null).apply {
+            fun disableView(){
+                edit_title.isEnabled = false
+                check_every_week.isEnabled = false
+                btn_show_time_picker.isEnabled = false
+                check_monday.isEnabled = false
+                check_tuesday.isEnabled = false
+                check_wednesday.isEnabled = false
+                check_thursday.isEnabled = false
+                check_friday.isEnabled = false
+                check_saturday.isEnabled = false
+                check_sunday.isEnabled = false
+            }
+            fun yoilCheck(yoil:String){
+                when(yoil){
+                    "월" -> {
+                        check_monday.isChecked = true
+                        if(targetDate!!.dayOfWeek.value.toDayOfWeek() == yoil)
+                            check_monday.isEnabled = false
+                    }
+                    "화" -> {
+                        check_tuesday.isChecked = true
+                        if(targetDate!!.dayOfWeek.value.toDayOfWeek() == yoil)
+                            check_tuesday.isEnabled = false
+                    }
+                    "수" -> {
+                        check_wednesday.isChecked = true
+                        if(targetDate!!.dayOfWeek.value.toDayOfWeek() == yoil)
+                            check_wednesday.isEnabled = false
+                    }
+                    "목" -> {
+                        check_thursday.isChecked = true
+                        if(targetDate!!.dayOfWeek.value.toDayOfWeek() == yoil)
+                            check_thursday.isEnabled = false
+                    }
+                    "금" -> {
+                        check_friday.isChecked = true
+                        if(targetDate!!.dayOfWeek.value.toDayOfWeek() == yoil)
+                            check_friday.isEnabled = false
+                    }
+                    "토" -> {
+                        check_saturday.isChecked = true
+                        if(targetDate!!.dayOfWeek.value.toDayOfWeek() == yoil)
+                            check_saturday.isEnabled = false
+                    }
+                    "일" -> {
+                        check_sunday.isChecked = true
+                        if(targetDate!!.dayOfWeek.value.toDayOfWeek() == yoil)
+                            check_sunday.isEnabled = false
+                    }
+                }
+
+            }
+
             btn_show_time_picker.setOnClickListener {
                 context.inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
                 TimePickerDialog(requireActivity(), TimePickerDialog.OnTimeSetListener { view, sHourOfDay, sMinute ->
@@ -178,30 +231,11 @@ class CalendarFragment : Fragment() {
                         endDate = schedule.endDate?.toLocalDate()
                         txt_date.text = "${targetDate}~${endDate.toString()}"
                     }
-                    schedule.yoil?.forEach {yoil ->
-                        when(yoil){
-                            "월" -> check_monday.isChecked = true
-                            "화" -> check_tuesday.isChecked = true
-                            "수" -> check_wednesday.isChecked = true
-                            "목" -> check_thursday.isChecked = true
-                            "금" -> check_friday.isChecked = true
-                            "토" -> check_saturday.isChecked = true
-                            "월" -> check_sunday.isChecked = true
-                        }
-                    }
+                    schedule.yoil?.forEach {yoil -> yoilCheck(yoil)}
                 }
                 when(schedule.type){
                     Schedule.TYPE_STUDENT_SCHEDULE, Schedule.TYPE_EDIT_STUDENT_SCHEDULE -> {
-                        edit_title.isEnabled = false
-                        check_every_week.isEnabled = false
-                        btn_show_time_picker.isEnabled = false
-                        check_monday.isEnabled = false
-                        check_tuesday.isEnabled = false
-                        check_wednesday.isEnabled = false
-                        check_thursday.isEnabled = false
-                        check_friday.isEnabled = false
-                        check_saturday.isEnabled = false
-                        check_sunday.isEnabled = false
+                        disableView()
                     }
                 }
             }
