@@ -237,8 +237,16 @@ class CalendarFragment : Fragment() {
                     Schedule.TYPE_STUDENT_SCHEDULE, Schedule.TYPE_EDIT_STUDENT_SCHEDULE -> {
                         disableView()
                     }
+                    /* 만료된 당일 일정의 수정을 비활성화 */
+                    Schedule.TYPE_PERSONAL -> {
+                        if(!schedule.everyWeek && schedule.startDate!!.toLocalDate().isBefore(today)) {
+                            disableView()
+                            btn_show_date_picker.isEnabled = false
+                            edit_event_info.isEnabled = false
+                        }
+                    }
                 }
-            }
+            }?: yoilCheck(targetDate!!.dayOfWeek.value.toDayOfWeek())
         }
 
         return AlertDialog.Builder(requireContext())
@@ -261,7 +269,12 @@ class CalendarFragment : Fragment() {
                     context.inputMethodManager.hideSoftInputFromWindow(dialog.windowToken, 0)
                 }
                 show()
-                getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+                getButton(AlertDialog.BUTTON_NEUTRAL).apply {
+                    schedule?.let {
+                        if(!it.everyWeek && it.startDate!!.toLocalDate().isBefore(today)) {
+                            isEnabled = false
+                        }
+                    } }.setOnClickListener {
                     dialog.run {
                         if (txt_title.text.trim().isBlank())
                             mainViewModel.toastLiveData.postValue("일정 제목을 입력하세요.")
