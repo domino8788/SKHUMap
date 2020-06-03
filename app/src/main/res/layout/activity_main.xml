@@ -20,14 +20,9 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_bottom_sheet_border"
         android:orientation="vertical"
-        android:fillViewport="true"
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/main_menu_size"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        app:layout_behavior="@string/bottom_sheet_behavior">
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/main_tab_layout"
                 android:layout_width="match_parent"
@@ -39,15 +34,6 @@
                 app:tabIndicatorAnimationDuration="0"
                 app:tabIndicatorFullWidth="false"
                 app:tabMode="fixed" />
-            <com.domino.skhumap.view.ScrollunableViewPager
-                android:id="@+id/main_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="true"
-                android:paddingTop="@dimen/fragment_in_view_pager_padding"
-                android:paddingHorizontal="@dimen/fragment_in_view_pager_padding"
-                />
-        </LinearLayout>
     </com.domino.skhumap.view.MultipleLevelBottomSheetView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
