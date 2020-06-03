@@ -154,7 +154,7 @@ class CalendarFragment : Fragment() {
                     txt_date.text = "기간 : ${targetDate.toString()} ~ ${year}-${if((month+1)<10) "0" else ""}${month+1}-${dayOfMonth}"
                 }, selectedDate!!.year, targetDate!!.monthValue-1, targetDate!!.dayOfMonth).apply {
                     datePicker.minDate = targetDate!!.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
-                    setMessage("시작 날짜 : ${targetDate.toString()}\n마감 날짜를 선택하세요.")
+                    setMessage("시작 날짜 : $targetDate\n마감 날짜를 선택하세요.")
                     show()
                 }
             }
@@ -285,13 +285,16 @@ class CalendarFragment : Fragment() {
                         else if (check_every_week.isChecked && endDate == null)
                             mainViewModel.toastLiveData.postValue("반복 할 기간을 선택하세요.")
                         else {
+                            /* 매주반복 일정에서 당일 일정으로 변경 시 기존 요일 정보를 비우고 당일 정보만 넣는다. */
                             if(!check_every_week.isChecked) {
                                 yoilList.clear()
                                 yoilList.add(targetDate!!.dayOfWeek.value.toDayOfWeek())
                             }
+                            /* 수정 시 기존 일정을 삭제 */
                             schedule?.let {
                                 deleteEvent(it, false)
                             }
+                            /* 새 일정을 저장 */
                             saveEvent(Schedule(schedule?.let {
                                         if (schedule.type == Schedule.TYPE_STUDENT_SCHEDULE)
                                             Schedule.TYPE_EDIT_STUDENT_SCHEDULE
