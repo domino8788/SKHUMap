@@ -59,10 +59,10 @@ class CalendarFragment : Fragment() {
         getInputDialog(it)
     }
 
-    fun termToString(startHourOfDay:Int, startMinute:Int, endHourOfDay:Int, endMinute: Int) =
-        "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute!! < 10) "0${startMinute}" else startMinute} ~ ${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute!! < 10) "0${endMinute}" else endMinute}"
+    private fun termToString(startHourOfDay:Int, startMinute:Int, endHourOfDay:Int, endMinute: Int):String =
+        "${if (startHourOfDay < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute < 10) "0${startMinute}" else startMinute} ~ ${if (endHourOfDay < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute < 10) "0${endMinute}" else endMinute}"
 
-    fun getInputDialog(schedule: Schedule? = null):AlertDialog {
+    private fun getInputDialog(schedule: Schedule? = null):AlertDialog {
         val targetDate = schedule?.startDate?.toLocalDate()?:selectedDate
         var startHourOfDay:Int?=null
         var startMinute:Int?=null
@@ -152,8 +152,8 @@ class CalendarFragment : Fragment() {
                 DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     endDate = LocalDate.of(year, month+1, dayOfMonth)
                     txt_date.text = "기간 : ${targetDate.toString()} ~ ${year}-${if((month+1)<10) "0" else ""}${month+1}-${dayOfMonth}"
-                }, selectedDate!!.year, targetDate!!.monthValue-1, targetDate!!.dayOfMonth).apply {
-                    datePicker.minDate = targetDate!!.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+                }, selectedDate!!.year, targetDate!!.monthValue-1, targetDate.dayOfMonth).apply {
+                    datePicker.minDate = targetDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
                     setMessage("시작 날짜 : $targetDate\n마감 날짜를 선택하세요.")
                     show()
                 }
