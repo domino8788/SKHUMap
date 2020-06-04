@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.Handler
 import android.webkit.*
 import androidx.lifecycle.*
 import com.domino.skhumap.repository.FirestoreHelper
@@ -179,7 +180,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                     when (action) {
                         Action.LOGIN -> {
                             status = Status.LOGIN_SEQUENCE
-                            view.loadUrl("http://sam.skhu.ac.kr")
+                            Handler().postDelayed({ view.loadUrl("http://sam.skhu.ac.kr") }, 500)
                         }
                     }
                 }
