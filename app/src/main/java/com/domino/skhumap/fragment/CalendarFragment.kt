@@ -496,11 +496,6 @@ class CalendarFragment : Fragment() {
             val newHeight = if (monthToWeek) oneWeekHeight else oneMonthHeight
 
             val animator = ValueAnimator.ofInt(oldHeight, newHeight)
-            animator.addUpdateListener { animator ->
-                calendar_view.layoutParams = calendar_view.layoutParams.apply {
-                    height = animator.animatedValue as Int
-                }
-            }
             animator.doOnStart {
                 if (!monthToWeek) {
                     calendar_view.inDateStyle = InDateStyle.ALL_MONTHS
