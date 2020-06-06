@@ -60,7 +60,9 @@ class CalendarFragment : Fragment() {
     }
 
     private fun termToString(startHourOfDay:Int, startMinute:Int, endHourOfDay:Int, endMinute: Int):String =
-        "${if (startHourOfDay < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute < 10) "0${startMinute}" else startMinute} ~ ${if (endHourOfDay < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute < 10) "0${endMinute}" else endMinute}"
+        "${timeToString(startHourOfDay)}:${timeToString(startMinute)} ~ ${timeToString(endHourOfDay)}:${timeToString(endMinute)}"
+
+    private fun timeToString(time:Int) = if(time < 10) "0${time}" else time
 
     private fun getInputDialog(schedule: Schedule? = null):AlertDialog {
         val targetDate = schedule?.startDate?.toLocalDate()?:selectedDate
@@ -139,7 +141,7 @@ class CalendarFragment : Fragment() {
                             mainViewModel.toastLiveData.postValue("마감 시간은 시작 시간 보다 나중이어야 합니다.")
                         }
                     }, sHourOfDay, sMinute, false).apply {
-                        setMessage("시작 시간 : $sHourOfDay:$sMinute\n마감 시간 선택")
+                        setMessage("시작 시간 : ${timeToString(sHourOfDay)}:${timeToString(sMinute)}\n마감 시간 선택")
                         show()
                     }
                 }, 0, 0, false).apply {
@@ -151,7 +153,7 @@ class CalendarFragment : Fragment() {
                 context.inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
                 DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     endDate = LocalDate.of(year, month+1, dayOfMonth)
-                    txt_date.text = "기간 : ${targetDate.toString()} ~ ${year}-${if((month+1)<10) "0" else ""}${month+1}-${dayOfMonth}"
+                    txt_date.text = "기간 : $targetDate ~ $endDate"
                 }, selectedDate!!.year, targetDate!!.monthValue-1, targetDate.dayOfMonth).apply {
                     datePicker.minDate = targetDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
                     setMessage("시작 날짜 : $targetDate\n마감 날짜를 선택하세요.")
@@ -312,8 +314,8 @@ class CalendarFragment : Fragment() {
                                     check_every_week.isChecked,
                                     "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:00",
                                     "${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:00",
-                                    "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:${if (startMinute!! < 10) "0${startMinute}" else startMinute}",
-                                    "${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:${if (endMinute!! < 10) "0${endMinute}" else endMinute}"
+                                    "${timeToString(startHourOfDay!!)}:${timeToString(endHourOfDay!!)}",
+                                    "${timeToString(endHourOfDay!!)}:${timeToString(endMinute!!)}"
                                 ).apply { schedule?.let { this.id = it.id } })
                             this@apply.dismiss()
                         }
