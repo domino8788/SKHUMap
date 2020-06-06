@@ -593,7 +593,8 @@ class CalendarFragment : Fragment() {
             (date.isAfter(schedule.startDate!!.toLocalDate()) || date.isEqual(schedule.startDate!!.toLocalDate()))
                     && (date.isBefore(schedule.endDate!!.toLocalDate()) || date.isEqual(schedule.endDate!!.toLocalDate()))
             //schedule.startDate!!.toLocalDate().toString() <= day.date.toString() && schedule.endDate!!.toLocalDate().toString() >= day.date.toString()
-        }.sortedBy { schedule -> schedule.frTm })
+        })
+        eventsAdapter.events.sortBy { schedule -> schedule.frTm }
         eventsAdapter.notifyDataSetChanged()
         txt_selected_date.text = selectionFormatter.format(date)
     }
