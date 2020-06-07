@@ -314,7 +314,7 @@ class CalendarFragment : Fragment() {
                                     check_every_week.isChecked,
                                     "${if (startHourOfDay!! < 10) "0${startHourOfDay}" else startHourOfDay}:00",
                                     "${if (endHourOfDay!! < 10) "0${endHourOfDay}" else endHourOfDay}:00",
-                                    "${timeToString(startHourOfDay!!)}:${timeToString(endHourOfDay!!)}",
+                                    "${timeToString(startHourOfDay!!)}:${timeToString(startMinute!!)}",
                                     "${timeToString(endHourOfDay!!)}:${timeToString(endMinute!!)}"
                                 ).apply { schedule?.let { this.id = it.id } })
                             this@apply.dismiss()
