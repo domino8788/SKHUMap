@@ -1,18 +1,16 @@
 package com.domino.skhumap.repository
 
-import com.domino.skhumap.vo.CurrentHaggi
+import com.domino.skhumap.vo.CurrentHaggiResponse
 import com.domino.skhumap.vo.Haggi
-import com.domino.skhumap.vo.StudentSchedule
+import com.domino.skhumap.vo.ScheduleResponse
+import com.domino.skhumap.vo.TargetFacility
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 object RetrofitHelper {
     private val gson = GsonBuilder().setLenient().create()
@@ -38,7 +36,7 @@ interface RetrofitService {
         @Body haggi: Haggi,
         @Header("RequestVerificationToken") token: String,
         @Header("Cookie") cookie: String
-    ): Call<StudentSchedule>
+    ): Call<ScheduleResponse>
 
     @Headers(
         "content-type: application/json;charset=UTF-8",
@@ -48,5 +46,16 @@ interface RetrofitService {
     fun getYyHaggi(
         @Header("RequestVerificationToken") token: String,
         @Header("Cookie") cookie: String
-    ): Call<CurrentHaggi>
+    ): Call<CurrentHaggiResponse>
+
+    @Headers(
+        "content-type: application/json;charset=UTF-8",
+        "X-Requested-With: XMLHttpRequest"
+    )
+    @POST("/SSE/SSEAD/SSEAD01_GetList")
+    fun getFacilityScheduleList(
+        @Body targetFacility: TargetFacility,
+        @Header("RequestVerificationToken") token: String,
+        @Header("Cookie") cookie: String
+    ): Call<ScheduleResponse>
 }
