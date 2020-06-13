@@ -2,7 +2,7 @@ package com.domino.skhumap.vo
 
 import com.google.gson.annotations.SerializedName
 
-data class StudentSchedule(
+data class ScheduleResponse(
     @SerializedName("DAT")
     val schedules:List<Lecture>,
     @SerializedName("MSG")
