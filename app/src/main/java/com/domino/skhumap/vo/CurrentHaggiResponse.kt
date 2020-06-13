@@ -2,7 +2,7 @@ package com.domino.skhumap.vo
 
 import com.google.gson.annotations.SerializedName
 
-data class CurrentHaggi(
+data class CurrentHaggiResponse(
     @SerializedName("DAT")
     val haggi:Haggi,
     @SerializedName("MSG")
