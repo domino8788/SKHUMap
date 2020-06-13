@@ -13,7 +13,7 @@ import com.domino.skhumap.utils.toLocalDate
 import com.domino.skhumap.utils.yoilToNumber
 import com.domino.skhumap.vo.Haggi
 import com.domino.skhumap.vo.Lecture
-import com.domino.skhumap.vo.StudentSchedule
+import com.domino.skhumap.vo.ScheduleResponse
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -155,7 +155,7 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
                 Status.SCHEDULE_SEQUENCE -> {
                     val networkService = RetrofitHelper.studentScheduleRetrofit.create(RetrofitService::class.java)
                     view.evaluateJavascript("document.getElementsByTagName(\"body\")[0].attributes[\"ncg-request-verification-token\"].value") {
-                        var result:StudentSchedule? = null
+                        var result:ScheduleResponse? = null
                         GlobalScope.launch {
                             var retry = false
                             do{
