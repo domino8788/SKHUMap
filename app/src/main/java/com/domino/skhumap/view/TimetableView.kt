@@ -27,6 +27,24 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
     var stickers: HashMap<Int, Sticker> = HashMap<Int, Sticker>()
     private var stickerCount = -1
 
+    private fun setStickerColor() {
+        val size = stickers.size
+        val orders = IntArray(size)
+        var i = 0
+        for (key in stickers.keys) {
+            orders[i++] = key
+        }
+        Arrays.sort(orders)
+        val colorSize = stickerColors.size
+        i = 0
+        while (i < size) {
+            for (v in stickers[orders[i]]!!.view) {
+                v.setBackgroundColor(Color.parseColor(stickerColors[i % colorSize]))
+            }
+            i++
+        }
+    }
+
     private fun getAttrs(attrs: AttributeSet?) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.TimetableView)
         rowCount = a.getInt(
