@@ -2,7 +2,10 @@ package com.domino.skhumap.view
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.Gravity
 import android.widget.*
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.Sticker
@@ -77,6 +80,35 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
             DEFAULT_START_TIME
         )
         a.recycle()
+    }
+
+    private fun createTable() {
+        createTableHeader()
+        for (i in 0 until rowCount) {
+            val tableRow = TableRow(context)
+            tableRow.layoutParams = createTableLayoutParam()
+            for (k in 0 until columnCount) {
+                val tv = TextView(context)
+                tv.layoutParams = createTableRowParam(cellHeight)
+                if (k == 0) {
+                    tv.text = getHeaderTime(i)
+                    tv.setTextColor(resources.getColor(R.color.colorHeaderText))
+                    tv.setTextSize(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        DEFAULT_SIDE_HEADER_FONT_SIZE_DP.toFloat()
+                    )
+                    tv.setBackgroundColor(resources.getColor(R.color.colorHeader))
+                    tv.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+                    tv.layoutParams = createTableRowParam(sideCellWidth, cellHeight)
+                } else {
+                    tv.text = ""
+                    tv.background = resources.getDrawable(R.drawable.bg_timetable_border)
+                    tv.gravity = Gravity.RIGHT
+                }
+                tableRow.addView(tv)
+            }
+            tableBox!!.addView(tableRow)
+        }
     }
 
     companion object {
