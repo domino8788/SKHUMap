@@ -143,6 +143,12 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
         return (size.x - paddingLeft - paddingRight - sideCellWidth) / (columnCount - 1)
     }
 
+    private fun calStickerHeightPx(schedule: TimetableSchedule): Int {
+        val startTopPx = calStickerTopPxByTime(schedule.startTime)
+        val endTopPx = calStickerTopPxByTime(schedule.endTime)
+        return endTopPx - startTopPx
+    }
+
 
     private fun createStickerParam(schedule: TimetableSchedule): RelativeLayout.LayoutParams {
         val cellW = calCellWidth()
