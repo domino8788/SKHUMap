@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.widget.*
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.Sticker
+import com.domino.skhumap.dto.Time
 import com.domino.skhumap.dto.TimetableSchedule
 import java.util.*
 
@@ -149,6 +150,7 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
         return endTopPx - startTopPx
     }
 
+    private fun calStickerTopPxByTime(time: Time): Int = (time.hour - startTime) * cellHeight + (time.minute / 60.0f * cellHeight).toInt()
 
     private fun createStickerParam(schedule: TimetableSchedule): RelativeLayout.LayoutParams {
         val cellW = calCellWidth()
