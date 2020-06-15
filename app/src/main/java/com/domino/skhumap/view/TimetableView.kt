@@ -169,6 +169,10 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
 
     private fun createTableLayoutParam(): TableLayout.LayoutParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT)
 
+    private fun createTableRowParam(h_px: Int): TableRow.LayoutParams = TableRow.LayoutParams(calCellWidth(), h_px)
+
+    private fun createTableRowParam(w_px: Int, h_px: Int): TableRow.LayoutParams = TableRow.LayoutParams(w_px, h_px)
+
     companion object {
         private const val DEFAULT_ROW_COUNT = 17
         private const val DEFAULT_COLUMN_COUNT = 6
