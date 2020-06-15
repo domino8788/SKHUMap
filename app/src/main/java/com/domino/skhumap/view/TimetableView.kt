@@ -192,6 +192,41 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
 
     private fun getHeaderTime(i: Int): String = ((startTime + i) % 25).toString()
 
+    private fun onCreateByBuilder(builder: Builder) {
+        rowCount = builder.rowCount
+        columnCount = builder.columnCount
+        cellHeight = builder.cellHeight
+        headerCellHeight = builder.headerCellHeight
+        sideCellWidth = builder.sideCellWidth
+        headerTitle = builder.headerTitle
+        stickerColors = builder.stickerColors
+        startTime = builder.startTime
+        init()
+    }
+
+    internal class Builder(private val context: Context) {
+        var rowCount: Int = DEFAULT_ROW_COUNT
+        var columnCount: Int = DEFAULT_COLUMN_COUNT
+        var cellHeight: Int = dp2Px(DEFAULT_CELL_HEIGHT_DP)
+            set(dp) {
+                field = dp2Px(dp)
+            }
+        var headerCellHeight:Int = dp2Px(DEFAULT_HEADER_CELL_HEIGHT_DP)
+            set(dp) {
+                field = dp2Px(dp)
+            }
+        var sideCellWidth: Int = dp2Px(DEFAULT_SIDE_CELL_WIDTH_DP)
+            set(dp){
+                field = dp2Px(dp)
+            }
+        var headerTitle: Array<String> = context.resources.getStringArray(R.array.header_title)
+        var stickerColors: Array<String> = context.resources.getStringArray(R.array.default_sticker_color)
+        var startTime: Int = DEFAULT_START_TIME
+
+        fun build(): TimetableView = TimetableView(context).also { it.onCreateByBuilder(this) }
+
+    }
+
     companion object {
         private const val DEFAULT_ROW_COUNT = 17
         private const val DEFAULT_COLUMN_COUNT = 6
