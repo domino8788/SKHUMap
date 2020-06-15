@@ -1,8 +1,10 @@
 package com.domino.skhumap.view
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Point
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -133,6 +135,14 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
         }
         tableHeader!!.addView(tableRow)
     }
+
+    private fun calCellWidth(): Int {
+        val display = (context as Activity).windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        return (size.x - paddingLeft - paddingRight - sideCellWidth) / (columnCount - 1)
+    }
+
 
     private fun createStickerParam(schedule: TimetableSchedule): RelativeLayout.LayoutParams {
         val cellW = calCellWidth()
