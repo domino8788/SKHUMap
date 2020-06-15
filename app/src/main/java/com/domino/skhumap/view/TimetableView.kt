@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -49,6 +51,31 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
         tableHeader = view.table_header
         tableBox = view.table_box
         createTable()
+    }
+
+    fun add(schedule: TimetableSchedule) {
+        add(schedule, -1)
+    }
+
+    private fun add(schedule: TimetableSchedule, specIdx: Int) {
+        val count = if (specIdx < 0) ++stickerCount else specIdx
+        val sticker = Sticker()
+        val tv = TextView(context).apply { ellipsize = TextUtils.TruncateAt.END }
+        val param = createStickerParam(schedule)
+        tv.layoutParams = param
+        tv.setPadding(10, 0, 10, 0)
+        tv.text = schedule.toString()
+        tv.setTextColor(Color.parseColor("#FFFFFF"))
+        tv.setTextSize(
+            TypedValue.COMPLEX_UNIT_DIP,
+            DEFAULT_STICKER_FONT_SIZE_DP.toFloat()
+        )
+        tv.setTypeface(null, Typeface.BOLD)
+        sticker.addTextView(tv)
+        sticker.addSchedule(schedule)
+        stickers[count] = sticker
+        stickerBox!!.addView(tv)
+        setStickerColor()
     }
 
     private fun setStickerColor() {
