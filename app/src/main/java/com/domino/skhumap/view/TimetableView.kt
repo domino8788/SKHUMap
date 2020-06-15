@@ -16,6 +16,7 @@ import com.domino.skhumap.R
 import com.domino.skhumap.dto.Sticker
 import com.domino.skhumap.dto.Time
 import com.domino.skhumap.dto.TimetableSchedule
+import com.domino.skhumap.vo.Lecture
 import kotlinx.android.synthetic.main.inner_table.view.*
 import kotlinx.android.synthetic.main.table_header.view.*
 import kotlinx.android.synthetic.main.view_timetable.view.*
@@ -75,6 +76,16 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
         sticker.addSchedule(schedule)
         stickers[count] = sticker
         stickerBox!!.addView(tv)
+        setStickerColor()
+    }
+
+    fun load(schedules: List<Lecture>) {
+        var maxKey = 0
+        schedules.groupBy(Lecture::times).values.forEachIndexed { key, sameSchedules->
+            add(TimetableSchedule(*sameSchedules.toTypedArray()), key)
+            if (maxKey < key) maxKey = key
+        }
+        stickerCount = maxKey + 1
         setStickerColor()
     }
 
