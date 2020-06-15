@@ -111,6 +111,29 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
         }
     }
 
+    private fun createTableHeader() {
+        val tableRow = TableRow(context)
+        tableRow.layoutParams = createTableLayoutParam()
+        for (i in 0 until columnCount) {
+            val tv = TextView(context)
+            if (i == 0) {
+                tv.layoutParams = createTableRowParam(sideCellWidth, headerCellHeight)
+            } else {
+                tv.layoutParams = createTableRowParam(headerCellHeight)
+            }
+            tv.setTextColor(resources.getColor(R.color.colorHeaderText))
+            tv.setTextSize(
+                TypedValue.COMPLEX_UNIT_DIP,
+                DEFAULT_HEADER_FONT_SIZE_DP.toFloat()
+            )
+            tv.text = headerTitle[i]
+            tv.gravity = Gravity.CENTER
+            tableRow.addView(tv)
+        }
+        tableHeader!!.addView(tableRow)
+    }
+
+
     companion object {
         private const val DEFAULT_ROW_COUNT = 17
         private const val DEFAULT_COLUMN_COUNT = 6
