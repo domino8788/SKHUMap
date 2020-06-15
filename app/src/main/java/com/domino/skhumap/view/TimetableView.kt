@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.widget.*
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.Sticker
+import com.domino.skhumap.dto.TimetableSchedule
 import java.util.*
 
 
@@ -131,6 +132,21 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
             tableRow.addView(tv)
         }
         tableHeader!!.addView(tableRow)
+    }
+
+    private fun createStickerParam(schedule: TimetableSchedule): RelativeLayout.LayoutParams {
+        val cellW = calCellWidth()
+        val param =
+            RelativeLayout.LayoutParams(cellW, calStickerHeightPx(schedule))
+        param.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+        param.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+        param.setMargins(
+            sideCellWidth + cellW * schedule.day,
+            calStickerTopPxByTime(schedule.startTime),
+            0,
+            0
+        )
+        return param
     }
 
 
