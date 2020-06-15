@@ -167,6 +167,7 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
         return param
     }
 
+    private fun createTableLayoutParam(): TableLayout.LayoutParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT)
 
     companion object {
         private const val DEFAULT_ROW_COUNT = 17
