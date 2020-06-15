@@ -5,6 +5,14 @@
         <item>캘린더</item>
         <item>마이페이지</item>
     </string-array>
+    <string-array name="header_title">
+        <item></item>
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+    </string-array>
     <string name="studentNumber">학번</string>
     <string name="password">비밀번호</string>
 
