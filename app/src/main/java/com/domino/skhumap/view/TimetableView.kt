@@ -190,6 +190,8 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
 
     private fun createTableRowParam(w_px: Int, h_px: Int): TableRow.LayoutParams = TableRow.LayoutParams(w_px, h_px)
 
+    private fun getHeaderTime(i: Int): String = ((startTime + i) % 25).toString()
+
     companion object {
         private const val DEFAULT_ROW_COUNT = 17
         private const val DEFAULT_COLUMN_COUNT = 6
