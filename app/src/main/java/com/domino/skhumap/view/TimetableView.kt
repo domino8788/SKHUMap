@@ -8,11 +8,15 @@ import android.graphics.Point
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.widget.*
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.Sticker
 import com.domino.skhumap.dto.Time
 import com.domino.skhumap.dto.TimetableSchedule
+import kotlinx.android.synthetic.main.inner_table.view.*
+import kotlinx.android.synthetic.main.table_header.view.*
+import kotlinx.android.synthetic.main.view_timetable.view.*
 import java.util.*
 
 
@@ -33,6 +37,19 @@ class TimetableView(@get:JvmName("getContext_")val context: Context, attrs: Attr
     var tableBox: TableLayout? = null
     var stickers: HashMap<Int, Sticker> = HashMap<Int, Sticker>()
     private var stickerCount = -1
+
+    init {
+        getAttrs(attrs)
+        init()
+    }
+
+    private fun init() {
+        val view: View = View.inflate(context, R.layout.view_timetable, this)
+        stickerBox = view.sticker_box
+        tableHeader = view.table_header
+        tableBox = view.table_box
+        createTable()
+    }
 
     private fun setStickerColor() {
         val size = stickers.size
