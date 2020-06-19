@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
 import com.domino.skhumap.contract.Code
+import com.domino.skhumap.fragment.FacilityInfoFragment
 import com.domino.skhumap.model.*
 import com.domino.skhumap.repository.FirestoreHelper
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
@@ -114,16 +115,20 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onBackPressed() {
-            if ( mapViewModel.selectedDepartment!= null) {
-                mapViewModel.selectedDepartment = null
-            } else {
-                if (doubleBackToExitPressedOnce) {
-                    return super.onBackPressed()
-                }
-                doubleBackToExitPressedOnce = true
-                Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-                Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+        if(supportFragmentManager.findFragmentByTag(FacilityInfoFragment.TAG) != null){
+            mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HALF_EXPANDED)
+            return super.onBackPressed()
+        }
+        else if (mapViewModel.selectedDepartment != null) {
+            mapViewModel.selectedDepartment = null
+        } else {
+            if (doubleBackToExitPressedOnce) {
+                return super.onBackPressed()
             }
+            doubleBackToExitPressedOnce = true
+            Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+            Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
