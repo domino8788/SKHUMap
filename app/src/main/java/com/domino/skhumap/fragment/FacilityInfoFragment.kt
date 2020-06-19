@@ -11,7 +11,6 @@ import com.domino.skhumap.R
 import com.domino.skhumap.dto.SearchableFacility
 import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
-import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import kotlinx.android.synthetic.main.fragment_facility_info.view.*
 
 class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment() {
@@ -30,11 +29,11 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java].apply {
-            selectedFacilityInfoLiveData.observe(requireActivity(), Observer { lectureList ->
+        mapViewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java].apply {
+            selectedFacilityInfoLiveData.observe(viewLifecycleOwner, Observer { lectureList ->
                 view.fragment_facility_info_timetable.load(lectureList)
             })
-            selectedFacilityLiveData.observe(requireActivity(), Observer { searchableFacility ->
+            selectedFacilityLiveData.observe(viewLifecycleOwner, Observer { searchableFacility ->
                 mainViewModel.requestHttp(getSelectedFacilityInfo(searchableFacility.facility.id))
             })
             selectedFacilityLiveData.postValue(facility)
