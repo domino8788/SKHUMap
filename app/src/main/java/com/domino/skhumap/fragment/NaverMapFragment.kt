@@ -253,7 +253,20 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         mapViewModel.selectedDepartment = facility
                     }
                     else {
-                        mapViewModel.touchMarkerLiveData.postValue(mapViewModel.getCurrentSelectToSearchableFacility(facility))
+                        val fm = requireActivity().supportFragmentManager
+                        if(fm.findFragmentByTag(FacilityInfoFragment.TAG) == null) {
+                            val fragment = FacilityInfoFragment(mapViewModel.getCurrentSelectToSearchableFacility(facility))
+                            mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HIDDEN)
+                            fm.beginTransaction()
+                                .setCustomAnimations(
+                                    R.anim.slide_in_up,
+                                    R.anim.fade_out,
+                                    R.anim.fade_in,
+                                    R.anim.slide_out_down)
+                                .add(R.id.main_layout, fragment, FacilityInfoFragment.TAG)
+                                .addToBackStack(null)
+                                .commit()
+                        }
                     }
                     false
                 }
