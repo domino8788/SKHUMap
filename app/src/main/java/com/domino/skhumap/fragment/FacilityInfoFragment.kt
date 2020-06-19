@@ -15,6 +15,9 @@ import com.domino.skhumap.view.MultipleLevelBottomSheetView
 import kotlinx.android.synthetic.main.fragment_facility_info.view.*
 
 class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment() {
+    companion object {
+        const val TAG = "FacilityInfoFragment"
+    }
     private lateinit var mapViewModel: MapViewModel
     private lateinit var mainViewModel: MainViewModel
 
@@ -29,7 +32,6 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         mapViewModel = ViewModelProvider(this)[MapViewModel::class.java].apply {
             selectedFacilityInfoLiveData.observe(requireActivity(), Observer { lectureList ->
-                mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HIDDEN)
                 view.fragment_facility_info_timetable.load(lectureList)
             })
             selectedFacilityLiveData.observe(requireActivity(), Observer { searchableFacility ->
