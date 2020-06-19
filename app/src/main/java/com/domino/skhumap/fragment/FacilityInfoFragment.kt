@@ -29,7 +29,7 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        mapViewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java].apply {
+        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java].apply {
             selectedFacilityInfoLiveData.observe(viewLifecycleOwner, Observer { lectureList ->
                 view.fragment_facility_info_timetable.load(lectureList)
             })
