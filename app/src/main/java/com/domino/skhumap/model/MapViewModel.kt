@@ -54,7 +54,7 @@ class MapViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun query(target: CollectionReference) {
         mapListener?.remove()
-        previousFacilitiesLiveData.postValue(facilities)
+        previousFacilitiesLiveData.value = facilities
         facilities = mutableListOf()
         mapListener = target.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             try {
