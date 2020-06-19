@@ -122,9 +122,6 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                 }
             })
 
-            touchMarkerLiveData.observe(requireActivity(), Observer { searchableFacility ->
-                favoritesViewModel.insert(searchableFacility)
-            })
         }
 
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
