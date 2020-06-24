@@ -41,6 +41,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
     private val groundOverlay by lazy { GroundOverlay() }
     private val defaultZoom = 18.5
     private val defaultCampusImageBearing = 67.5
+    private val typeList = listOf(0,1,2,3,4,5,14,15,16,17)
     private lateinit var mapViewModel:MapViewModel
     private lateinit var searchViewModel:SearchViewModel
     private lateinit var mainViewModel: MainViewModel
@@ -254,7 +255,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                     }
                     else {
                         val fm = requireActivity().supportFragmentManager
-                        if(fm.findFragmentByTag(FacilityInfoFragment.TAG) == null) {
+                        if(fm.findFragmentByTag(FacilityInfoFragment.TAG) == null && facility.type in typeList) {
                             val fragment = FacilityInfoFragment(mapViewModel.getCurrentSelectToSearchableFacility(facility))
                             mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HIDDEN)
                             fm.beginTransaction()
