@@ -62,6 +62,17 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
             android.R.id.home -> {
                 requireActivity().onBackPressed()
             }
+            R.id.fragment_facility_info_is_favorites -> {
+                favoritesViewModel.run {
+                    if(isExists(facility)){
+                        remove(facility)
+                        item.icon = resources.getDrawable(R.drawable.ic_favorite_border_black_24dp)
+                    } else {
+                        insert(facility)
+                        item.icon = resources.getDrawable(R.drawable.ic_favorite_black_24dp)
+                    }
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }
