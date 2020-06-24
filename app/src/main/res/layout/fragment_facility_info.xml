@@ -6,6 +6,15 @@
     android:orientation="vertical"
     android:clickable="true"
     android:id="@+id/fragment_facility_info_container">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/fragment_facility_info_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f2f2f2"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:minHeight="?attr/actionBarSize"/>
+
     <com.domino.skhumap.view.TimetableView
         android:id="@+id/fragment_facility_info_timetable"
         android:layout_width="match_parent"
