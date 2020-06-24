@@ -57,4 +57,12 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
             else resources.getDrawable(R.drawable.ic_favorite_border_black_24dp)
         super.onCreateOptionsMenu(menu, inflater)
     }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                requireActivity().onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
