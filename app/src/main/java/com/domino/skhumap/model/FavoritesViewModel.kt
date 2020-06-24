@@ -28,6 +28,13 @@ class FavoritesViewModel : ViewModel() {
             }
         }
     }
+    fun remove(searchableFavorites: SearchableFacility) {
+        if(favorites.contains(searchableFavorites)) {
+            favorites.remove(searchableFavorites)
+            favoritesLiveData.postValue(favorites)
+            searchableFavorites.toReference().delete()
+        }
+    }
 
     fun query() {
         favoritesReference.orderBy("index").get().addOnCompleteListener { task ->
