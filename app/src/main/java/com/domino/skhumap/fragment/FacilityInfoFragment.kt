@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.SearchableFacility
+import com.domino.skhumap.model.FavoritesViewModel
 import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
 import kotlinx.android.synthetic.main.fragment_facility_info.view.*
@@ -19,6 +20,7 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
     }
     private lateinit var mapViewModel: MapViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var favoritesViewModel: FavoritesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,5 +40,6 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
             })
             selectedFacilityLiveData.postValue(facility)
         }
+        favoritesViewModel = ViewModelProvider(requireActivity())[FavoritesViewModel::class.java]
     }
 }
