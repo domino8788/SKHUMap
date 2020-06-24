@@ -73,4 +73,5 @@ class FavoritesViewModel : ViewModel() {
         favoritesLiveData.postValue(favorites)
     }
 
+    fun isExists(searchableFacility: SearchableFacility) = favorites.contains(searchableFacility)
 }
