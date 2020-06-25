@@ -23,6 +23,8 @@ class FavoritesView(@get:JvmName("getContext_")val context: Context, attrs: Attr
     private lateinit var favoritesList:ArrayList<SearchableFacility>
     init {
         view = View.inflate(context, R.layout.view_favorites, this).also {view ->
+            view.favorites_progress_bar.visibility = View.VISIBLE
+            view.btn_edit.isEnabled = false
             view.list_facility.run {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 val radius = resources.getDimensionPixelSize(R.dimen.radius);
@@ -38,6 +40,8 @@ class FavoritesView(@get:JvmName("getContext_")val context: Context, attrs: Attr
     }
     fun notifyDataSetChanged() {
         list_facility?.run {
+            view.favorites_progress_bar.visibility = View.GONE
+            view.btn_edit.isEnabled = true
             adapter?.notifyDataSetChanged()
             smoothScrollToPosition((favoritesList.size - 1) / 4)
         }
