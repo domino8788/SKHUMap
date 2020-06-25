@@ -49,11 +49,23 @@ class FacilityFragment() : Fragment() {
                 list_facility?.adapter?.notifyDataSetChanged()
                 list_facility?.smoothScrollToPosition((it.size-1)/4)
             })
+            view.favorites_view.setOnEditButtonClickListener { list->
+                val fm = requireActivity().supportFragmentManager
+                if(fm.findFragmentByTag(EditFavoritesFragment.TAG) == null) {
+                    val fragment = EditFavoritesFragment(list)
+                    mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HIDDEN)
+                    fm.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.slide_in_up,
+                            R.anim.fade_out,
+                            R.anim.fade_in,
+                            R.anim.slide_out_down)
+                        .add(R.id.main_layout, fragment, EditFavoritesFragment.TAG)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
             query()
         }
-
-        btn_edit.setOnClickListener { startActivityForResult(Intent(context, EditFavoritesActivity::class.java).apply {
-            putParcelableArrayListExtra("favorites", favoritesViewModel.favoritesLiveData.value!!)
-        }, Code.REQUEST_EDIT_FAVORITES) }
     }
 }
