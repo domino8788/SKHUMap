@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="false">
-
+    android:layout_height="wrap_content">
     <androidx.cardview.widget.CardView
         style="@style/CardView.Light"
         android:layout_width="match_parent"
@@ -50,7 +48,13 @@
                 tools:listitem="@layout/item_favorites_list"
                 tools:orientation="horizontal" />
         </LinearLayout>
-
+        <ProgressBar
+            android:id="@+id/favorites_progress_bar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
     </androidx.cardview.widget.CardView>
 
 </FrameLayout>
