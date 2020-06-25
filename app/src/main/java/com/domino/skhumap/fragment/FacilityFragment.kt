@@ -1,6 +1,5 @@
 package com.domino.skhumap.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,19 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import com.domino.skhumap.R
-import com.domino.skhumap.activity.EditFavoritesActivity
 import com.domino.skhumap.adapter.FavoritesListAdapter
-import com.domino.skhumap.contract.Code
 import com.domino.skhumap.model.FavoritesViewModel
+import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
-import kotlinx.android.synthetic.main.fragment_facility.*
+import com.domino.skhumap.view.MultipleLevelBottomSheetView
+import kotlinx.android.synthetic.main.fragment_facility.view.*
 
 class FacilityFragment() : Fragment() {
-
     private lateinit var favoritesViewModel: FavoritesViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var mapViewModel : MapViewModel
 
     override fun onCreateView(
@@ -31,23 +28,14 @@ class FacilityFragment() : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        favoritesViewModel = ViewModelProvider(requireActivity())[FavoritesViewModel::class.java]
         mapViewModel = ViewModelProvider(requireActivity())[MapViewModel::class.java]
-
-        favoritesViewModel.run {
-            list_facility.run {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = FavoritesListAdapter(favoritesViewModel.favoritesLiveData.value!!, mapViewModel)
-
-                val radius = resources.getDimensionPixelSize(R.dimen.radius);
-                val dotsHeight = resources.getDimensionPixelSize(R.dimen.dots_height);
-                val color = resources.getColor(R.color.colorAccent);
-                addItemDecoration(FavoritesListAdapter.DotsIndicatorDecoration(radius, radius * 4, dotsHeight, color, color))
-                PagerSnapHelper().attachToRecyclerView(this)
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        favoritesViewModel = ViewModelProvider(requireActivity())[FavoritesViewModel::class.java].apply {
+            view.favorites_view.adapter = FavoritesListAdapter(favoritesLiveData.value!!){favorites->
+                mapViewModel.markMapLivdeData.value = favorites
             }
             favoritesLiveData.observe(requireActivity(), Observer {
-                list_facility?.adapter?.notifyDataSetChanged()
-                list_facility?.smoothScrollToPosition((it.size-1)/4)
+                view.favorites_view.notifyDataSetChanged()
             })
             view.favorites_view.setOnEditButtonClickListener { list->
                 val fm = requireActivity().supportFragmentManager
