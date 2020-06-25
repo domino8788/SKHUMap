@@ -37,6 +37,8 @@ class FavoritesViewModel : ViewModel() {
     }
 
     fun query() {
+        result.clear()
+        delete.clear()
         favoritesReference.orderBy("index").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 task.result!!.toObjects(Favorites::class.java).forEach {
@@ -62,14 +64,10 @@ class FavoritesViewModel : ViewModel() {
         }
     }
 
-    fun updateAll(newFavorites: ArrayList<SearchableFacility>) {
-        favorites.removeAll(newFavorites)
+    fun updateAll() {
         db.runBatch {batch ->
-            favorites.forEach { batch.delete(it.toReference()) }
-            newFavorites.forEachIndexed { index, searchableFacility -> batch.update(searchableFacility.toReference(), mapOf("index" to index)) }
+            favorites.forEachIndexed { index, searchableFacility -> batch.update(searchableFacility.toReference(), mapOf("index" to index)) }
         }
-        favorites.clear()
-        favorites.addAll(newFavorites)
         favoritesLiveData.postValue(favorites)
     }
 
