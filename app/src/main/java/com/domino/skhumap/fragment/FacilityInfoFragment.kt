@@ -13,6 +13,7 @@ import com.domino.skhumap.model.MainViewModel
 import com.domino.skhumap.model.MapViewModel
 import kotlinx.android.synthetic.main.fragment_facility_info.*
 import kotlinx.android.synthetic.main.fragment_facility_info.view.*
+import kotlin.math.absoluteValue
 
 class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment() {
     companion object {
@@ -35,7 +36,7 @@ class FacilityInfoFragment(private val facility: SearchableFacility) : Fragment(
             setSupportActionBar(fragment_facility_info_toolbar)
             supportActionBar?.run {
                 setDisplayHomeAsUpEnabled(true)
-                title = "${facility.department?.name!![0]!!.plus(" "+facility.floorNumber.toString().plus("층 "))?:""}${facility.facility.id}"
+                title = "${facility.department?.name!![0]!!.plus(" "+if(facility.floorNumber>0)"F${facility.floorNumber} " else "B${facility.floorNumber.absoluteValue} ")}${facility.facility.id}"
             }
         }
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
