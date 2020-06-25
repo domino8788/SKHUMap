@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/fragment_in_view_pager_padding"
-    android:layout_marginBottom="@dimen/fragment_in_view_pager_padding"
+    android:paddingHorizontal="@dimen/fragment_in_view_pager_padding"
+    android:paddingBottom="@dimen/fragment_in_view_pager_padding"
+    android:background="@color/white"
     android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/edit_tool_bar"
+        android:id="@+id/fragment_edit_favorites_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="@android:dimen/app_icon_size"
-    />
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        />
     <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/edit_check_box_all_select"
+        android:id="@+id/fragment_edit_check_box_all_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="전체 선택"
         />
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/edit_facility_list"
+        android:id="@+id/fragment_edit_facility_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -27,7 +29,7 @@
         tools:orientation="horizontal"  />
 
     <Button
-        android:id="@+id/edit_btn_delete"
+        android:id="@+id/fragment_edit_btn_delete"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom"
