@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onBackPressed() {
-        if(supportFragmentManager.findFragmentByTag(FacilityInfoFragment.TAG) != null){
+        if(supportFragmentManager.backStackEntryCount!=0){
             mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HALF_EXPANDED)
             return super.onBackPressed()
         }
@@ -129,16 +129,5 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
             Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-            when(resultCode){
-                Code.RESULT_REQUEST_FAVORITES_RENEWAL -> {
-                    data?.let { favoritesViewModel.updateAll(it.getParcelableArrayListExtra("favorites")) }
-                }
-                Code.RESULT_REQUEST_MY_PAGE_RENEWAL -> authViewModel.loadLoginInfo()
-            }
-            true
     }
 }
