@@ -9,11 +9,11 @@ import com.domino.skhumap.dto.SearchableFacility
 import com.google.firebase.firestore.DocumentReference
 
 class FavoritesViewModel : ViewModel() {
-    private val favorites: ArrayList<SearchableFacility> = ArrayList()
+    val favorites: ArrayList<SearchableFacility> = ArrayList()
     private val result: HashMap<Int, SearchableFacility> = HashMap()
     private val delete: HashMap<Int, DocumentReference> = HashMap()
 
-    val favoritesLiveData: MutableLiveData<ArrayList<SearchableFacility>> = MutableLiveData<ArrayList<SearchableFacility>>(favorites)
+    val favoritesLiveData: MutableLiveData<ArrayList<SearchableFacility>> = MutableLiveData<ArrayList<SearchableFacility>>()
 
     /* 즐겨찾기 삽입 */
     fun insert(searchableFavorites: SearchableFacility) {
