@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.domino.skhumap.Interface.ItemTouchHelperAdapter
 import com.domino.skhumap.R
 import com.domino.skhumap.dto.SearchableFacility
-import kotlinx.android.synthetic.main.activity_edit_favorites.view.*
+import kotlinx.android.synthetic.main.fragment_edit_favorites.view.*
 import kotlinx.android.synthetic.main.item_favorites_edit_list_item.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -50,7 +50,7 @@ class EditFacilityListAdapter(private val list: ArrayList<SearchableFacility>): 
                 check_box_select.run {
                     isChecked = checkedList[position]
                     setOnClickListener {
-                        (parent.parent.parent as ViewGroup).edit_check_box_all_select.isChecked=false
+                        (parent.parent.parent as ViewGroup).fragment_edit_check_box_all_select.isChecked=false
                         checkedList[adapterPosition] = isChecked
                     }
                 }
@@ -67,6 +67,7 @@ class EditFacilityListAdapter(private val list: ArrayList<SearchableFacility>): 
     }
 
     override fun onItemDismiss(position: Int) {
+        list[position].toReference().delete()
         list.removeAt(position)
         checkedList.removeAt(position)
         notifyItemRemoved(position)
