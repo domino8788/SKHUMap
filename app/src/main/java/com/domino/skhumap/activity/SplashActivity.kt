@@ -6,6 +6,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.domino.skhumap.R
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
@@ -13,6 +14,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
         val txtAnim = AnimationUtils.loadAnimation(this, R.anim.appear)
         splash_txt.startAnimation(txtAnim)
         txtAnim.setAnimationListener(object:Animation.AnimationListener{
