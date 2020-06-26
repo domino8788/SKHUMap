@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 group='com.github.kizitonwose'
 def artifact = 'CalendarView'
@@ -62,4 +63,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.7.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
     implementation 'com.github.kizitonwose:CalendarView:0.3.4'
+    // Recommended: Add the Firebase SDK for Google Analytics.
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.4.3'
+    // Add the Firebase Crashlytics SDK.
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.0'
 }
