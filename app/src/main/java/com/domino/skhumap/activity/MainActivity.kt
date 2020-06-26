@@ -1,6 +1,5 @@
 package com.domino.skhumap.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -12,8 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.domino.skhumap.R
 import com.domino.skhumap.adapter.MenuAdapter
-import com.domino.skhumap.contract.Code
-import com.domino.skhumap.fragment.FacilityInfoFragment
 import com.domino.skhumap.model.*
 import com.domino.skhumap.repository.FirestoreHelper
 import com.domino.skhumap.view.MultipleLevelBottomSheetView
