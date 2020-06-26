@@ -39,7 +39,7 @@ class EditFavoritesFragment(val list:ArrayList<SearchableFacility>) : Fragment()
             setSupportActionBar(fragment_edit_favorites_tool_bar)
             supportActionBar?.run {
                 setDisplayHomeAsUpEnabled(true)
-                title = ""
+                title = "즐겨찾기 수정"
             }
         }
 
