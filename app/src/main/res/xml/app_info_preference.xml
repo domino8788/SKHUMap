@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="developer"
+        android:icon="@drawable/ic_person_pin_black_24dp"
+        android:title="개발자 : 김남진 (201432003)"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
+        android:key="email"
+        android:icon="@drawable/ic_email_black_24dp"
+        android:title="email : skawls1124@gmail.com"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
+        android:key="github"
+        android:icon="@drawable/ic_github"
+        android:title="github : https://github.com/domino8788"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
+        android:key="info"
+        android:title="SKHU MAP 은 2020년 1학기 소프트웨어 캡스톤디자인 과목에서 진행한 프로젝트 입니다. "
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+
+</PreferenceScreen>
