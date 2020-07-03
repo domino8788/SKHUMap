@@ -7,8 +7,8 @@ exports.createUser = functions.auth.user().onCreate((user) => {
     const userInfo = user.email.split("@")
     const id = userInfo[0]
 
-    db.doc(`users/${id}`).set({
-        uid: user.uid
+    db.doc(`users/${user.uid}`).set({
+        id: id
     })
 
     console.info(`${id} 회원가입 \nuid : ${user.uid}`)
