@@ -41,24 +41,29 @@ class FavoritesViewModel : ViewModel() {
         delete.clear()
         favoritesReference.orderBy("index").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                task.result!!.toObjects(Favorites::class.java).forEach {
-                    it.toSearchableFacility(result, delete) {
-                        if ((result.size + delete.size) == task.result!!.size()) {
-                            favorites.clear()
-                            favorites.addAll(result.values)
-                            favoritesLiveData.postValue(favorites)
-                            if (delete.size != 0) {
-                                db.runBatch { batch ->
-                                    delete.values.forEach { deleteTarget ->
-                                        batch.delete(deleteTarget)
-                                    }
-                                    favorites.forEachIndexed { index, updateTarget ->
-                                        batch.update(updateTarget.toReference(), mapOf("index" to index))
+                task.result!!.toObjects(Favorites::class.java).apply {
+                    if(size == 0)
+                        favoritesLiveData.postValue(favorites)
+                    else
+                        forEach {
+                            it.toSearchableFacility(result, delete) {
+                                if ((result.size + delete.size) == task.result!!.size()) {
+                                    favorites.clear()
+                                    favorites.addAll(result.values)
+                                    favoritesLiveData.postValue(favorites)
+                                    if (delete.size != 0) {
+                                        db.runBatch { batch ->
+                                            delete.values.forEach { deleteTarget ->
+                                                batch.delete(deleteTarget)
+                                            }
+                                            favorites.forEachIndexed { index, updateTarget ->
+                                                batch.update(updateTarget.toReference(), mapOf("index" to index))
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
                 }
             }
         }
