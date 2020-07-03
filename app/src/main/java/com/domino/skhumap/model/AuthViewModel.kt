@@ -77,7 +77,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun loginSuccess(id: String, password: String, name: String){
         setLoginInfo(id, password, name)
-        FirestoreHelper.userReference = FirestoreHelper.db.document("users/${id}")
+        FirestoreHelper.userReference = FirestoreHelper.db.document("users/${user!!.uid}")
         toastLiveData.postValue("로그인 성공. $id $name 으로 로그인 되셨습니다.")
         loadLoginInfo()
     }
