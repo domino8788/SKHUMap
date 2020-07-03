@@ -26,7 +26,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     }
     private var user:FirebaseUser? = auth.currentUser
 
-    fun getEmail(id:String, name:String) = "${id}@${name}.com"
+    fun getEmail(id:String) = "${id}@skhumap.com"
 
     fun login(id:String, password: String):WebViewClient?{
         val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -50,7 +50,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     val isLogin:Boolean
-    get() = user != null
+        get() = user != null
 
     fun logout() {
         CookieManager.getInstance().removeAllCookie()
@@ -84,7 +84,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun resetPassword(id:String, name:String, previousPassword:String, newPassword:String){
         /* 입력한 password로 로그인 시도 */
-        auth.signInWithEmailAndPassword(getEmail(id, name), previousPassword).addOnCompleteListener { task ->
+        auth.signInWithEmailAndPassword(getEmail(id), previousPassword).addOnCompleteListener { task ->
             /* 로그인 성공 */
             if(task.isSuccessful){
                 /* 비밀번호 갱신 */
@@ -110,7 +110,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     private fun firebaseAuth(id: String, password: String, name: String) {
-        auth.signInWithEmailAndPassword(getEmail(id, name), password)
+        auth.signInWithEmailAndPassword(getEmail(id), password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     loginSuccess(id, password, name)
@@ -123,12 +123,9 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                         }
                         /* 신규가입 */
                         is FirebaseAuthInvalidUserException -> {
-                            auth.createUserWithEmailAndPassword("${id}@${name}.com", password)
+                            auth.createUserWithEmailAndPassword(getEmail(id), password)
                                 .addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
-                                        user?.updateProfile(
-                                            UserProfileChangeRequest.Builder().setDisplayName(name).build()
-                                        )
                                         loginSuccess(id, password, name)
                                     } else {
                                         toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
