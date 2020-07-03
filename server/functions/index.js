@@ -14,6 +14,15 @@ exports.createUser = functions.auth.user().onCreate((user) => {
     console.info(`${id} 회원가입 \nuid : ${user.uid}`)
 })
 
+exports.deleteUser = functions.auth.user().onDelete((user) => {
+    const userInfo = user.email.split("@")
+    const id = userInfo[0]
+
+    db.doc(`users/${user.uid}`).delete()
+
+    console.info(`${id} 회원탈퇴 \nuid : ${user.uid}`)
+})
+
 const createKeywords = (keyword) => {
     const arr = []
     let cur = ''
