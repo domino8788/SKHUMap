@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="policy1"
+        android:title="@string/policy1"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
+        android:key="policy2"
+        android:title="@string/policy2"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
+        android:key="policy3"
+        android:title="@string/policy3"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
+        android:key="policy4"
+        android:title="@string/policy4"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
+        android:key="policy5"
+        android:title="@string/policy5"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+</PreferenceScreen>
