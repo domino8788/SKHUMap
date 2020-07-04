@@ -23,5 +23,9 @@
         android:title="SKHU MAP 은 2020년 1학기 소프트웨어 캡스톤디자인 과목에서 진행한 프로젝트 입니다. "
         android:layout="@layout/item_my_page_menu_list">
     </Preference>
-
+    <Preference
+        android:key="policy"
+        android:title="개인정보처리방침 및 이용약관"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
 </PreferenceScreen>

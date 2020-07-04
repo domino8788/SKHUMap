@@ -26,4 +26,9 @@
     <string name="end_date">End date</string>
     <string name="clear">Clear</string>
     <string name="week_mode">Week mode</string>
+    <string name="policy1">본 앱은 사용자를 식별하는 용도로 성공회대학교 학사행정시스템 로그인 정보(학번, 비밀번호)를 사용합니다.</string>
+    <string name="policy2">본 앱이 로그인 정보를 이용해 파싱한 정보는 앱이 설치된 기기에만 보관됩니다.</string>
+    <string name="policy3">본 앱은 로그인 정보를 이용해 학생정보를 변경하지 않습니다.</string>
+    <string name="policy4">본 앱의 서버는 로그인 정보와 사용자 데이터(즐겨찾기, 일정) 외 다른 정보를 저장하지 않으며 사용자 비밀번호는 Firebase Auth 정책에 따라 암호화 됩니다.</string>
+    <string name="policy5">본 앱은 성공회대학교 공식 인증 앱이 아니므로 사용 중 발생하는 모든 책임은 사용자 본인에게 있습니다.</string>
 </resources>

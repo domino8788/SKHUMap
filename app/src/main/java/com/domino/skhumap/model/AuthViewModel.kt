@@ -10,6 +10,8 @@ import androidx.lifecycle.*
 import com.domino.skhumap.repository.FirestoreHelper
 import com.google.firebase.auth.*
 import java.net.URLEncoder
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     val idLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
@@ -18,6 +20,7 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     val toastLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     /* 이름, 비밀번호 */
     val callResetPassword: MutableLiveData<Pair<String, String>> by lazy { MutableLiveData<Pair<String, String>>() }
+    val callSignIn:MutableLiveData<()->Unit> by lazy { MutableLiveData<()->Unit>() }
 
     private val auth = FirebaseAuth.getInstance().apply {
         addAuthStateListener {state ->
@@ -25,6 +28,9 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
     private var user:FirebaseUser? = auth.currentUser
+    val signInTime
+    get() = SimpleDateFormat("yyyy년 M월 d일 HH시 mm분 ss초").let { it.format(Date(user!!.metadata!!.creationTimestamp)) }
+
 
     fun getEmail(id:String) = "${id}@skhumap.com"
 
@@ -56,6 +62,16 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         CookieManager.getInstance().removeAllCookie()
         app.getSharedPreferences("login_info", Context.MODE_PRIVATE)!!.edit().clear().commit()
         auth.signOut()
+    }
+    fun signIn(id:String, password: String, name: String){
+        auth.createUserWithEmailAndPassword(getEmail(id), password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    loginSuccess(id, password, name)
+                } else {
+                    toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
+                }
+            }
     }
     fun signOut(){
         user?.delete()
@@ -126,14 +142,9 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
                         }
                         /* 신규가입 */
                         is FirebaseAuthInvalidUserException -> {
-                            auth.createUserWithEmailAndPassword(getEmail(id), password)
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        loginSuccess(id, password, name)
-                                    } else {
-                                        toastLiveData.postValue("인증에 실패했습니다. 관리자에게 문의하세요.")
-                                    }
-                                }
+                            callSignIn.postValue{
+                                signIn(id, password, name)
+                            }
                         }
                     }
                 }

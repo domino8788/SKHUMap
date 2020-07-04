@@ -85,6 +85,17 @@ class LoginActivity : AppCompatActivity() {
                         dialog.cancel()
                     }.create().show()
             })
+            callSignIn.observe(this@LoginActivity, Observer { callback ->
+                AlertDialog.Builder(this@LoginActivity)
+                    .setTitle("회원가입")
+                    .setMessage("${app.getString(R.string.policy1)}\n\n${app.getString(R.string.policy2)}\n\n${app.getString(R.string.policy3)}\n\n${app.getString(R.string.policy4)}\n\n${app.getString(R.string.policy5)}\n\n회원가입 하시겠습니까?")
+                    .setPositiveButton("동의") { _, _ ->
+                        callback()
+                    }
+                    .setNegativeButton("취소") { _, _ ->
+                        toastLiveData.postValue("회원가입을 취소했습니다.")
+                    }.create().show()
+            })
             if(isLogin) {
                 app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
                     login_id.setText(getString("id", ""))
