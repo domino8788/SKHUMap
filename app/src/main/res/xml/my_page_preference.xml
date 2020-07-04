@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:key="logout"
-        android:icon="@drawable/ic_signs"
         android:title="로그아웃"
         android:layout="@layout/item_my_page_menu_list">
     </Preference>
     <Preference
+        android:key="signout"
+        android:title="회원탈퇴"
+        android:layout="@layout/item_my_page_menu_list">
+    </Preference>
+    <Preference
         android:key="info"
-        android:icon="@drawable/ic_interface"
         android:title="앱 정보"
         android:layout="@layout/item_my_page_menu_list">
     </Preference>
