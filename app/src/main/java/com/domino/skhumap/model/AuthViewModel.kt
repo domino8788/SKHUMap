@@ -10,6 +10,8 @@ import androidx.lifecycle.*
 import com.domino.skhumap.repository.FirestoreHelper
 import com.google.firebase.auth.*
 import java.net.URLEncoder
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AuthViewModel(val app: Application) : AndroidViewModel(app) {
     val idLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
@@ -26,6 +28,9 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
     private var user:FirebaseUser? = auth.currentUser
+    val signInTime
+    get() = SimpleDateFormat("yyyy년 M월 d일 HH시 mm분 ss초").let { it.format(Date(user!!.metadata!!.creationTimestamp)) }
+
 
     fun getEmail(id:String) = "${id}@skhumap.com"
 
