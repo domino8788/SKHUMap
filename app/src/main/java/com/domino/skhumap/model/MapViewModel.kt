@@ -83,7 +83,7 @@ class MapViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun getFloorList(minFloor: Int, maxFloor: Int): MutableList<Pair<String, Int>> =
         mutableListOf<Pair<String, Int>>().apply {
-            (minFloor..maxFloor).forEach { if(it!=0) add(getFloorName(it) to it) }
+            (minFloor..maxFloor).forEach { if(it!=0) add(getFloorName(it).toUpperCase() to it) }
         }
 
     fun getSelectedDepartmentId() = selectedDepartment!!.id
