@@ -57,6 +57,9 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         app.getSharedPreferences("login_info", Context.MODE_PRIVATE)!!.edit().clear().commit()
         auth.signOut()
     }
+    fun signOut(){
+        user?.delete()
+    }
 
     fun loadLoginInfo() {
         app.getSharedPreferences("login_info", Context.MODE_PRIVATE).run {
