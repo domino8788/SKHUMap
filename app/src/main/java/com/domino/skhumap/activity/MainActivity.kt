@@ -113,7 +113,8 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onBackPressed() {
         if(supportFragmentManager.backStackEntryCount!=0){
-            mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HALF_EXPANDED)
+            if(supportFragmentManager.backStackEntryCount==1)
+                mainViewModel.setBottomSheetState(MultipleLevelBottomSheetView.State.HALF_EXPANDED)
             return super.onBackPressed()
         }
         else if (mapViewModel.selectedDepartment != null) {
