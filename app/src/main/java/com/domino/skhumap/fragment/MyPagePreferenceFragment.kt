@@ -32,7 +32,9 @@ class MyPagePreferenceFragment:PreferenceFragmentCompat(){
             }
             "signout"->{
                 val builder = AlertDialog.Builder(requireContext())
-                builder.setMessage("회원탈퇴 하시겠습니까?\n회원탈퇴 시 모든 유저 데이터가 삭제 됩니다.")
+                builder
+                    .setTitle("회원탈퇴")
+                    .setMessage("회원탈퇴 하시겠습니까?\n회원탈퇴 시 모든 유저 데이터가 삭제 됩니다.")
                     .setPositiveButton("회원탈퇴") { _, _ ->
                         authViewModel.signOut()
                         authViewModel.logout()
