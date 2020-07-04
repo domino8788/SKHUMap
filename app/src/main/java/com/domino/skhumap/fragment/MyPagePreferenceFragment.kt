@@ -2,6 +2,7 @@ package com.domino.skhumap.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -26,10 +27,20 @@ class MyPagePreferenceFragment:PreferenceFragmentCompat(){
         when(preference?.key){
             "logout" -> {
                 authViewModel.logout()
-                startActivity(Intent(requireActivity(), LoginActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_DOCUMENT
-                })
+                startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 requireActivity().finish()
+            }
+            "signout"->{
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage("회원탈퇴 하시겠습니까?\n회원탈퇴 시 모든 유저 데이터가 삭제 됩니다.")
+                    .setPositiveButton("회원탈퇴") { _, _ ->
+                        authViewModel.signOut()
+                        authViewModel.logout()
+                        startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                        requireActivity().finish()
+                    }
+                    .setNegativeButton("취소") { _, _ -> }
+                builder.create().show()
             }
             "info" -> {
                 val fm = requireActivity().supportFragmentManager
