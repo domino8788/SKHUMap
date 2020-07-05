@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SKHU MAP</string>
+    <string name="app_name">SKHU Map</string>
     <string-array name="menu">
         <item>교내지도</item>
         <item>캘린더</item>
