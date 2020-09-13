@@ -109,7 +109,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                 }
             })
 
-            markMapLivdeData.observe(requireActivity(), Observer { searchableFacility ->
+            markMapLiveData.observe(requireActivity(), Observer { searchableFacility ->
                 mapViewModel.run {
                     selectedDepartment = searchableFacility.department
                     setSelectedFloor(searchableFacility.floorNumber)
@@ -122,7 +122,11 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                     it.marker?.map = null
                 }
             })
-
+            selectedDepartmentLiveData.observe(requireActivity(), Observer {facility ->
+                facility?.let { department ->
+                    department_info.text = "${department.id} ${department.name.joinToString(", ")}"
+                }
+            })
         }
 
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
@@ -192,7 +196,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         clearSearchFocus()
                         searchSuggestion.keyword?.find { it -> it.contains(query) }?.let { setSearchText(it) }
                         GlobalScope.launch {
-                            mapViewModel.markMapLivdeData.postValue(searchSuggestion.toSearchableFacility())
+                            mapViewModel.markMapLiveData.postValue(searchSuggestion.toSearchableFacility())
                         }
                     }
                 })
@@ -223,6 +227,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         )
                         alpha = 0.45f
                     }
+                    department_info.visibility = View.GONE
                 }
                 Mode.INDOOR -> {
                     /* 지도 기본 설정 */
@@ -236,6 +241,7 @@ class NaverMapFragment : Fragment(), OnMapReadyCallback {
                         image = OverlayImage.fromResource(resourceId)
                         bounds = LatLngBounds(indoorBenchMarkSouthWest, indoorBenchMarkNorthEast)
                     }
+                    department_info.visibility = View.VISIBLE
                 }
             }
             groundOverlay.map = naverMap

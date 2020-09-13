@@ -34,7 +34,7 @@ class MapViewModel(val app: Application) : AndroidViewModel(app) {
     val selectedFacilityInfoLiveData:MutableLiveData<List<Lecture>> by lazy { MutableLiveData<List<Lecture>>() }
     private var mapListener: ListenerRegistration? = null
     val selectedFacilityLiveData: MutableLiveData<SearchableFacility> by lazy { MutableLiveData<SearchableFacility>() }
-
+    val selectedDepartmentLiveData: MutableLiveData<Facility> by lazy { MutableLiveData<Facility>() }
     var selectedDepartment:Facility? = null
     set(facility) {
         field = facility
@@ -42,6 +42,7 @@ class MapViewModel(val app: Application) : AndroidViewModel(app) {
             floorListLiveData.value = getFloorList((it.info!!["minFloor"] as Long).toInt(), (it.info!!["maxFloor"] as Long).toInt())
             setSelectedFloor(1)
         }?: setSelectedFloor(null)
+        selectedDepartmentLiveData.postValue(facility)
     }
 
 
