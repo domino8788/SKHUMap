@@ -30,7 +30,7 @@ class MapViewModel(val app: Application) : AndroidViewModel(app) {
     val previousFacilitiesLiveData:MutableLiveData<MutableList<Facility>> by lazy { MutableLiveData<MutableList<Facility>>() }
     val floorListLiveData: MutableLiveData<MutableList<Pair<String, Int>>> by lazy { MutableLiveData<MutableList<Pair<String, Int>>>() }
     val selectedFloorLiveData:MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
-    val markMapLivdeData:MutableLiveData<SearchableFacility> by lazy { MutableLiveData<SearchableFacility>() }
+    val markMapLiveData:MutableLiveData<SearchableFacility> by lazy { MutableLiveData<SearchableFacility>() }
     val selectedFacilityInfoLiveData:MutableLiveData<List<Lecture>> by lazy { MutableLiveData<List<Lecture>>() }
     private var mapListener: ListenerRegistration? = null
     val selectedFacilityLiveData: MutableLiveData<SearchableFacility> by lazy { MutableLiveData<SearchableFacility>() }

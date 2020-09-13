@@ -32,7 +32,7 @@ class FacilityFragment() : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         favoritesViewModel = ViewModelProvider(requireActivity())[FavoritesViewModel::class.java].apply {
             view.favorites_view.adapter = FavoritesListAdapter(favorites){favorites->
-                mapViewModel.markMapLivdeData.value = favorites
+                mapViewModel.markMapLiveData.value = favorites
             }
             favoritesLiveData.observe(requireActivity(), Observer {
                 view.favorites_view.notifyDataSetChanged()
