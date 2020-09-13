@@ -63,20 +63,20 @@ data class Lecture (
         var endDate:Timestamp? = null
         when(haggi){
             "Z0101" -> {
-                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 3, 1))
-                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 6, 30))
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 2, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 5, 30))
             }
             "Z0102" -> {
-                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 9, 1))
-                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 12, 31))
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 8, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 11, 31))
             }
             "Z0103" -> {
-                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 7, 1))
-                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 7, 14))
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 6, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 6, 14))
             }
             "Z0104" -> {
-                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 1, 1))
-                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 1, 15))
+                startDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 12, 1))
+                endDate = Timestamp(Date(calendar.get(Calendar.YEAR)-1900, 12, 15))
             }
         }
         return Schedule(Schedule.TYPE_STUDENT_SCHEDULE, gwamogKorNm, "$gyosuNm\n$hosilCd\n$roomName", mutableListOf(yoilNm),
