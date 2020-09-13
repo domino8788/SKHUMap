@@ -520,10 +520,14 @@ class CalendarFragment : Fragment() {
                     else
                         calendar_view.scrollToDate(firstDate)
                 } else {
-                    if (firstDate.yearMonth == lastDate.yearMonth)
+                    if (firstDate.yearMonth == lastDate.yearMonth) {
                         calendar_view.scrollToMonth(firstDate.yearMonth)
-                    else
+                        selectDate(today)
+                    }
+                    else {
                         calendar_view.scrollToMonth(minOf(firstDate.yearMonth.next, endMonth))
+                        selectDate(lastDate.minusDays(lastDate.dayOfMonth-1L))
+                    }
                 }
             }
             animator.duration = 250
