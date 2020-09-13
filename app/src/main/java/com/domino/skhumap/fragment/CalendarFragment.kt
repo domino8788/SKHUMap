@@ -582,7 +582,7 @@ class CalendarFragment : Fragment() {
         if(needUpdate) {
             if(event.type == Schedule.TYPE_EDIT_STUDENT_SCHEDULE) {
                 event.yoil?.forEach { yoil ->
-                    weekEvents[yoil.yoilToNumber()]!!.add(calendarViewModel.lectureList.find { lecture -> (event.name == lecture.gwamogKorNm) && (event.adjustFrTm == lecture.adjustFrTm) }!!.toSchedule)
+                    weekEvents[yoil.yoilToNumber()]!!.add(calendarViewModel.lectureList.find { lecture -> (event.name == lecture.gwamogKorNm) && (event.adjustFrTm == lecture.adjustFrTm) && (yoil == lecture.yoilNm) }!!.toSchedule)
                 }
             }
             calendarViewModel.deleteSchedule(event)
