@@ -40,13 +40,4 @@ class PolicyFragment():Fragment() {
         view.policy_version.text = "버전 정보 : ${BuildConfig.VERSION_NAME}"
         view.policy_sign_in_time.text = "${authViewModel.signInTime}에 동의하셨습니다."
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home -> {
-                requireActivity().onBackPressed()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 }
