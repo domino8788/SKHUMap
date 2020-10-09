@@ -19,7 +19,17 @@
         android:layout_marginStart="@dimen/fragment_in_view_pager_padding"
         android:layout_marginTop="80dp"
         android:background="@drawable/bg_level_picker_border" />
-
+    <TextView
+        android:id="@+id/department_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginEnd="@dimen/fragment_in_view_pager_padding"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/bg_level_picker_border" />
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/floating_search_view"
         android:layout_width="match_parent"
@@ -32,15 +42,4 @@
         app:floatingSearch_showSearchKey="false"
         app:floatingSearch_leftActionMode="showSearch"
         app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
-    <TextView
-        android:id="@+id/department_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:paddingVertical="4dp"
-        android:paddingHorizontal="8dp"
-        android:layout_marginEnd="@dimen/fragment_in_view_pager_padding"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/bg_level_picker_border" />
 </RelativeLayout>
