@@ -16,7 +16,10 @@
 - 앱 이름 : SKHU Map
 - 플랫폼 : Android
 - 언어 : Kotlin
-- DB : Firebase Firestore
+- DB : Cloud Firestore
+- Backend : Cloud Functions, Firebase Hosting
+- 유지보수 : Firebase Crashlytics
+- 인증 : Firebase Authentication
 
 # 릴리즈 정보
 - 최종 릴리즈 버전 : 1.3.3 (2020-09-14)
@@ -29,6 +32,19 @@ https://youtu.be/iMRNe0X60qk
 
 ### 3차 릴리즈 시연 영상
 https://youtu.be/6wn9quB179A
+
+### 제11회 성공회대학교 IT&미디어콘텐츠 경진대회 발표 동영상
+https://youtu.be/Hv1FgHqrGew
+
+#### 동영상 발표 내용 순서
+01. 작품 개요
+02. 팀 소개(팀 이름 설명, 참여 인력)
+03. 이용 기술
+04. 개발 일정
+05. 작품 구성
+06. 작품 특징
+07. 개발 방법
+08. 작품 시연
 
 # SKHU Map v1.3.0 기능 소개
 
@@ -71,6 +87,7 @@ https://youtu.be/6wn9quB179A
     - 즐겨찾기를 삭제할 수 있다.
       - 스와이핑으로 삭제가 가능하다.
       - 콤보박스가 체크된 즐겨찾기를 일괄삭제 할 수 있다.
+      
 ## 캘린더
 |캘린더 인터페이스|일정 추가|일정 수정|일정 삭제|
 |-|-|-|-|
