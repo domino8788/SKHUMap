@@ -16,7 +16,7 @@ data class Search(@DocumentId var id: String="", @PropertyName("keyword") var ke
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()!!
-        parcel.readList(keyword, String::class.java.classLoader)
+        keyword?.let { parcel.readList(it, String::class.java.classLoader) }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
