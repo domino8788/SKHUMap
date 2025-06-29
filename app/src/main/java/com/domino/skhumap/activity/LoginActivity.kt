@@ -50,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
             login_web_view.run {
                 settings.run {
                     javaScriptEnabled = true
-                    setAppCacheEnabled(true)
                     domStorageEnabled = true
                 }
             }

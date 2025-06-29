@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         main_web_view.run {
             settings.run {
                 javaScriptEnabled = true
-                setAppCacheEnabled(true)
                 domStorageEnabled = true
             }
         }

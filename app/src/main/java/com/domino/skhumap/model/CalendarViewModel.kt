@@ -195,6 +195,9 @@ class CalendarViewModel(val app: Application) : AndroidViewModel(app) {
                     }
                     status = Status.FINISH
                 }
+                Status.FINISH -> {
+                    // 완료 상태 - 아무것도 하지 않음
+                }
             }
         }
     }

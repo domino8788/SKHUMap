@@ -32,8 +32,8 @@
             android:launchMode="singleTop" />
 
         <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="ha6f0suz9a" />
+            android:name="com.naver.maps.map.NCP_KEY_ID"
+            android:value="${NAVER_MAPS_API_KEY}" />
     </application>
 
 </manifest>
