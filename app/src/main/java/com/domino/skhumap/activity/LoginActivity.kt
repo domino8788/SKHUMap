@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
                 login(login_id.text.toString(), login_password.text.toString())?.let {
                     login_web_view.run {
                         webViewClient = it
-                        loadUrl("http://sam.skhu.ac.kr")
+                        loadUrl("https://www.naver.com/")
                     }
                 }
             }
