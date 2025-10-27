@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             })
             webClientLiveData.observe(this@MainActivity, Observer { webClient->
                 main_web_view.webViewClient = webClient
-                main_web_view.loadUrl("http://sam.skhu.ac.kr")
+//                main_web_view.loadUrl("http://sam.skhu.ac.kr")
             })
             toastLiveData.observe(this@MainActivity, Observer { message ->
                 Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()

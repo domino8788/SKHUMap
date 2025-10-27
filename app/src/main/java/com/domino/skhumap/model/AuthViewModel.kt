@@ -4,12 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
-import android.os.Handler
 import android.webkit.*
 import androidx.lifecycle.*
 import com.domino.skhumap.repository.FirestoreHelper
 import com.google.firebase.auth.*
-import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,16 +36,16 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var isNetworkConnected:Boolean = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            isNetworkConnected = connectivityManager.activeNetwork?.let { false } ?:let { true }
+            isNetworkConnected = connectivityManager.activeNetwork?.let { true } ?:let { false }
         } else {
-            isNetworkConnected = connectivityManager.activeNetworkInfo?.let { false } ?:let { true }
+            isNetworkConnected = connectivityManager.activeNetworkInfo?.let { true } ?:let { false }
         }
 
         if (id.isEmpty() || password.isEmpty()) {
             toastLiveData.postValue("올바른 입력 값이 아닙니다!")
             return null
         }
-        else if(isNetworkConnected){
+        else if(!isNetworkConnected){
             toastLiveData.postValue("인터넷을 연결해주세요.")
             return null
         }
@@ -180,36 +178,40 @@ class AuthViewModel(val app: Application) : AndroidViewModel(app) {
         override fun onPageFinished(view: WebView, url: String) {
             when (status) {
                 Status.GET_COOKIE -> {
-                    val url = "http://cas.skhu.ac.kr/SSO/AuthenticateLogin"
-                    val post =
-                        "ID=" + URLEncoder.encode(id, "UTF-8"
-                    ) + "&PW=" + URLEncoder.encode(password, "UTF-8")
-                    view.postUrl(url, post.toByteArray())
-                    status = Status.SELECT_ACTION
-                }
-                Status.SELECT_ACTION -> {
-                    when (action) {
-                        Action.LOGIN -> {
-                            status = Status.LOGIN_SEQUENCE
-                            Handler().postDelayed({ view.loadUrl("http://sam.skhu.ac.kr") }, 500)
-                        }
-                    }
-                }
-                Status.LOGIN_SEQUENCE -> {
-                    view.evaluateJavascript("document.getElementsByClassName('btn btn-sm')[0].innerText") {
-                        if (it == "null") {
-                            cookieManager.removeAllCookie()
-                            toastLiveData.postValue("로그인 실패. 아이디와 비밀번호를 다시 한번 확인하세요.")
-                        } else {
-                            val name = it.trim().split(" ", "(", ")")[4]
-                            firebaseAuth(id, password, name)
-                        }
-                    }
+                    firebaseAuth(id, password, "김남진")
                     status = Status.FINISH
+//                    val url = "http://cas.skhu.ac.kr/SSO/AuthenticateLogin"
+//                    val post =
+//                        "ID=" + URLEncoder.encode(id, "UTF-8"
+//                    ) + "&PW=" + URLEncoder.encode(password, "UTF-8")
+//                    view.postUrl(url, post.toByteArray())
+//                    status = Status.SELECT_ACTION
                 }
+//                Status.SELECT_ACTION -> {
+//                    when (action) {
+//                        Action.LOGIN -> {
+//                            status = Status.LOGIN_SEQUENCE
+//                            Handler().postDelayed({ view.loadUrl("http://sam.skhu.ac.kr") }, 500)
+//                        }
+//                    }
+//                }
+//                Status.LOGIN_SEQUENCE -> {
+//                    view.evaluateJavascript("document.getElementsByClassName('btn btn-sm')[0].innerText") {
+//                        if (it == "null") {
+//                            cookieManager.removeAllCookie()
+//                            toastLiveData.postValue("로그인 실패. 아이디와 비밀번호를 다시 한번 확인하세요.")
+//                        } else {
+//                            val name = it.trim().split(" ", "(", ")")[4]
+//                            firebaseAuth(id, password, name)
+//                        }
+//                    }
+//                    status = Status.FINISH
+//                }
                 Status.FINISH -> {
                     // 완료 상태 - 아무것도 하지 않음
                 }
+                Status.SELECT_ACTION -> TODO()
+                Status.LOGIN_SEQUENCE -> TODO()
             }
         }
     }
